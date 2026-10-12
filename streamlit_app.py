@@ -58,14 +58,15 @@ def tabla_filas(filas):
         'Left activity': ACT[f['mi']], 'Right activity': ACT[f['md']]} for f in filas])
 
 
-def linea_tiempo(filas, alto=150):
+def linea_tiempo(filas, alto=240):
     df = pd.DataFrame([{'hand': mano, 'start': f['t0'], 'end': f['t1'], 'activity': ACT[f[k]],
                         'what': f.get('desc_' + k) or ACT[f[k]]}
                        for f in filas for mano, k in (('Left hand', 'mi'), ('Right hand', 'md'))])
     escala = alt.Scale(domain=list(COLORES), range=list(COLORES.values()))
     return alt.Chart(df).mark_bar().encode(
-        x=alt.X('start:Q', title='seconds'), x2='end:Q', y=alt.Y('hand:N', title=None, sort=['Left hand', 'Right hand']),
-        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='bottom', title=None)),
+        x=alt.X('start:Q', title='seconds', scale=alt.Scale(domain=[0, max(f['t1'] for f in filas)], nice=False)),
+        x2='end:Q', y=alt.Y('hand:N', title=None, sort=['Left hand', 'Right hand']),
+        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='top', title=None, columns=6)),
         tooltip=['hand', 'activity', 'what', 'start', 'end']).properties(height=alto)
 
 
@@ -150,7 +151,7 @@ with t_res:
 with t_dia:
     izq, der = st.columns([3, 2])
     with izq:
-        st.altair_chart(linea_tiempo(filas, 120), use_container_width=True)
+        st.altair_chart(linea_tiempo(filas, 200), use_container_width=True)
         df = tabla_filas(filas)
         sel = st.dataframe(df[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
                            use_container_width=True, height=460, on_select='rerun', selection_mode='single-row')
@@ -272,7 +273,7 @@ with t_live:
                 x=alt.X('start:Q', title='seconds'), x2='end:Q', y=alt.Y('hand:N', title=None),
                 color=alt.Color('motion:N', scale=alt.Scale(
                     domain=list(nombres.values()), range=['#9e9e9e', '#fb8c00', '#66bb6a', '#1e88e5'])),
-                tooltip=['hand', 'motion', 'start']).properties(height=120), use_container_width=True)
+                tooltip=['hand', 'motion', 'start']).properties(height=200), use_container_width=True)
             st.caption('Motion only (speed in hand-lengths per second). This is not yet the bimanual chart: telling '
                        '"hold" from "operate" needs the vision model.')
             ev_vivo = errores.detectar(pi)
