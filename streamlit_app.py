@@ -137,7 +137,7 @@ if vista == 'Overview':
                   delta_color='off')
     else:
         c4.metric('Charting by hand', '≈ 60 min', 'for this 4.7-min video', delta_color='off')
-    st.altair_chart(linea_tiempo(filas), use_container_width=True)
+    st.altair_chart(linea_tiempo(filas), width="stretch")
     st.subheader('Top improvements')
     for p in pot['palancas'][:3]:
         st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** per unit ({p['pct']:.0f} %). "
@@ -159,12 +159,12 @@ if vista == 'Overview':
 if vista == 'Bimanual chart':
     izq, der = st.columns([3, 2])
     with izq:
-        st.altair_chart(linea_tiempo(filas, 200), use_container_width=True)
+        st.altair_chart(linea_tiempo(filas, 200), width="stretch")
         df = tabla_filas(filas)
         st.caption('ILO symbols: ○ operation · ⇨ transport · D delay · ▽ hold. Course convention: ▽ only while the '
                    'other hand operates; a hand that holds while the other one fetches is waiting, so it is D.')
         sel = st.dataframe(df[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
-                           use_container_width=True, height=460, on_select='rerun', selection_mode='single-row')
+                           width="stretch", height=460, on_select='rerun', selection_mode='single-row')
     fila = sel.selection.rows[0] if sel and sel.selection.rows else 0
     f = filas[fila]
     with der:
@@ -181,9 +181,9 @@ if vista == 'Bimanual chart':
                     f"by the agent (gate chose **{cal.get('compuerta')}**).")
     a, b = st.columns(2)
     a.download_button('Download the chart (Excel, course format)', excel_bytes(str(EJ[nombre]), HUELLA), 'bimanual_chart.xlsx',
-                      use_container_width=True)
+                      width="stretch")
     b.download_button('Download the raw result (JSON)', json.dumps(d, ensure_ascii=False, indent=1), 'diagrama.json',
-                      use_container_width=True)
+                      width="stretch")
 
 if vista == 'Improvement plan':
     with st.expander('Assumptions (change them)', expanded=False):
@@ -201,7 +201,7 @@ if vista == 'Improvement plan':
         dfp = pd.DataFrame([{'Change': p['title'], 'Seconds saved per unit': p['segundos']} for p in pot['palancas']])
         st.altair_chart(alt.Chart(dfp).mark_bar(color='#2e7d32').encode(
             x='Seconds saved per unit:Q', y=alt.Y('Change:N', sort='-x', title=None),
-            tooltip=list(dfp.columns)).properties(height=40 + 40 * len(dfp)), use_container_width=True)
+            tooltip=list(dfp.columns)).properties(height=40 + 40 * len(dfp)), width="stretch")
     for p in pot['palancas']:
         with st.container(border=True):
             st.markdown(f"**{p['title']}** — ≈ **{p['segundos']:.1f} s** per unit ({p['pct']:.1f} %)")
@@ -225,7 +225,7 @@ if vista == 'Method alerts':
     st.markdown('Signals for the engineer to look at, from hand tracking plus the chart codes. They are prompts to '
                 'check, not verdicts.')
     if ev:
-        st.dataframe(alertas_agrupadas(ev), hide_index=True, use_container_width=True)
+        st.dataframe(alertas_agrupadas(ev), hide_index=True, width="stretch")
     else:
         st.info('No method alerts for this operation.')
 
@@ -237,7 +237,7 @@ if vista == 'Accuracy & AMD':
         ['LEGO assembly, blind human labels (92)', '—', '64.1 %', '71.7 %'],
         ['IMPACT assembly, 4 new operators (982)', '45.7 %', '70.0 %', '73.6 %'],
     ], columns=['Test set', 'Constant baseline', 'Vision model alone', 'With 30–70 s of human review']),
-        hide_index=True, use_container_width=True)
+        hide_index=True, width="stretch")
     st.caption('Most remaining errors are about *when* an activity starts or ends (±1 s), not *which* activity it is: '
                'with ±1 s tolerance the KIT result is 87 %. Times are observed times, not standard times (no rating or '
                'allowances).')
@@ -283,12 +283,12 @@ if vista == 'Try your own video':
                 x=alt.X('start:Q', title='seconds'), x2='end:Q', y=alt.Y('hand:N', title=None),
                 color=alt.Color('motion:N', scale=alt.Scale(
                     domain=list(nombres.values()), range=['#9e9e9e', '#fb8c00', '#66bb6a', '#1e88e5'])),
-                tooltip=['hand', 'motion', 'start']).properties(height=200), use_container_width=True)
+                tooltip=['hand', 'motion', 'start']).properties(height=200), width="stretch")
             st.caption('Motion only (speed in hand-lengths per second). This is not yet the bimanual chart: telling '
                        '"hold" from "operate" needs the vision model.')
             ev_vivo = errores.detectar(pi)
             if ev_vivo:
-                st.dataframe(alertas_agrupadas(ev_vivo), hide_index=True, use_container_width=True)
+                st.dataframe(alertas_agrupadas(ev_vivo), hide_index=True, width="stretch")
     if not base:
         st.info('The full agent needs the vision model on a GPU server (AMD Instinct MI300X), switched on for live '
                 'demos only because it costs money per hour. The examples in the sidebar were computed with the full '
