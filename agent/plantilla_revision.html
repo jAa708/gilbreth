@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revisar diagrama bimanual</title>
+<style>
+  :root { --bg:#160d27; --panel:#21143a; --borde:#3a2a5c; --txt:#efe8fa; --suave:#b8a6d9;
+          --mag:#e020c0; --vio:#6a3cff; --ok:#3ddc97; --mal:#ff6b6b; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:14px/1.4 "Segoe UI",system-ui,sans-serif; }
+  header { padding:10px 16px; border-bottom:1px solid var(--borde); display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+  header h1 { font-size:17px; margin:0; }
+  .chip { background:var(--panel); border:1px solid var(--borde); border-radius:999px; padding:3px 10px; color:var(--suave); }
+  .grid { display:grid; grid-template-columns:minmax(420px, 46%) 1fr; height:calc(100vh - 54px); }
+  .izq { padding:12px 16px; border-right:1px solid var(--borde); overflow:auto; }
+  video { width:100%; border-radius:8px; background:#000; }
+  .ctrl { display:flex; gap:8px; flex-wrap:wrap; margin:8px 0; align-items:center; }
+  button, select, input[type=text] { background:var(--panel); color:var(--txt); border:1px solid var(--borde);
+          border-radius:6px; padding:5px 9px; font:inherit; }
+  button:hover { border-color:var(--vio); cursor:pointer; }
+  button.prim { background:var(--vio); border-color:var(--vio); }
+  .leyenda { font-size:13px; color:var(--suave); background:var(--panel); border-radius:8px; padding:10px 12px; margin-top:10px; }
+  .leyenda b { color:var(--txt); }
+  .der { overflow:auto; }
+  table { width:100%; border-collapse:collapse; }
+  th { position:sticky; top:0; background:var(--panel); text-align:left; padding:7px 8px; font-weight:600; z-index:1; }
+  td { padding:6px 8px; border-bottom:1px solid var(--borde); vertical-align:top; }
+  tr.activa td { background:#2d1b52; }
+  tr.validada td:first-child { border-left:4px solid var(--ok); }
+  tr.cambiada td:first-child { border-left:4px solid var(--mag); }
+  .desc { color:var(--suave); font-size:12.5px; }
+  .t { white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .mini { padding:1px 6px; font-size:12px; }
+  .nota { width:100%; margin-top:4px; font-size:12.5px; }
+  kbd { background:#000; border:1px solid var(--borde); border-radius:4px; padding:0 5px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>/*TITULO*/</h1>
+  <span class="chip" id="progreso">0 validadas</span>
+  <span class="chip" id="cambios">0 cambiadas</span>
+  <button class="prim" id="exportar">Exportar JSON</button>
+</header>
+<div class="grid">
+  <div class="izq">
+    <video id="v" src="/*VIDEO*/" controls preload="auto" muted></video>
+    <div class="ctrl">
+      <span id="reloj" class="chip t">0.0 s</span>
+      <button id="rep">↺ Repetir fila (R)</button>
+      <label><input type="checkbox" id="bucle" checked> bucle en la fila (L)</label>
+      <select id="vel"><option value="0.25">0,25×</option><option value="0.5" selected>0,5×</option><option value="1">1×</option></select>
+    </div>
+    <div class="ctrl">
+      <button id="ini">Inicio = ahora (I)</button>
+      <button id="fin">Fin = ahora (F)</button>
+      <button id="okSig" class="prim">✓ Validar y siguiente (V)</button>
+    </div>
+    <div class="leyenda">
+      <b>Qué mano es cuál (según la ficha que escribió el agente):</b> /*CAMARA*/<br><br>
+      <b>Códigos:</b> TR = alcanza, toma o lleva · OP = ensambla u opera · TR+OP = lleva y encaja en la misma fila ·
+      <b>S = ▽ sostiene mientras la OTRA mano opera</b> · <b>D = espera</b> (quieta, o sostiene mientras la otra va por pieza) · NV = no se ve.<br><br>
+      <b>Atajos:</b> <kbd>Espacio</kbd> play/pausa · <kbd>J</kbd>/<kbd>K</kbd> fila anterior/siguiente ·
+      <kbd>R</kbd> repetir · <kbd>L</kbd> bucle · <kbd>I</kbd>/<kbd>F</kbd> marcar inicio/fin · <kbd>V</kbd> validar y seguir.<br><br>
+      Borrador hecho por el agente: mira cada fila, corrige el código de cada mano o los límites (I/F) si están mal
+      y valida. Casi todos los errores medidos están en los bordes (±1 s). Todo se guarda solo en este navegador; al
+      final, <b>Exportar JSON</b> y pásalo a <code>python revision.py aprobar diagrama_revisado.json final.xlsx</code>.
+    </div>
+  </div>
+  <div class="der">
+    <table>
+      <thead><tr><th>#</th><th>Tiempo</th><th>MD (mano derecha)</th><th>MI (mano izquierda)</th><th>✓</th></tr></thead>
+      <tbody id="cuerpo"></tbody>
+    </table>
+  </div>
+</div>
+<script>
+const ORIGINAL = /*DATOS*/[];
+const CIEGO = false;
+const CODIGOS = CIEGO ? ['?','TR','OP','TR+OP','S','D','NV'] : ['TR','OP','TR+OP','S','D','NV'];
+const CLAVE = 'revision_/*CLAVE*/';
+let filas = JSON.parse(JSON.stringify(ORIGINAL)).map(f => CIEGO ? ({...f, cmd:'?', cmi:'?', md:'', mi:'', ok:false, nota:''}) : ({...f, ok:false, nota:''}));
+try { const g = JSON.parse(localStorage.getItem(CLAVE) || 'null'); if (g && g.length === filas.length) filas = g; } catch (e) {}
+let activa = 0;
+const v = document.getElementById('v');
+
+function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify(filas)); } catch (e) {} pintarCont(); }
+function cambiada(i) { if (CIEGO) return false; const a = ORIGINAL[i], b = filas[i];
+  return a.cmd !== b.cmd || a.cmi !== b.cmi || Math.abs(a.t0 - b.t0) > 0.01 || Math.abs(a.t1 - b.t1) > 0.01 || b.nota; }
+function pintarCont() {
+  document.getElementById('progreso').textContent = filas.filter(f => f.ok).length + ' / ' + filas.length + ' validadas';
+  document.getElementById('cambios').textContent = filas.filter((_, i) => cambiada(i)).length + ' cambiadas';
+}
+function sel(i, mano) {
+  const s = document.createElement('select');
+  CODIGOS.forEach(c => { const o = document.createElement('option'); o.value = o.textContent = c; s.appendChild(o); });
+  s.value = filas[i][mano];
+  s.onchange = () => { filas[i][mano] = s.value; guardar(); pintarFila(i); };
+  s.onclick = ev => ev.stopPropagation();
+  return s;
+}
+function pintarFila(i) {
+  const tr = document.getElementById('f' + i), f = filas[i];
+  tr.className = (i === activa ? 'activa ' : '') + (f.ok ? 'validada ' : '') + (cambiada(i) ? 'cambiada' : '');
+  tr.querySelector('.t').textContent = f.t0.toFixed(1) + '–' + f.t1.toFixed(1) + ' s';
+}
+function construir() {
+  const cuerpo = document.getElementById('cuerpo');
+  filas.forEach((f, i) => {
+    const tr = document.createElement('tr'); tr.id = 'f' + i;
+    tr.innerHTML = `<td>${f.n}</td><td class="t"></td>
+      <td><div class="s-md"></div><div class="desc">${f.md}</div></td>
+      <td><div class="s-mi"></div><div class="desc">${f.mi}</div>
+          <input class="nota" type="text" placeholder="nota (opcional)"></td>
+      <td><input type="checkbox" class="okc"></td>`;
+    tr.querySelector('.s-md').appendChild(sel(i, 'cmd'));
+    tr.querySelector('.s-mi').appendChild(sel(i, 'cmi'));
+    const nota = tr.querySelector('.nota'); nota.value = f.nota || '';
+    nota.oninput = () => { filas[i].nota = nota.value; guardar(); pintarFila(i); };
+    nota.onclick = ev => ev.stopPropagation();
+    const ok = tr.querySelector('.okc'); ok.checked = f.ok;
+    ok.onchange = () => { filas[i].ok = ok.checked; guardar(); pintarFila(i); };
+    ok.onclick = ev => ev.stopPropagation();
+    tr.onclick = () => ir(i);
+    cuerpo.appendChild(tr); pintarFila(i);
+  });
+  pintarCont();
+}
+function ir(i, reproducir = true) {
+  const prev = activa; activa = Math.max(0, Math.min(filas.length - 1, i));
+  pintarFila(prev); pintarFila(activa);
+  document.getElementById('f' + activa).scrollIntoView({block:'nearest'});
+  v.currentTime = filas[activa].t0; if (reproducir) v.play();
+}
+v.addEventListener('timeupdate', () => {
+  document.getElementById('reloj').textContent = v.currentTime.toFixed(1) + ' s';
+  const f = filas[activa];
+  if (document.getElementById('bucle').checked && v.currentTime >= f.t1) v.currentTime = f.t0;
+});
+v.playbackRate = 0.5;
+document.getElementById('vel').onchange = e => { v.playbackRate = parseFloat(e.target.value); };
+document.getElementById('rep').onclick = () => ir(activa);
+document.getElementById('ini').onclick = () => { filas[activa].t0 = +v.currentTime.toFixed(2); guardar(); pintarFila(activa); };
+document.getElementById('fin').onclick = () => { filas[activa].t1 = +v.currentTime.toFixed(2); guardar(); pintarFila(activa); };
+document.getElementById('okSig').onclick = () => { filas[activa].ok = true; document.querySelector('#f' + activa + ' .okc').checked = true;
+  guardar(); pintarFila(activa); ir(activa + 1); };
+document.getElementById('exportar').onclick = () => {
+  const salida = { modo: 'revision_agente', video: '/*VIDEO*/', convencion: 'MD = mano derecha del operario; MI = izquierda',
+    validadas: filas.filter(f => f.ok).length, filas: filas.map((f, i) => ({...f, original:{cmd:ORIGINAL[i].cmd, cmi:ORIGINAL[i].cmi,
+    t0:ORIGINAL[i].t0, t1:ORIGINAL[i].t1}, cambiada: !!cambiada(i)})) };
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(salida, null, 1)], {type:'application/json'}));
+  a.download = 'diagrama_revisado.json'; a.click();
+};
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+  const k = e.key.toLowerCase();
+  if (k === ' ') { e.preventDefault(); v.paused ? v.play() : v.pause(); }
+  else if (k === 'j') ir(activa - 1); else if (k === 'k') ir(activa + 1);
+  else if (k === 'r') ir(activa); else if (k === 'l') { const b = document.getElementById('bucle'); b.checked = !b.checked; }
+  else if (k === 'i') document.getElementById('ini').click(); else if (k === 'f') document.getElementById('fin').click();
+  else if (k === 'v') document.getElementById('okSig').click();
+});
+construir(); ir(0, false);
+if (CIEGO) { document.getElementById('cambios').remove(); document.querySelector('header h1').textContent = 'Prueba ciega · 8 secuencias · sin códigos ni descripciones'; document.querySelectorAll('.desc').forEach(e => e.remove()); }
+</script>
+</body>
+</html>

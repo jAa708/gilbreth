@@ -1,0 +1,11 @@
+# Derived from IMPACT (CC BY-NC-SA 4.0): distributed separately, never in this MIT repo
+models/*.npz
+# Downloaded at first use
+models/*.task
+# Local runs
+resultado*/
+runs/
+*.pyc
+__pycache__/
+.streamlit/secrets.toml
+.env

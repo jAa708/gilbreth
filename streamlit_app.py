@@ -1,0 +1,283 @@
+"""Gilbreth: AI motion study from a workstation video.
+A phone video of a manual operation goes in; a draft bimanual (left-hand / right-hand) chart, method alerts and an
+improvement plan in seconds come out, for the methods engineer to review and approve.
+Vision model: Gemma 4 31B served with vLLM on AMD Instinct MI300X (ROCm). Hand tracking: MediaPipe."""
+import json, os, sys, tempfile
+from collections import defaultdict
+from pathlib import Path
+
+import altair as alt
+import pandas as pd
+import streamlit as st
+
+RAIZ = Path(__file__).resolve().parent
+sys.path.insert(0, str(RAIZ / 'agent'))
+import errores, mejora  # noqa: E402
+
+st.set_page_config(page_title='Gilbreth · AI motion study', page_icon='⏱️', layout='wide')
+
+ACT = {'OP': 'Operation', 'TR+OP': 'Transport + operation', 'TR': 'Transport', 'S': 'Hold', 'D': 'Delay',
+       'NV': 'Not visible'}
+SYM = {'OP': '○', 'TR+OP': '○', 'TR': '⇨', 'S': '▽', 'D': 'D', 'NV': '·'}
+COLORES = {'Operation': '#2e7d32', 'Transport + operation': '#66bb6a', 'Transport': '#1e88e5', 'Hold': '#fb8c00',
+           'Delay': '#e53935', 'Not visible': '#9e9e9e'}
+MANO_EN = {'R': 'right', 'L': 'left', 'RL': 'both'}
+
+
+@st.cache_data
+def ejemplos():
+    out = {}
+    for d in sorted((RAIZ / 'examples').glob('*/diagrama.json')):
+        meta = json.loads(d.read_text(encoding='utf-8'))['meta']
+        out[meta.get('title_en') or d.parent.name] = d.parent
+    return out
+
+
+@st.cache_data
+def cargar(carpeta):
+    carpeta = Path(carpeta)
+    d = json.loads((carpeta / 'diagrama.json').read_text(encoding='utf-8'))
+    ev = json.loads((carpeta / 'errores.json').read_text(encoding='utf-8')) if (carpeta / 'errores.json').exists() else []
+    cal = json.loads((carpeta / 'calibracion.json').read_text(encoding='utf-8')) \
+        if (carpeta / 'calibracion.json').exists() else {}
+    video = next(iter(sorted(carpeta.glob('*.mp4'))), None)
+    return d, ev, cal, video
+
+
+@st.cache_data
+def banco():
+    p = RAIZ / 'docs' / 'benchmark.json'
+    return json.loads(p.read_text(encoding='utf-8')) if p.exists() else {}
+
+
+def tabla_filas(filas):
+    return pd.DataFrame([{
+        'Time': f"{f['t0']:.0f}–{f['t1']:.0f} s",
+        'Left hand': f.get('desc_mi') or ACT[f['mi']], 'L': SYM[f['mi']], 'R': SYM[f['md']],
+        'Right hand': f.get('desc_md') or ACT[f['md']],
+        'Left activity': ACT[f['mi']], 'Right activity': ACT[f['md']]} for f in filas])
+
+
+def linea_tiempo(filas, alto=150):
+    df = pd.DataFrame([{'hand': mano, 'start': f['t0'], 'end': f['t1'], 'activity': ACT[f[k]],
+                        'what': f.get('desc_' + k) or ACT[f[k]]}
+                       for f in filas for mano, k in (('Left hand', 'mi'), ('Right hand', 'md'))])
+    escala = alt.Scale(domain=list(COLORES), range=list(COLORES.values()))
+    return alt.Chart(df).mark_bar().encode(
+        x=alt.X('start:Q', title='seconds'), x2='end:Q', y=alt.Y('hand:N', title=None, sort=['Left hand', 'Right hand']),
+        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='bottom', title=None)),
+        tooltip=['hand', 'activity', 'what', 'start', 'end']).properties(height=alto)
+
+
+@st.cache_data
+def excel_bytes(carpeta):
+    import salidas
+    d, ev, _, _ = cargar(carpeta)
+    with tempfile.TemporaryDirectory() as tmp:
+        ruta = Path(tmp) / 'bimanual_chart.xlsx'
+        salidas.escribir_excel(d['filas'], salidas.indicadores(d['filas']), d['meta'], ruta, eventos=ev)
+        return ruta.read_bytes()
+
+
+def alertas_agrupadas(ev):
+    por = defaultdict(list)
+    for e in ev:
+        por[e['tipo']].append(e)
+    filas = []
+    for tipo, lista in sorted(por.items(), key=lambda x: -sum(e['t1'] - e['t0'] for e in x[1])):
+        manos = ''.join(sorted({c for e in lista for c in e['mano']}))
+        filas.append({'Alert': errores.TITLE_EN.get(tipo, tipo), 'Hand': MANO_EN.get(manos, manos),
+                      'Times': len(lista), 'Total s': round(sum(e['t1'] - e['t0'] for e in lista), 1),
+                      'First at': ', '.join(f"{e['t0']:.0f} s" for e in lista[:4]) + (' …' if len(lista) > 4 else ''),
+                      'What to change': errores.FIX_EN.get(tipo, '')})
+    return pd.DataFrame(filas)
+
+
+# ---------------------------------------------------------------------------------------------------------------- UI
+st.title('⏱️ Gilbreth')
+st.markdown('**AI motion study from a workstation video.** A phone video of a manual operation goes in; a draft '
+            '**bimanual chart** (what each hand does, second by second), **method alerts** and an **improvement plan '
+            'in seconds** come out — for the methods engineer to review and approve.')
+
+EJ = ejemplos()
+with st.sidebar:
+    st.header('Example')
+    nombre = st.selectbox('Operation', list(EJ), label_visibility='collapsed')
+    st.caption('Results computed with Gemma 4 31B on AMD Instinct MI300X (vLLM + ROCm) and MediaPipe hand tracking.')
+    st.divider()
+    st.markdown('**Who is it for?** Industrial and methods engineers, and plant supervisors in small and mid-size '
+                'factories, who need left-hand/right-hand charts and motion-economy improvements but cannot spend '
+                'an hour per video.')
+    st.caption('Named after Frank and Lillian Gilbreth, who filmed workers a century ago to study their motions.')
+
+d, ev, cal, video = cargar(str(EJ[nombre]))
+filas = d['filas']
+B = banco()
+
+t_res, t_dia, t_plan, t_alert, t_acc, t_live = st.tabs(
+    ['Overview', 'Bimanual chart', 'Improvement plan', 'Method alerts', 'Accuracy & AMD', 'Try your own video'])
+
+with t_res:
+    pot = mejora.potencial(filas)
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric('Observed time per unit', f"{pot['tiempo_s']:.0f} s")
+    c2.metric('Estimated after the plan', f"{pot['nuevo_s']:.0f} s", f"-{pot['ahorro_pct']:.0f} %", delta_color='inverse')
+    c3.metric('Output per shift', f"+{pot['capacidad_pct']:.0f} %")
+    if B.get('minutos_agente'):
+        c4.metric('Time to a reviewed chart', f"{B['minutos_agente']:.0f} min", f"vs ≈ 60 min by hand",
+                  delta_color='off')
+    else:
+        c4.metric('Charting by hand', '≈ 60 min', 'for this 4.7-min video', delta_color='off')
+    st.altair_chart(linea_tiempo(filas), use_container_width=True)
+    st.subheader('Top improvements')
+    for p in pot['palancas'][:3]:
+        st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** per unit ({p['pct']:.0f} %). "
+                    f"{p['evidence']}")
+    st.subheader('How it works')
+    st.markdown(
+        '1. **Hands** — MediaPipe tracks both hands at 10 fps; handedness comes from a ±2 s majority vote.\n'
+        '2. **Operation sheet** — the vision model looks at 6 frames and writes what is assembled, where the parts '
+        'and tools are, and the typical cycle. Nothing about the product is hard-coded.\n'
+        '3. **Every second** — Gemma 4 31B on the AMD MI300X gets 4 marked frames, a crop of each hand and '
+        'hand-speed data, and returns the activity of each hand (ILO symbols: ○ operation, ⇨ transport, '
+        'D delay, ▽ hold) as schema-checked JSON.\n'
+        '4. **Human calibration** — the engineer corrects the first cycle (≥ 30 s). A small model learns from that '
+        'correction how much to trust the vision model vs. the hand motion, and a **gate** checks on the reviewed '
+        'seconds (without seeing itself) that it really beats the vision model before recoding the rest.\n'
+        '5. **Outputs** — chart rows (a new row whenever either hand changes activity), method alerts, the '
+        'improvement plan in seconds, and the Excel chart in the course format.')
+
+with t_dia:
+    izq, der = st.columns([3, 2])
+    with izq:
+        st.altair_chart(linea_tiempo(filas, 120), use_container_width=True)
+        df = tabla_filas(filas)
+        sel = st.dataframe(df[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
+                           use_container_width=True, height=460, on_select='rerun', selection_mode='single-row')
+    fila = sel.selection.rows[0] if sel and sel.selection.rows else 0
+    f = filas[fila]
+    with der:
+        if video:
+            st.video(str(video), start_time=int(f['t0']))
+        st.markdown(f"**Row {fila + 1}** · {f['t0']:.0f}–{f['t1']:.0f} s")
+        st.markdown(f"**Left hand** {SYM[f['mi']]} {ACT[f['mi']]} — {f.get('desc_mi', '')}  \n"
+                    f"**Right hand** {SYM[f['md']]} {ACT[f['md']]} — {f.get('desc_md', '')}")
+        img = EJ[nombre] / 'frames' / f'{fila:04d}.jpg'
+        if img.exists():
+            st.image(str(img), caption='Frame at the middle of the row')
+        if cal:
+            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed by an engineer; the rest was coded "
+                    f"by the agent (gate chose **{cal.get('compuerta')}**).")
+    a, b = st.columns(2)
+    a.download_button('Download the chart (Excel, course format)', excel_bytes(str(EJ[nombre])), 'bimanual_chart.xlsx',
+                      use_container_width=True)
+    b.download_button('Download the raw result (JSON)', json.dumps(d, ensure_ascii=False, indent=1), 'diagrama.json',
+                      use_container_width=True)
+
+with t_plan:
+    with st.expander('Assumptions (change them)', expanded=False):
+        alfa = st.slider('Share of "both hands idle" time recovered with visible instructions and staged material',
+                         0.0, 1.0, 0.5, 0.05)
+        beta = st.slider('Share of transport time cut by bringing materials into the normal working area',
+                         0.0, 0.6, 0.3, 0.05)
+    pot = mejora.potencial(filas, alfa, beta)
+    c1, c2, c3 = st.columns(3)
+    c1.metric('Now', f"{pot['tiempo_s']:.0f} s per unit")
+    c2.metric('With the plan (estimate)', f"{pot['nuevo_s']:.0f} s per unit", f"-{pot['ahorro_s']:.0f} s",
+              delta_color='inverse')
+    c3.metric('Floor: time with some hand operating', f"{pot['piso_s']:.0f} s")
+    if pot['palancas']:
+        dfp = pd.DataFrame([{'Change': p['title'], 'Seconds saved per unit': p['segundos']} for p in pot['palancas']])
+        st.altair_chart(alt.Chart(dfp).mark_bar(color='#2e7d32').encode(
+            x='Seconds saved per unit:Q', y=alt.Y('Change:N', sort='-x', title=None),
+            tooltip=list(dfp.columns)).properties(height=40 + 40 * len(dfp)), use_container_width=True)
+    for p in pot['palancas']:
+        with st.container(border=True):
+            st.markdown(f"**{p['title']}** — ≈ **{p['segundos']:.1f} s** per unit ({p['pct']:.1f} %)")
+            st.caption(f"Evidence: {p['evidence']}  \nAssumption: {p['assumption']}")
+    st.subheader('What it is worth')
+    e1, e2, e3, e4 = st.columns(4)
+    cap0 = 8 * 3600 / pot['tiempo_s'] if pot['tiempo_s'] else 0
+    u = e1.number_input('Units per shift (today)', 1.0, 100000.0, float(round(cap0, 1)))
+    h = e2.number_input('Shift length (h)', 1.0, 24.0, 8.0)
+    n = e3.number_input('Shifts per year', 1, 1000, 250)
+    c = e4.number_input('Labour cost per hour (USD)', 0.0, 500.0, 5.0)
+    eco = mejora.economia(pot, u, h, n, c)
+    if eco:
+        st.markdown(f"Same units with **{eco['horas_ahorradas_anio']:,.0f} fewer labour hours a year** "
+                    f"(≈ **USD {eco['valor_anio']:,.0f}**), or the same shift producing "
+                    f"**{eco['unidades_turno_despues']:,.0f}** instead of **{eco['unidades_turno_antes']:,.0f}** units.")
+    st.caption('An estimate to prioritise changes, not a measurement: re-film the operation after the change and run '
+               'Gilbreth again to measure the real saving.')
+
+with t_alert:
+    st.markdown('Signals for the engineer to look at, from hand tracking plus the chart codes. They are prompts to '
+                'check, not verdicts.')
+    if ev:
+        st.dataframe(alertas_agrupadas(ev), hide_index=True, use_container_width=True)
+    else:
+        st.info('No method alerts for this operation.')
+
+with t_acc:
+    st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Every test set was looked at '
+                '**once**, with the system frozen beforehand.')
+    st.dataframe(pd.DataFrame([
+        ['KIT bimanual, new person (workshop + kitchen, 3,305 hand-seconds)', '48–55 %', '67.5 %', '77.1 %'],
+        ['LEGO assembly, blind human labels (92)', '—', '64.1 %', '71.7 %'],
+        ['IMPACT assembly, 4 new operators (982)', '45.7 %', '70.0 %', '73.6 %'],
+    ], columns=['Test set', 'Constant baseline', 'Vision model alone', 'With 30–70 s of human review']),
+        hide_index=True, use_container_width=True)
+    st.caption('Most remaining errors are about *when* an activity starts or ends (±1 s), not *which* activity it is: '
+               'with ±1 s tolerance the KIT result is 87 %. Times are observed times, not standard times (no rating or '
+               'allowances).')
+    st.subheader('Running on AMD')
+    if B:
+        st.json(B)
+    else:
+        st.markdown('Gemma 4 31B (Google DeepMind) served with **vLLM on an AMD Instinct MI300X** (192 GB, ROCm). '
+                    'Speed and memory figures from the MI300X run will be shown here.')
+
+with t_live:
+    st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU and gives '
+                'a first look at each hand. The full chart needs the vision model on the AMD GPU server.')
+    up = st.file_uploader('Video', type=['mp4', 'mov', 'avi', 'mkv'])
+    base = os.environ.get('GILBRETH_VLLM_URL', '')
+    if up is not None:
+        import numpy as np
+        import extraer_puntos
+        from manos import cargar as cargar_npz, pista, sensores
+        with tempfile.TemporaryDirectory() as tmp:
+            vid = Path(tmp) / ('video' + Path(up.name).suffix)
+            vid.write_bytes(up.getvalue())
+            barra = st.progress(0.0, 'Tracking hands…')
+            nf, nd = extraer_puntos.extraer(vid, Path(tmp) / 'puntos.npz', lambda x: barra.progress(x, 'Tracking hands…'))
+            barra.progress(1.0, f'{nf} frames, {nd} hand detections')
+            pi = pista(*cargar_npz(Path(tmp) / 'puntos.npz'))
+        if not pi:
+            st.warning('No hands found. Film from above, with both hands and the work area in view.')
+        else:
+            dur = int(max(pi)) + 1
+            filas_vivo = []
+            for s in range(dur):
+                sen = sensores(pi, s, s + 1)
+                fila = {'t0': float(s), 't1': float(s + 1)}
+                for k, clave in (('md', 'mano_derecha'), ('mi', 'mano_izquierda')):
+                    v = sen[clave]['velocidad_mediana']
+                    fila[k] = 'NV' if v is None else ('S' if v < 0.6 else ('TR+OP' if v < 0.9 else 'TR'))
+                filas_vivo.append(fila)
+            nombres = {'NV': 'Not visible', 'S': 'Still / fine work', 'TR+OP': 'Moving', 'TR': 'Travelling'}
+            dfv = pd.DataFrame([{'hand': m, 'start': f['t0'], 'end': f['t1'], 'motion': nombres[f[k]]}
+                                for f in filas_vivo for m, k in (('Left hand', 'mi'), ('Right hand', 'md'))])
+            st.altair_chart(alt.Chart(dfv).mark_bar().encode(
+                x=alt.X('start:Q', title='seconds'), x2='end:Q', y=alt.Y('hand:N', title=None),
+                color=alt.Color('motion:N', scale=alt.Scale(
+                    domain=list(nombres.values()), range=['#9e9e9e', '#fb8c00', '#66bb6a', '#1e88e5'])),
+                tooltip=['hand', 'motion', 'start']).properties(height=120), use_container_width=True)
+            st.caption('Motion only (speed in hand-lengths per second). This is not yet the bimanual chart: telling '
+                       '"hold" from "operate" needs the vision model.')
+            ev_vivo = errores.detectar(pi)
+            if ev_vivo:
+                st.dataframe(alertas_agrupadas(ev_vivo), hide_index=True, use_container_width=True)
+    if not base:
+        st.info('The AMD GPU server is switched on for live demos only (it costs money per hour). The examples in the '
+                'sidebar were computed on it end to end.')
