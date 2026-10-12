@@ -10,7 +10,7 @@ Uso:
 Opciones: --convencion curso|oit (sostener mientras la otra mano transporta: D o S), --hilos 8, --sin-sensores,
           --sin-recortes, --etiqueta x
 """
-import argparse, base64, json, re, time, urllib.request
+import argparse, base64, json, os, re, time, urllib.request
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -158,7 +158,13 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
         try:
             req = urllib.request.Request(a.base.rstrip('/') + '/v1/chat/completions', data=json.dumps(cuerpo).encode(),
                                          headers={'Content-Type': 'application/json'})
-            texto = json.loads(urllib.request.urlopen(req, timeout=900).read())['choices'][0]['message'].get('content') or ''
+            t0 = time.time()
+            r = json.loads(urllib.request.urlopen(req, timeout=900).read())
+            if os.environ.get('GILBRETH_LATENCIAS'):          # banco: latencia y tokens de cada consulta
+                with open(os.environ['GILBRETH_LATENCIAS'], 'a', encoding='utf-8') as f:
+                    f.write(json.dumps({'paso': nombre, 's': round(time.time() - t0, 3), 'imagenes': sum(
+                        1 for c in contenido if c.get('type') == 'image_url'), **(r.get('usage') or {})}) + '\n')
+            texto = r['choices'][0]['message'].get('content') or ''
             m = re.search(r'\{.*\}', texto, re.S)
             return json.loads(m.group(0)) if m else {}
         except Exception as e:                      # reintento corto: el servidor puede estar ocupado

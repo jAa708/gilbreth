@@ -172,9 +172,11 @@ if vista == 'Overview':
     c1.metric('Observed time per unit', f"{pot['tiempo_s']:.0f} s")
     c2.metric('Estimated after the plan', f"{pot['nuevo_s']:.0f} s", f"-{pot['ahorro_pct']:.0f} %", delta_color='inverse')
     c3.metric('Output per shift', f"+{pot['capacidad_pct']:.0f} %")
-    if B.get('minutos_agente'):
-        c4.metric('Time to a reviewed chart', f"{B['minutos_agente']:.0f} min", f"vs ≈ 60 min by hand",
-                  delta_color='off')
+    corrida = (B.get('runs') or {}).get(d['meta'].get('run', ''))
+    a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
+    if corrida:
+        c4.metric('Agent on AMD MI300X', f"{corrida['wall_s'] / 60:.1f} min",
+                  f"vs ≈ {a_mano:.0f} min by hand", delta_color='off')
     elif d['meta'].get('minutos_a_mano'):
         c4.metric('Charting by hand (measured)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
                   f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off')
@@ -302,8 +304,19 @@ if vista == 'Accuracy & AMD':
                'with ±1 s tolerance the KIT result is 87 %. Times are observed times, not standard times (no rating or '
                'allowances).')
     st.subheader('Running on AMD')
-    if B:
-        st.json(B)
+    if B.get('runs'):
+        st.markdown(f"Model **{B.get('modelo', '')}** served with vLLM on **{B.get('gpu') or 'AMD Instinct MI300X'}**"
+                    + (f", {B['vram_used_gb']} of {B['vram_total_gb']} GB of GPU memory in use"
+                       if B.get('vram_used_gb') else '') + '.')
+        st.dataframe(pd.DataFrame([{'Video': k, 'Video length (s)': v['video_s'], 'Agent wall time (s)': v['wall_s'],
+                                    'Seconds of video per minute': v['video_s_per_min']}
+                                   for k, v in B['runs'].items()]), hide_index=True, width="stretch")
+        st.dataframe(pd.DataFrame([{'Step': k, 'Requests': v['requests'], 'Latency p50 (s)': v['p50_s'],
+                                    'Latency p95 (s)': v['p95_s'], 'Prompt tokens (mean)': v['prompt_tokens_mean'],
+                                    'Output tokens (mean)': v['completion_tokens_mean']}
+                                   for k, v in B.get('pasos', {}).items()]), hide_index=True, width="stretch")
+        st.caption('Steps: operation sheet (1 request per video), per-second coding (1 per second of video), '
+                   'row descriptions (1 per chart row). Wall time covers the GPU part; hand tracking ran on CPU.')
     else:
         st.markdown('Gemma 4 31B (Google DeepMind) served with **vLLM on an AMD Instinct MI300X** (192 GB, ROCm). '
                     'Speed and memory figures from the MI300X run will be shown here.')
