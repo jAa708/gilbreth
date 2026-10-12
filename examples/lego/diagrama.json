@@ -7,7 +7,8 @@
   "fecha": "2026-10-12",
   "convencion_texto": "▽ solo si la otra mano opera; sostener mientras la otra va por la pieza o folleto = D (curso).",
   "title_en": "LEGO Creator 5761 Mini Digger, full assembly (56 pieces)",
-  "motor_en": "Gemma 4 31B (4-bit QAT) on a cloud NVIDIA A100 (development run, to be replaced by the AMD MI300X run)"
+  "motor_en": "Gemma 4 31B (4-bit QAT) on a cloud NVIDIA A100 (development run, to be replaced by the AMD MI300X run)",
+  "minutos_a_mano": 60
  },
  "indicadores": {
   "duracion_s": 284.0,

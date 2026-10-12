@@ -13,7 +13,7 @@ ap.add_argument('--engine', default='', help='e.g. "Gemma 4 31B (BF16) on AMD In
 a = ap.parse_args()
 res, dst = Path(a.resultado), Path(a.destino)
 (dst / 'frames').mkdir(parents=True, exist_ok=True)
-for f in ('diagrama.json', 'errores.json', 'calibracion.json'):
+for f in ('diagrama.json', 'errores.json', 'calibracion.json', 'verdad.json'):
     if (res / f).exists():
         shutil.copy(res / f, dst / f)
 d = json.loads((dst / 'diagrama.json').read_text(encoding='utf-8'))

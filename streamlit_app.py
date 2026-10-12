@@ -22,6 +22,7 @@ SYM = {'OP': '○', 'TR+OP': '○', 'TR': '⇨', 'S': '▽', 'D': 'D', 'NV': '·
 COLORES = {'Operation': '#2e7d32', 'Transport + operation': '#66bb6a', 'Transport': '#1e88e5', 'Hold': '#fb8c00',
            'Delay': '#e53935', 'Not visible': '#9e9e9e'}
 MANO_EN = {'R': 'right', 'L': 'left', 'RL': 'both'}
+RITMO_A_MANO = 60 / (284 / 60)      # minutos de trabajo manual por minuto de video, medido en el LEGO (≈ 12,7)
 # costo patronal por hora (verificados el 12-oct-2026; detalle en docs/SOURCES.md)
 COSTOS = {
     'United States — production worker, manufacturing': (
@@ -35,7 +36,7 @@ COSTOS = {
 
 
 @st.cache_data
-def ejemplos(_huella):
+def ejemplos(huella):            # sin «_»: st.cache_data no mira los parámetros que empiezan con guion bajo
     out = {}
     for d in sorted((RAIZ / 'examples').glob('*/diagrama.json')):
         meta = json.loads(d.read_text(encoding='utf-8'))['meta']
@@ -51,7 +52,9 @@ def cargar(carpeta, huella=None):
     cal = json.loads((carpeta / 'calibracion.json').read_text(encoding='utf-8')) \
         if (carpeta / 'calibracion.json').exists() else {}
     video = next(iter(sorted(carpeta.glob('*.mp4'))), None)
-    return d, ev, cal, video
+    verdad = {int(s): v for s, v in json.loads((carpeta / 'verdad.json').read_text(encoding='utf-8')).items()} \
+        if (carpeta / 'verdad.json').exists() else {}
+    return d, ev, cal, video, verdad
 
 
 @st.cache_data
@@ -80,10 +83,35 @@ def linea_tiempo(filas, alto=240):
         tooltip=['hand', 'activity', 'what', 'start', 'end']).properties(height=alto)
 
 
+def linea_comparada(filas, verdad, alto=300):
+    """Agente vs. etiqueta humana, por mano (los segundos sin etiqueta humana quedan en blanco)."""
+    filas_d = [{'hand': f'{mano} · Gilbreth', 'start': f['t0'], 'end': f['t1'], 'activity': ACT[f[k]]}
+               for f in filas for mano, k in (('Left', 'mi'), ('Right', 'md'))]
+    filas_d += [{'hand': f'{mano} · human', 'start': s, 'end': s + 1, 'activity': ACT[v[k]]}
+                for s, v in verdad.items() for mano, k in (('Left', 'mi'), ('Right', 'md')) if not v['nulo_' + k]]
+    orden = ['Left · Gilbreth', 'Left · human', 'Right · Gilbreth', 'Right · human']
+    escala = alt.Scale(domain=list(COLORES), range=list(COLORES.values()))
+    return alt.Chart(pd.DataFrame(filas_d)).mark_bar().encode(
+        x=alt.X('start:Q', title='seconds', scale=alt.Scale(domain=[0, max(f['t1'] for f in filas)], nice=False)),
+        x2='end:Q', y=alt.Y('hand:N', title=None, sort=orden),
+        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='top', title=None, columns=6)),
+        tooltip=['hand', 'activity', 'start']).properties(height=alto)
+
+
+def acuerdo(cal):
+    r = cal.get('acierto_vs_humano_desde_60s') or {}
+    if 'gilbreth' not in r:
+        return ''
+    g, v = r['gilbreth'], r['gemma']
+    return (f"Agreement with the human labels after the reviewed minute: **{100 * g[0] / g[1]:.1f} %** of "
+            f"{g[1]:,} hand-seconds (vision model alone: {100 * v[0] / v[1]:.1f} %). Seconds where the dataset gives "
+            f"both hands the same verb are left out, because its labels do not say which hand holds.")
+
+
 @st.cache_data
 def excel_bytes(carpeta, huella=None):
     import salidas
-    d, ev, _, _ = cargar(carpeta, huella)
+    d, ev = cargar(carpeta, huella)[:2]
     with tempfile.TemporaryDirectory() as tmp:
         ruta = Path(tmp) / 'bimanual_chart.xlsx'
         salidas.escribir_excel(d['filas'], salidas.indicadores(d['filas']), d['meta'], ruta, eventos=ev)
@@ -121,10 +149,12 @@ with st.sidebar:
     st.caption('Named after Frank and Lillian Gilbreth, who filmed workers a century ago to study their motions.')
 
 HUELLA = (EJ[nombre] / 'diagrama.json').stat().st_mtime  # la caché se renueva si el ejemplo cambia
-d, ev, cal, video = cargar(str(EJ[nombre]), HUELLA)
+d, ev, cal, video, verdad = cargar(str(EJ[nombre]), HUELLA)
 with st.sidebar:
     st.caption('Computed with ' + d['meta'].get('motor_en', 'Gemma 4 31B on AMD Instinct MI300X (vLLM + ROCm)')
                + ' and MediaPipe hand tracking.')
+    if d['meta'].get('licencia_en'):
+        st.caption(d['meta']['licencia_en'])
 filas = d['filas']
 B = banco()
 
@@ -145,13 +175,20 @@ if vista == 'Overview':
     if B.get('minutos_agente'):
         c4.metric('Time to a reviewed chart', f"{B['minutos_agente']:.0f} min", f"vs ≈ 60 min by hand",
                   delta_color='off')
+    elif d['meta'].get('minutos_a_mano'):
+        c4.metric('Charting by hand (measured)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
+                  f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off')
     else:
-        c4.metric('Charting by hand', '≈ 60 min', 'for this 4.7-min video', delta_color='off')
-    st.caption('Charting by hand: one person, ≈ 60 min for this 4.7-min video in our course project (≈ 13 min per '
-               'minute of video). Published references for related manual analyses: MTM-UAS needs ≈ 40 analyst-minutes '
+        c4.metric('Charting by hand (estimate)', f"≈ {pot['tiempo_s'] / 60 * RITMO_A_MANO:.0f} min",
+                  f"at ≈ {RITMO_A_MANO:.0f} min per video-minute", delta_color='off')
+    st.caption(f'Charting by hand: in our course project one person took ≈ 60 min for a 4.7-min video (≈ '
+               f'{RITMO_A_MANO:.0f} min per minute of video). Published references for related manual analyses: '
+               'MTM-UAS needs ≈ 40 analyst-minutes '
                'per minute of work and MTM-1 ≈ 350 (IMD-EWD); labelling hand motions frame by frame took 79.8 min per '
                'minute of video in StrokeRehab (NeurIPS 2022). Sources: docs/SOURCES.md.')
     st.altair_chart(linea_tiempo(filas), width="stretch")
+    if acuerdo(cal):
+        st.success(acuerdo(cal))
     st.subheader('Top improvements')
     for p in pot['palancas'][:3]:
         st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** per unit ({p['pct']:.0f} %). "
@@ -173,7 +210,11 @@ if vista == 'Overview':
 if vista == 'Bimanual chart':
     izq, der = st.columns([3, 2])
     with izq:
-        st.altair_chart(linea_tiempo(filas, 200), width="stretch")
+        if verdad:
+            st.altair_chart(linea_comparada(filas, verdad), width="stretch")
+            st.caption(acuerdo(cal) or 'Gilbreth vs. the human labels of the dataset.')
+        else:
+            st.altair_chart(linea_tiempo(filas, 200), width="stretch")
         df = tabla_filas(filas)
         st.caption('ILO symbols: ○ operation · ⇨ transport · D delay · ▽ hold. Course convention: ▽ only while the '
                    'other hand operates; a hand that holds while the other one fetches is waiting, so it is D.')
@@ -185,8 +226,9 @@ if vista == 'Bimanual chart':
         if video:
             st.video(str(video), start_time=int(f['t0']))
         st.markdown(f"**Row {fila + 1}** · {f['t0']:.0f}–{f['t1']:.0f} s")
-        st.markdown(f"**Left hand** {SYM[f['mi']]} {ACT[f['mi']]} — {f.get('desc_mi', '')}  \n"
-                    f"**Right hand** {SYM[f['md']]} {ACT[f['md']]} — {f.get('desc_md', '')}")
+        que = lambda k: f" — {f[k]}" if f.get(k) else ''
+        st.markdown(f"**Left hand** {SYM[f['mi']]} {ACT[f['mi']]}{que('desc_mi')}  \n"
+                    f"**Right hand** {SYM[f['md']]} {ACT[f['md']]}{que('desc_md')}")
         img = EJ[nombre] / 'frames' / f'{fila:04d}.jpg'
         if img.exists():
             st.image(str(img), caption='Frame at the middle of the row')

@@ -1,0 +1,1 @@
+{"revisado_hasta_s": 60, "compuerta": "v7", "estimacion": {"gemma": 27, "v7": 57, "n": 88, "b": 36, "c": 6}, "previo": "IMPACT (other operators)", "acierto_vs_humano_desde_60s": {"gemma": [208, 307], "gemma_con_ambiguos": [214, 317], "gilbreth": [234, 307], "gilbreth_con_ambiguos": [241, 317]}}

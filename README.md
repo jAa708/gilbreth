@@ -82,7 +82,9 @@ the 31B model.
   published separately with attribution and downloaded on use (`GILBRETH_PRIOR_URL`). Without it the agent runs in
   **MIT-pure** mode (`--sin-previo`), which learns only from your reviewed seconds and measured clearly lower
   (KIT, development: 49.8 % vs 62.4 %), because the gate cannot trust a model trained on so few seconds.
-- No dataset videos are included. The LEGO example video is shared with the permission of the person filmed.
+- `examples/impact_gearbox/` is **CC BY-NC-SA 4.0, not MIT**: video, frames and labels from the IMPACT dataset,
+  with attribution and the changes made, in that folder's README. Non-commercial use only.
+- The LEGO example video is shared with the permission of the person filmed.
 - Datasets used for measurement: IMPACT (Hugging Face `KratosWen/IMPACT`, CC BY-NC-SA 4.0) and KIT Bimanual Actions
   (Dreher, Wächter, Asfour; `bimanual-actions.humanoids.kit.edu`).
 
