@@ -72,6 +72,9 @@ python agent/bimanual.py video.mp4 --salida run1 --base http://127.0.0.1:8000 --
 python scripts/make_example.py run1 video.mp4 examples/my_operation --title "My operation"
 ```
 Docker: `docker build -t gilbreth . && docker run -p 8501:8501 gilbreth`.
+Wiring check without a large GPU: serve a small model with Ollama (`gemma4:e2b`) and add `--ollama --base
+http://127.0.0.1:11434 --modelo gemma4:e2b`. It runs end to end on a laptop GPU; the accuracy figures above are for
+the 31B model.
 
 ## Licences and data
 - Code: **MIT** (this repository).
