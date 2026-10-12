@@ -46,7 +46,11 @@ def potencial(filas, alfa=0.5, beta=0.3):
                 'supuesto': f'Con la {MANO[x]} libre, ella trae la siguiente pieza mientras la {MANO[y]} opera: '
                             f'se ahorra min(transporte, operación).',
                 'assumption': f'With the {HAND[x]} hand free, it fetches the next part while the {HAND[y]} hand '
-                              f'operates: saves min(transport, operation). Upper bound.'})
+                              f'operates: saves min(transport, operation). Upper bound.',
+                'fuente': 'Caso publicado: con una plantilla, el ensamble a dos manos de un enchufe pasó de 106,84 s a '
+                          '66,38 s (−38 %); lo más lento era «usar una mano para sostener la base» (ASEE, artículo #20434, tabla 5).',
+                'source': 'Published case: a fixture cut a two-hand plug assembly from 106.84 s to 66.38 s (−38 %); the '
+                          'slowest method was "one hand holding the base" (ASEE paper #20434, Table 5).'})
     ociosas = sum(_dur(f) for f in filas if f['md'] in LIBRE and f['mi'] in LIBRE)
     if ociosas > 0:
         palancas.append({
@@ -56,7 +60,9 @@ def potencial(filas, alfa=0.5, beta=0.3):
             'evidencia': f'Las dos manos sostienen o esperan {ociosas:.0f} s (buscar, leer instrucciones, esperar).',
             'evidence': f'Both hands hold or wait for {ociosas:.0f} s (searching, reading instructions, waiting).',
             'supuesto': f'Instrucciones a la vista y material preparado recuperan el {alfa:.0%} de ese tiempo.',
-            'assumption': f'Visible instructions and pre-staged material recover {alfa:.0%} of that time.'})
+            'assumption': f'Visible instructions and pre-staged material recover {alfa:.0%} of that time.',
+            'fuente': 'Supuesto ajustable: no hay un porcentaje publicado que valga para todo puesto.',
+            'source': 'Adjustable assumption: there is no published percentage that holds for every workstation.'})
     tr_crit = sum(_dur(f) for f in filas
                   if 'TR' in (f['md'], f['mi']) and f['md'] not in OPERA and f['mi'] not in OPERA)
     resto = max(0.0, tr_crit - par_total)
@@ -70,7 +76,11 @@ def potencial(filas, alfa=0.5, beta=0.3):
             'evidence': f'{tr_crit:.0f} s of the cycle are transport only (no hand operating); {resto:.0f} s remain '
                         f'after freeing the hand.',
             'supuesto': f'Material en el orden de uso y al alcance recorta el {beta:.0%} de esos transportes.',
-            'assumption': f'Materials within reach and in order of use cut {beta:.0%} of those transports.'})
+            'assumption': f'Materials within reach and in order of use cut {beta:.0%} of those transports.',
+            'fuente': 'MTM-1 (alcanzar, caso B): 60 cm = 21,2 TMU y 30 cm = 12,8 TMU → acortar a la mitad ahorra el '
+                      '40 % de ese alcance; 40→20 cm, el 36 %. El 30 % por defecto queda por debajo.',
+            'source': 'MTM-1 (reach, case B): 60 cm = 21.2 TMU and 30 cm = 12.8 TMU, so halving the distance saves 40 % '
+                      'of that reach (40→20 cm: 36 %). The 30 % default sits below that.'})
     piso = sum(_dur(f) for f in filas if f['md'] in OPERA or f['mi'] in OPERA)
     bruto = sum(p['segundos'] for p in palancas)
     ahorro = min(bruto, max(0.0, T - piso))

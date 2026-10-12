@@ -22,6 +22,16 @@ SYM = {'OP': '○', 'TR+OP': '○', 'TR': '⇨', 'S': '▽', 'D': 'D', 'NV': '·
 COLORES = {'Operation': '#2e7d32', 'Transport + operation': '#66bb6a', 'Transport': '#1e88e5', 'Hold': '#fb8c00',
            'Delay': '#e53935', 'Not visible': '#9e9e9e'}
 MANO_EN = {'R': 'right', 'L': 'left', 'RL': 'both'}
+# costo patronal por hora (verificados el 12-oct-2026; detalle en docs/SOURCES.md)
+COSTOS = {
+    'United States — production worker, manufacturing': (
+        'USD', 39.25, 'BLS Employer Costs for Employee Compensation, June 2026: total compensation per hour worked, '
+                      'manufacturing, production occupations.'),
+    'Colombia — minimum-wage operator': (
+        'COP', 15540, 'Own calculation from the 2026 minimum wage (COP 1,750,905, Decree 159 of 2026, transitional) '
+                      'plus transport allowance, benefits and employer contributions, over 182 h/month (42-h week); '
+                      'range COP 14,921–16,839 depending on risk class and tax exemption.'),
+    'Custom': ('USD', 10.0, 'Type your own cost per hour.')}
 
 
 @st.cache_data
@@ -137,6 +147,10 @@ if vista == 'Overview':
                   delta_color='off')
     else:
         c4.metric('Charting by hand', '≈ 60 min', 'for this 4.7-min video', delta_color='off')
+    st.caption('Charting by hand: one person, ≈ 60 min for this 4.7-min video in our course project (≈ 13 min per '
+               'minute of video). Published references for related manual analyses: MTM-UAS needs ≈ 40 analyst-minutes '
+               'per minute of work and MTM-1 ≈ 350 (IMD-EWD); labelling hand motions frame by frame took 79.8 min per '
+               'minute of video in StrokeRehab (NeurIPS 2022). Sources: docs/SOURCES.md.')
     st.altair_chart(linea_tiempo(filas), width="stretch")
     st.subheader('Top improvements')
     for p in pot['palancas'][:3]:
@@ -205,18 +219,22 @@ if vista == 'Improvement plan':
     for p in pot['palancas']:
         with st.container(border=True):
             st.markdown(f"**{p['title']}** — ≈ **{p['segundos']:.1f} s** per unit ({p['pct']:.1f} %)")
-            st.caption(f"Evidence: {p['evidence']}  \nAssumption: {p['assumption']}")
+            st.caption(f"Evidence: {p['evidence']}  \nAssumption: {p['assumption']}"
+                       + (f"  \nSupport: {p['source']}" if p.get('source') else ''))
     st.subheader('What it is worth')
+    pais = st.selectbox('Labour cost', list(COSTOS), help='Employer cost per hour; sources in docs/SOURCES.md')
+    moneda, costo0, nota = COSTOS[pais]
     e1, e2, e3, e4 = st.columns(4)
     cap0 = 8 * 3600 / pot['tiempo_s'] if pot['tiempo_s'] else 0
     u = e1.number_input('Units per shift (today)', 1.0, 100000.0, float(round(cap0, 1)))
     h = e2.number_input('Shift length (h)', 1.0, 24.0, 8.0)
     n = e3.number_input('Shifts per year', 1, 1000, 250)
-    c = e4.number_input('Labour cost per hour (USD)', 0.0, 500.0, 5.0)
+    c = e4.number_input(f'Labour cost per hour ({moneda})', 0.0, 1e6, float(costo0), key=f'costo_{pais}')
+    st.caption(nota)
     eco = mejora.economia(pot, u, h, n, c)
     if eco:
         st.markdown(f"Same units with **{eco['horas_ahorradas_anio']:,.0f} fewer labour hours a year** "
-                    f"(≈ **USD {eco['valor_anio']:,.0f}**), or the same shift producing "
+                    f"(≈ **{moneda} {eco['valor_anio']:,.0f}**), or the same shift producing "
                     f"**{eco['unidades_turno_despues']:,.0f}** instead of **{eco['unidades_turno_antes']:,.0f}** units.")
     st.caption('An estimate to prioritise changes, not a measurement: re-film the operation after the change and run '
                'Gilbreth again to measure the real saving.')
