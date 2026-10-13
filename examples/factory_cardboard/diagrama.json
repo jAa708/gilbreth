@@ -1,0 +1,864 @@
+{
+ "meta": {
+  "producto": "Cardboard packaging boxes are being folded and assembled.",
+  "operacion": "The left hand typically holds and stabilizes the cardboard workpiece while the right hand folds the flaps or marks the material.",
+  "lugar": "Supply areas: white bins (left) and green conveyor (right). Work point: white table surface in the center. Waste/finished area: bottom center.",
+  "video": "cardboard.mp4",
+  "fecha": "2026-10-13",
+  "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
+  "camara": "Operator is at the bottom center. The left hand (L) appears on the left side of the image, and the right hand (R) appears on the right side.",
+  "run": "cardboard",
+  "title_en": "Cardboard box folding at a packing station (factory video, CC BY 4.0)",
+  "motor_en": "Gemma 4 31B (4-bit QAT) on a cloud NVIDIA A100 with vLLM; vision model only, no human review (development run)",
+  "licencia_en": "Video: Factory Manipulation Videos by Procedural Robotics Inc. (huggingface.co/datasets/procedural-robotics/factory-manipulation-videos), CC BY 4.0. Excerpt 60-210 s of cardboard_manipulation_station04_worker026.mp4, re-encoded; chart computed by Gilbreth."
+ },
+ "indicadores": {
+  "duracion_s": 150.0,
+  "filas": 45,
+  "MD": {
+   "OP": 79.3,
+   "NV": 10.7,
+   "TR": 7.3,
+   "D": 2.0,
+   "TR+OP": 0.7
+  },
+  "MD_productivo_pct": 80.0,
+  "MD_improductivo_pct": 12.7,
+  "MI": {
+   "S": 70.0,
+   "TR": 12.0,
+   "NV": 8.7,
+   "D": 4.7,
+   "OP": 4.7
+  },
+  "MI_productivo_pct": 4.7,
+  "MI_improductivo_pct": 83.3
+ },
+ "filas": [
+  {
+   "t0": 0,
+   "t1": 9.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with the tool · MI: Holds the cardboard workpiece"
+   ],
+   "ks": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "n": 1,
+   "dur": 9.0,
+   "desc_md": "Marks the cardboard with the tool",
+   "desc_mi": "Holds the cardboard workpiece"
+  },
+  {
+   "t0": 9.0,
+   "t1": 11.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "MD: Reaches for and grasps marking tool · MI: Reaches for cardboard flat from bin"
+   ],
+   "ks": [
+    9,
+    10
+   ],
+   "n": 2,
+   "dur": 2.0,
+   "desc_md": "Reaches for and grasps marking tool",
+   "desc_mi": "Reaches for cardboard flat from bin"
+  },
+  {
+   "t0": 11.0,
+   "t1": 21.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard workpiece with tool · MI: Holds and stabilizes cardboard workpiece"
+   ],
+   "ks": [
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+   ],
+   "n": 3,
+   "dur": 10.0,
+   "desc_md": "Marks the cardboard workpiece with tool",
+   "desc_mi": "Holds and stabilizes cardboard workpiece"
+  },
+  {
+   "t0": 21.0,
+   "t1": 22.0,
+   "md": "TR",
+   "mi": "TR",
+   "obs": [
+    "MD: Reaches for and grasps cardboard box flat · MI: Reaches for and grasps cardboard box flat"
+   ],
+   "ks": [
+    21
+   ],
+   "n": 4,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps cardboard box flat",
+   "desc_mi": "Reaches for and grasps cardboard box flat"
+  },
+  {
+   "t0": 22.0,
+   "t1": 35.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with the tool · MI: Holds and stabilizes the cardboard"
+   ],
+   "ks": [
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34
+   ],
+   "n": 5,
+   "dur": 13.0,
+   "desc_md": "Marks the cardboard with the tool",
+   "desc_mi": "Holds and stabilizes the cardboard"
+  },
+  {
+   "t0": 35.0,
+   "t1": 36.0,
+   "md": "OP",
+   "mi": "D",
+   "obs": [
+    "MD: Marks the cardboard workpiece with tool · MI: Waits"
+   ],
+   "ks": [
+    35
+   ],
+   "n": 6,
+   "dur": 1.0,
+   "desc_md": "Marks the cardboard workpiece with tool",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 36.0,
+   "t1": 49.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Holds and stabilizes cardboard flat"
+   ],
+   "ks": [
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48
+   ],
+   "n": 7,
+   "dur": 13.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Holds and stabilizes cardboard flat"
+  },
+  {
+   "t0": 49.0,
+   "t1": 50.0,
+   "md": "OP",
+   "mi": "TR",
+   "obs": [
+    "MD: Marks the cardboard with a tool · MI: Releases and moves away from workpiece"
+   ],
+   "ks": [
+    49
+   ],
+   "n": 8,
+   "dur": 1.0,
+   "desc_md": "Marks the cardboard with a tool",
+   "desc_mi": "Releases and moves away from workpiece"
+  },
+  {
+   "t0": 50.0,
+   "t1": 51.0,
+   "md": "TR",
+   "mi": "TR",
+   "obs": [
+    "MD: Reaches for and grasps cardboard flat · MI: Reaches toward cardboard supply bin"
+   ],
+   "ks": [
+    50
+   ],
+   "n": 9,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps cardboard flat",
+   "desc_mi": "Reaches toward cardboard supply bin"
+  },
+  {
+   "t0": 51.0,
+   "t1": 70.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with the tool · MI: Holds and stabilizes the cardboard"
+   ],
+   "ks": [
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69
+   ],
+   "n": 10,
+   "dur": 19.0,
+   "desc_md": "Marks the cardboard with the tool",
+   "desc_mi": "Holds and stabilizes the cardboard"
+  },
+  {
+   "t0": 70.0,
+   "t1": 73.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "MD: Holds stack of cardboard flats · MI: Holds stack of cardboard flats"
+   ],
+   "ks": [
+    70,
+    71,
+    72
+   ],
+   "n": 11,
+   "dur": 3.0,
+   "desc_md": "Holds stack of cardboard flats",
+   "desc_mi": "Holds stack of cardboard flats"
+  },
+  {
+   "t0": 73.0,
+   "t1": 75.0,
+   "md": "TR",
+   "mi": "TR",
+   "obs": [
+    "MD: Carries cardboard stack to conveyor · MI: Releases and moves away from workpiece"
+   ],
+   "ks": [
+    73,
+    74
+   ],
+   "n": 12,
+   "dur": 2.0,
+   "desc_md": "Carries cardboard stack to conveyor",
+   "desc_mi": "Releases and moves away from workpiece"
+  },
+  {
+   "t0": 75.0,
+   "t1": 76.0,
+   "md": "TR+OP",
+   "mi": "S",
+   "obs": [
+    "MD: Reaches for and grasps marking tool · MI: Holds and stabilizes cardboard workpiece"
+   ],
+   "ks": [
+    75
+   ],
+   "n": 13,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps marking tool",
+   "desc_mi": "Holds and stabilizes cardboard workpiece"
+  },
+  {
+   "t0": 76.0,
+   "t1": 96.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard using the tool · MI: Holds and stabilizes the cardboard flat"
+   ],
+   "ks": [
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95
+   ],
+   "n": 14,
+   "dur": 20.0,
+   "desc_md": "Marks the cardboard using the tool",
+   "desc_mi": "Holds and stabilizes the cardboard flat"
+  },
+  {
+   "t0": 96.0,
+   "t1": 98.0,
+   "md": "OP",
+   "mi": "NV",
+   "obs": [
+    "MD: Marks the cardboard workpiece with tool · MI: Waits"
+   ],
+   "ks": [
+    96,
+    97
+   ],
+   "n": 15,
+   "dur": 2.0,
+   "desc_md": "Marks the cardboard workpiece with tool",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 98.0,
+   "t1": 103.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with the tool · MI: Holds and stabilizes the cardboard box"
+   ],
+   "ks": [
+    98,
+    99,
+    100,
+    101,
+    102
+   ],
+   "n": 16,
+   "dur": 5.0,
+   "desc_md": "Marks the cardboard with the tool",
+   "desc_mi": "Holds and stabilizes the cardboard box"
+  },
+  {
+   "t0": 103.0,
+   "t1": 106.0,
+   "md": "OP",
+   "mi": "NV",
+   "obs": [
+    "MD: Marks the cardboard workpiece with tool · MI: Waits"
+   ],
+   "ks": [
+    103,
+    104,
+    105
+   ],
+   "n": 17,
+   "dur": 3.0,
+   "desc_md": "Marks the cardboard workpiece with tool",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 106.0,
+   "t1": 109.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Holds and stabilizes cardboard workpiece"
+   ],
+   "ks": [
+    106,
+    107,
+    108
+   ],
+   "n": 18,
+   "dur": 3.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Holds and stabilizes cardboard workpiece"
+  },
+  {
+   "t0": 109.0,
+   "t1": 110.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "MD: Folds cardboard flap · MI: Holds and stabilizes cardboard box"
+   ],
+   "ks": [
+    109
+   ],
+   "n": 19,
+   "dur": 1.0,
+   "desc_md": "Folds cardboard flap",
+   "desc_mi": "Holds and stabilizes cardboard box"
+  },
+  {
+   "t0": 110.0,
+   "t1": 111.0,
+   "md": "OP",
+   "mi": "TR",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Releases and moves away from workpiece"
+   ],
+   "ks": [
+    110
+   ],
+   "n": 20,
+   "dur": 1.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Releases and moves away from workpiece"
+  },
+  {
+   "t0": 111.0,
+   "t1": 112.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "MD: Reaches for and grasps cardboard flat · MI: Waits"
+   ],
+   "ks": [
+    111
+   ],
+   "n": 21,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps cardboard flat",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 112.0,
+   "t1": 113.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Holds and stabilizes cardboard flat"
+   ],
+   "ks": [
+    112
+   ],
+   "n": 22,
+   "dur": 1.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Holds and stabilizes cardboard flat"
+  },
+  {
+   "t0": 113.0,
+   "t1": 114.0,
+   "md": "NV",
+   "mi": "NV",
+   "obs": [
+    "MD: Waits · MI: Waits"
+   ],
+   "ks": [
+    113
+   ],
+   "n": 23,
+   "dur": 1.0,
+   "desc_md": "Waits",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 114.0,
+   "t1": 115.0,
+   "md": "TR",
+   "mi": "NV",
+   "obs": [
+    "MD: Carries marking tool toward workpiece · MI: Waits"
+   ],
+   "ks": [
+    114
+   ],
+   "n": 24,
+   "dur": 1.0,
+   "desc_md": "Carries marking tool toward workpiece",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 115.0,
+   "t1": 116.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Holds and stabilizes cardboard box"
+   ],
+   "ks": [
+    115
+   ],
+   "n": 25,
+   "dur": 1.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Holds and stabilizes cardboard box"
+  },
+  {
+   "t0": 116.0,
+   "t1": 117.0,
+   "md": "OP",
+   "mi": "NV",
+   "obs": [
+    "MD: Presses and folds cardboard box flap · MI: Waits"
+   ],
+   "ks": [
+    116
+   ],
+   "n": 26,
+   "dur": 1.0,
+   "desc_md": "Presses and folds cardboard box flap",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 117.0,
+   "t1": 118.0,
+   "md": "NV",
+   "mi": "NV",
+   "obs": [
+    "MD: Waits · MI: Waits"
+   ],
+   "ks": [
+    117
+   ],
+   "n": 27,
+   "dur": 1.0,
+   "desc_md": "Waits",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 118.0,
+   "t1": 121.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Holds and stabilizes cardboard box"
+   ],
+   "ks": [
+    118,
+    119,
+    120
+   ],
+   "n": 28,
+   "dur": 3.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Holds and stabilizes cardboard box"
+  },
+  {
+   "t0": 121.0,
+   "t1": 122.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Holds and stabilizes cardboard box"
+   ],
+   "ks": [
+    121
+   ],
+   "n": 29,
+   "dur": 1.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Holds and stabilizes cardboard box"
+  },
+  {
+   "t0": 122.0,
+   "t1": 123.0,
+   "md": "TR",
+   "mi": "OP",
+   "obs": [
+    "MD: Reaches for and adjusts cardboard flap · MI: Holds and stabilizes cardboard box"
+   ],
+   "ks": [
+    122
+   ],
+   "n": 30,
+   "dur": 1.0,
+   "desc_md": "Reaches for and adjusts cardboard flap",
+   "desc_mi": "Holds and stabilizes cardboard box"
+  },
+  {
+   "t0": 123.0,
+   "t1": 124.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "MD: Folds and presses cardboard flap · MI: Holds and stabilizes cardboard box"
+   ],
+   "ks": [
+    123
+   ],
+   "n": 31,
+   "dur": 1.0,
+   "desc_md": "Folds and presses cardboard flap",
+   "desc_mi": "Holds and stabilizes cardboard box"
+  },
+  {
+   "t0": 124.0,
+   "t1": 128.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks cardboard with tool · MI: Holds and stabilizes cardboard workpiece"
+   ],
+   "ks": [
+    124,
+    125,
+    126,
+    127
+   ],
+   "n": 32,
+   "dur": 4.0,
+   "desc_md": "Marks cardboard with tool",
+   "desc_mi": "Holds and stabilizes cardboard workpiece"
+  },
+  {
+   "t0": 128.0,
+   "t1": 133.0,
+   "md": "NV",
+   "mi": "TR",
+   "obs": [
+    "MD: Waits · MI: Grasps and moves cardboard waste"
+   ],
+   "ks": [
+    128,
+    129,
+    130,
+    131,
+    132
+   ],
+   "n": 33,
+   "dur": 5.0,
+   "desc_md": "Waits",
+   "desc_mi": "Grasps and moves cardboard waste"
+  },
+  {
+   "t0": 133.0,
+   "t1": 134.0,
+   "md": "NV",
+   "mi": "NV",
+   "obs": [
+    "MD: Waits · MI: Waits"
+   ],
+   "ks": [
+    133
+   ],
+   "n": 34,
+   "dur": 1.0,
+   "desc_md": "Waits",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 134.0,
+   "t1": 135.0,
+   "md": "NV",
+   "mi": "TR",
+   "obs": [
+    "MD: Waits · MI: Transports cardboard scrap to waste area"
+   ],
+   "ks": [
+    134
+   ],
+   "n": 35,
+   "dur": 1.0,
+   "desc_md": "Waits",
+   "desc_mi": "Transports cardboard scrap to waste area"
+  },
+  {
+   "t0": 135.0,
+   "t1": 136.0,
+   "md": "NV",
+   "mi": "OP",
+   "obs": [
+    "MD: Waits · MI: Marks the cardboard workpiece with tool"
+   ],
+   "ks": [
+    135
+   ],
+   "n": 36,
+   "dur": 1.0,
+   "desc_md": "Waits",
+   "desc_mi": "Marks the cardboard workpiece with tool"
+  },
+  {
+   "t0": 136.0,
+   "t1": 137.0,
+   "md": "TR",
+   "mi": "TR",
+   "obs": [
+    "MD: Reaches for and grasps cardboard waste · MI: Reaches for and grasps cardboard waste"
+   ],
+   "ks": [
+    136
+   ],
+   "n": 37,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps cardboard waste",
+   "desc_mi": "Reaches for and grasps cardboard waste"
+  },
+  {
+   "t0": 137.0,
+   "t1": 138.0,
+   "md": "TR",
+   "mi": "NV",
+   "obs": [
+    "MD: Reaches for and grasps cardboard piece · MI: Waits"
+   ],
+   "ks": [
+    137
+   ],
+   "n": 38,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps cardboard piece",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 138.0,
+   "t1": 139.0,
+   "md": "OP",
+   "mi": "NV",
+   "obs": [
+    "MD: Folds cardboard box flap · MI: Waits"
+   ],
+   "ks": [
+    138
+   ],
+   "n": 39,
+   "dur": 1.0,
+   "desc_md": "Folds cardboard box flap",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 139.0,
+   "t1": 141.0,
+   "md": "NV",
+   "mi": "TR",
+   "obs": [
+    "MD: Waits · MI: Reaches for and grasps part from bin"
+   ],
+   "ks": [
+    139,
+    140
+   ],
+   "n": 40,
+   "dur": 2.0,
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for and grasps part from bin"
+  },
+  {
+   "t0": 141.0,
+   "t1": 143.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with the tool · MI: Holds and stabilizes the cardboard"
+   ],
+   "ks": [
+    141,
+    142
+   ],
+   "n": 41,
+   "dur": 2.0,
+   "desc_md": "Marks the cardboard with the tool",
+   "desc_mi": "Holds and stabilizes the cardboard"
+  },
+  {
+   "t0": 143.0,
+   "t1": 145.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Folds and stabilizes cardboard workpiece"
+   ],
+   "ks": [
+    143,
+    144
+   ],
+   "n": 42,
+   "dur": 2.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Folds and stabilizes cardboard workpiece"
+  },
+  {
+   "t0": 145.0,
+   "t1": 146.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "MD: Marks the cardboard with tool · MI: Holds and stabilizes cardboard workpiece"
+   ],
+   "ks": [
+    145
+   ],
+   "n": 43,
+   "dur": 1.0,
+   "desc_md": "Marks the cardboard with tool",
+   "desc_mi": "Holds and stabilizes cardboard workpiece"
+  },
+  {
+   "t0": 146.0,
+   "t1": 147.0,
+   "md": "NV",
+   "mi": "NV",
+   "obs": [
+    "MD: Waits · MI: Waits"
+   ],
+   "ks": [
+    146
+   ],
+   "n": 44,
+   "dur": 1.0,
+   "desc_md": "Waits",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 147.0,
+   "t1": 149.983,
+   "md": "NV",
+   "mi": "TR",
+   "obs": [
+    "MD: Waits · MI: Reaches for and grasps cardboard flat"
+   ],
+   "ks": [
+    147,
+    148,
+    149
+   ],
+   "n": 45,
+   "dur": 2.98,
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for and grasps cardboard flat"
+  }
+ ]
+}

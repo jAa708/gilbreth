@@ -1,5 +1,5 @@
 """Turn a result folder from agent/bimanual.py into an example the app can show.
-Usage: python scripts/make_example.py RESULT_DIR VIDEO.mp4 examples/NAME [--title "..."] [--engine "..."]
+Usage: python scripts/make_example.py RESULT_DIR VIDEO.mp4 examples/NAME [--title ...] [--engine ...] [--license ...] [--copy-video]
 Copies diagrama.json / errores.json / calibracion.json and extracts one 320-px frame per chart row (row midpoint)."""
 import argparse, json, shutil
 from pathlib import Path
@@ -10,6 +10,8 @@ ap = argparse.ArgumentParser()
 ap.add_argument('resultado'), ap.add_argument('video'), ap.add_argument('destino')
 ap.add_argument('--title', default='')
 ap.add_argument('--engine', default='', help='e.g. "Gemma 4 31B (BF16) on AMD Instinct MI300X (vLLM + ROCm)"')
+ap.add_argument('--license', default='', help='source and licence note shown in the app (third-party videos)')
+ap.add_argument('--copy-video', action='store_true', help='copy the video into the example folder')
 a = ap.parse_args()
 res, dst = Path(a.resultado), Path(a.destino)
 (dst / 'frames').mkdir(parents=True, exist_ok=True)
@@ -22,6 +24,10 @@ if a.title:
     d['meta']['title_en'] = a.title
 if a.engine:
     d['meta']['motor_en'] = a.engine
+if a.license:
+    d['meta']['licencia_en'] = a.license
+if a.copy_video:
+    shutil.copy(a.video, dst / Path(a.video).name)
 (dst / 'diagrama.json').write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding='utf-8')
 cap = cv2.VideoCapture(a.video)
 for i, f in enumerate(d['filas']):

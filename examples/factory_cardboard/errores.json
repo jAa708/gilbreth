@@ -1,0 +1,436 @@
+[
+ {
+  "tipo": "espera_sosteniendo",
+  "mano": "L",
+  "t0": 9,
+  "t1": 11,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 9.409,
+  "t1": 10.11,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 10.11,
+  "t1": 11.812,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 10.711,
+  "t1": 11.712,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 21.722,
+  "t1": 23.423000000000002,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 22.322,
+  "t1": 23.624000000000002,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 35.035,
+  "t1": 35.635,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 36.136,
+  "t1": 37.537,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 37.137,
+  "t1": 37.537,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 49.55,
+  "t1": 50.050000000000004,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 50.35,
+  "t1": 52.052,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 51.652,
+  "t1": 52.252,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "ambas_ociosas",
+  "mano": "RL",
+  "t0": 70,
+  "t1": 73,
+  "detalle": "las dos manos en espera (o con el folleto)"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 70.07,
+  "t1": 71.47099999999999,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 74.174,
+  "t1": 74.77499999999999,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 75.175,
+  "t1": 76.276,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "L",
+  "t0": 94.795,
+  "t1": 95.896,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "L",
+  "t0": 95.896,
+  "t1": 96.29599999999999,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "L",
+  "t0": 96.296,
+  "t1": 97.79799999999999,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "L",
+  "t0": 100.3,
+  "t1": 101.50099999999999,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "L",
+  "t0": 103.904,
+  "t1": 105.205,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "L",
+  "t0": 105.405,
+  "t1": 106.80699999999999,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 110.41,
+  "t1": 110.711,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "espera_sosteniendo",
+  "mano": "L",
+  "t0": 111,
+  "t1": 112,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 111.111,
+  "t1": 111.511,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 111.612,
+  "t1": 112.112,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "L",
+  "t0": 112.412,
+  "t1": 115.916,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 114.314,
+  "t1": 114.815,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 115.415,
+  "t1": 118.618,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "L",
+  "t0": 116.416,
+  "t1": 118.318,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 118.318,
+  "t1": 118.618,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 118.318,
+  "t1": 121.021,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 119.519,
+  "t1": 120.02,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 119.519,
+  "t1": 120.02,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 120.32,
+  "t1": 121.021,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 120.32,
+  "t1": 121.22099999999999,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 121.621,
+  "t1": 122.222,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 121.621,
+  "t1": 121.922,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 122.723,
+  "t1": 127.928,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 123.223,
+  "t1": 123.523,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 123.724,
+  "t1": 124.024,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 124.124,
+  "t1": 125.32499999999999,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 126.026,
+  "t1": 126.827,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "R",
+  "t0": 127.928,
+  "t1": 131.131,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 127.928,
+  "t1": 128.72899999999998,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 128,
+  "t1": 133,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "R",
+  "t0": 132.232,
+  "t1": 134.935,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 134,
+  "t1": 135,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 135.636,
+  "t1": 136.136,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "L",
+  "t0": 136.937,
+  "t1": 139.039,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 139,
+  "t1": 141,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "R",
+  "t0": 139.239,
+  "t1": 140.74099999999999,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "R",
+  "t0": 141.041,
+  "t1": 142.34199999999998,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 142.042,
+  "t1": 143.44299999999998,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 142.342,
+  "t1": 144.04399999999998,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 143.543,
+  "t1": 143.844,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "L",
+  "t0": 143.543,
+  "t1": 143.844,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "cruce",
+  "mano": "R",
+  "t0": 144.444,
+  "t1": 145.045,
+  "detalle": "las manos se cruzan: una pasa al lado de la otra"
+ },
+ {
+  "tipo": "alcance_lejano",
+  "mano": "R",
+  "t0": 144.444,
+  "t1": 145.045,
+  "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "R",
+  "t0": 145.245,
+  "t1": 147.647,
+  "detalle": "la mano no se ve"
+ },
+ {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 147,
+  "t1": 150,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
+ },
+ {
+  "tipo": "fuera_de_cuadro",
+  "mano": "R",
+  "t0": 147.948,
+  "t1": 150.04999999999998,
+  "detalle": "la mano no se ve"
+ }
+]

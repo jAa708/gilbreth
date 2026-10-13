@@ -1,0 +1,49 @@
+{
+ "modelo": "google/gemma-4-31B-it-qat-w4a16-ct",
+ "gpu": "",
+ "runs": {
+  "plastic": {
+   "video_s": 150.0,
+   "wall_s": 461,
+   "video_s_per_min": 19.5
+  },
+  "cardboard": {
+   "video_s": 150.0,
+   "wall_s": 325,
+   "video_s_per_min": 27.7
+  },
+  "screw": {
+   "video_s": 150.0,
+   "wall_s": 388,
+   "video_s_per_min": 23.2
+  }
+ },
+ "pasos": {
+  "ficha": {
+   "requests": 3,
+   "p50_s": 4.58,
+   "p95_s": 11.18,
+   "prompt_tokens_mean": 1901,
+   "completion_tokens_mean": 162
+  },
+  "paso": {
+   "requests": 450,
+   "p50_s": 14.02,
+   "p95_s": 17.97,
+   "prompt_tokens_mean": 2568,
+   "completion_tokens_mean": 170
+  },
+  "desc": {
+   "requests": 261,
+   "p50_s": 10.99,
+   "p95_s": 14.77,
+   "prompt_tokens_mean": 2012,
+   "completion_tokens_mean": 106
+  }
+ },
+ "total": {
+  "video_s": 450.0,
+  "wall_s": 1174,
+  "video_s_per_min": 23.0
+ }
+}

@@ -9,3 +9,4 @@ runs/
 __pycache__/
 .streamlit/secrets.toml
 .env
+runs_colab/

@@ -38,7 +38,9 @@ COSTOS = {
 @st.cache_data
 def ejemplos(huella):            # sin «_»: st.cache_data no mira los parámetros que empiezan con guion bajo
     out = {}
-    for d in sorted((RAIZ / 'examples').glob('*/diagrama.json')):
+    orden = ['impact_gearbox', 'factory_screw', 'factory_cardboard', 'factory_plastic', 'lego']
+    for d in sorted((RAIZ / 'examples').glob('*/diagrama.json'),
+                    key=lambda p: (orden.index(p.parent.name) if p.parent.name in orden else len(orden), p.parent.name)):
         meta = json.loads(d.read_text(encoding='utf-8'))['meta']
         out[meta.get('title_en') or d.parent.name] = d.parent
     return out
