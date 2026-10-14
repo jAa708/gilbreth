@@ -198,7 +198,7 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
             t0 = time.time()
             r = json.loads(urllib.request.urlopen(req, timeout=900).read())
             if os.environ.get('GILBRETH_LATENCIAS'):          # banco: latencia y tokens de cada consulta
-                with open(os.environ['GILBRETH_LATENCIAS'], 'a', encoding='utf-8') as f:
+                with _cerrojo, open(os.environ['GILBRETH_LATENCIAS'], 'a', encoding='utf-8') as f:   # una línea entera por hilo
                     f.write(json.dumps({'paso': nombre, 's': round(time.time() - t0, 3), 'imagenes': sum(
                         1 for c in contenido if c.get('type') == 'image_url'), **(r.get('usage') or {})}) + '\n')
             texto = r['choices'][0]['message'].get('content') or ''
@@ -254,10 +254,22 @@ def armar_paso(a, ficha, rutas_paso, rutas_rec, sens, dur, fotos, unidad_ventana
                                                 for p in rutas_paso + rutas_rec]
 
 
+def _cod(x):
+    """Código válido o None. Sin esquema estricto (json_object) el modelo a veces envuelve el código: {'type': 'TR'}."""
+    if isinstance(x, dict):
+        x = next((v for v in x.values() if isinstance(v, str)), None)
+    if not isinstance(x, str):
+        return None
+    x = x.strip().upper().replace(' ', '')
+    return x if x in CODIGOS else None
+
+
 def codigos(j, a):
     if not j or '_error' in j:
         return 'D', 'D'
-    md, mi = j.get('code_right', 'D'), j.get('code_left', 'D')
+    md, mi = _cod(j.get('code_right', 'D')), _cod(j.get('code_left', 'D'))
+    if md is None or mi is None:                   # respuesta inválida: igual que una vacía
+        return 'D', 'D'
     if j.get('documents_in_use'):
         md = mi = 'D'
     return coherencia_curso(md, mi) if a.convencion == 'curso' else (md, mi)
@@ -311,7 +323,7 @@ def cmd_segmentos(a):
         conf = Counter()
         pred = []
         for r, j in zip(filas, crudos):
-            md, mi = codigos(j, a) if variante == 'final' else (j.get('code_right', 'D'), j.get('code_left', 'D'))
+            md, mi = codigos(j, a) if variante == 'final' else (_cod(j.get('code_right', 'D')) or 'D', _cod(j.get('code_left', 'D')) or 'D')
             pred.append(f"{r['n']}:{md}/{mi}")
             for p, real in ((md, r['cmd']), (mi, r['cmi'])):
                 ok += p == real

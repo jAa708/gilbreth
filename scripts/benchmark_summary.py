@@ -17,7 +17,11 @@ for linea in (runs / 'tiempos.csv').read_text().split():
     out['runs'][nombre] = {'video_s': video_s, 'wall_s': int(s), 'video_s_per_min': round(60 * video_s / int(s), 1)}
 por = defaultdict(list)
 for linea in (runs / 'latencias.jsonl').read_text(encoding='utf-8').splitlines():
-    por[json.loads(linea)['paso']].append(json.loads(linea))
+    try:
+        x = json.loads(linea)
+    except ValueError:                       # línea rota (escritura concurrente): se descarta
+        continue
+    por[x['paso']].append(x)
 for paso, xs in por.items():
     lat = sorted(x['s'] for x in xs)
     out['pasos'][paso] = {'requests': len(xs), 'p50_s': round(statistics.median(lat), 2),

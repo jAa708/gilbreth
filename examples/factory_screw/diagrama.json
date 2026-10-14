@@ -1,39 +1,39 @@
 {
  "meta": {
-  "producto": "Small electronic or mechanical components are being assembled using a fastening tool.",
-  "operacion": "Left hand fetches a fastener and holds the workpiece; right hand operates the power driver to fasten the part. Left hand then moves the finished assembly to the conveyor.",
-  "lugar": "Supply areas: blue bins on the left. Work point: center on the brown mat. Finished parts: green conveyor belt on the right.",
-  "video": "screw.mp4",
-  "fecha": "2026-10-13",
+  "producto": "Small blue plastic components being assembled with screws.",
+  "operacion": "Left hand fetches a workpiece and holds it at the work point; right hand fetches a screw and fastens it using the electric screwdriver.",
+  "lugar": "Supply areas: blue bins on the left. Work point: center cardboard mat. Output: green conveyor belt on the right.",
+  "video": "video.mp4",
+  "fecha": "2026-10-14",
   "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
-  "camara": "Operator is at the bottom of the image. The left hand (L) appears on the left/center and the right hand (R) appears on the right/center.",
+  "camara": "Operator is at the bottom. Left hand (Cyan) appears on the left/center; right hand (Magenta) appears on the right/center.",
   "run": "screw",
   "title_en": "Screw assembly with a suspended power screwdriver (factory video, CC BY 4.0)",
-  "motor_en": "Gemma 4 31B (4-bit QAT) on a cloud NVIDIA A100 with vLLM; vision model only, no human review (development run)",
+  "motor_en": "Gemma 4 31B on AMD GPUs (AMD Token Factory, shared endpoint)",
   "licencia_en": "Video: Factory Manipulation Videos by Procedural Robotics Inc. (huggingface.co/datasets/procedural-robotics/factory-manipulation-videos), CC BY 4.0. Excerpt 60-210 s of screw_assembly_station12_worker003.mp4, re-encoded; chart computed by Gilbreth."
  },
  "indicadores": {
   "duracion_s": 150.0,
-  "filas": 88,
+  "filas": 85,
   "MD": {
-   "OP": 42.7,
-   "TR": 24.7,
-   "D": 22.7,
+   "OP": 45.3,
+   "TR": 21.3,
+   "D": 21.3,
    "NV": 8.0,
-   "S": 2.0
+   "S": 3.3,
+   "TR+OP": 0.7
   },
-  "MD_productivo_pct": 42.7,
+  "MD_productivo_pct": 46.0,
   "MD_improductivo_pct": 32.7,
   "MI": {
-   "S": 39.3,
-   "D": 24.7,
-   "TR": 24.0,
-   "NV": 6.0,
-   "OP": 4.7,
-   "TR+OP": 1.3
+   "S": 38.7,
+   "D": 23.3,
+   "TR": 22.0,
+   "OP": 8.7,
+   "NV": 7.3
   },
-  "MI_productivo_pct": 6.0,
-  "MI_improductivo_pct": 70.0
+  "MI_productivo_pct": 8.7,
+  "MI_improductivo_pct": 69.3
  },
  "filas": [
   {
@@ -42,101 +42,71 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Reaches for and grasps fastener from bin"
+    "R: Reaches for and grasps electric screwdriver · L: Places blue workpiece on work point"
    ],
    "ks": [
     0
    ],
    "n": 1,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_md": "Reaches for and grasps electric screwdriver",
+   "desc_mi": "Places blue workpiece on work point"
   },
   {
    "t0": 1.0,
-   "t1": 2.0,
-   "md": "OP",
-   "mi": "TR+OP",
-   "obs": [
-    "MD: Operates power driver to fasten screw · MI: Fetches fastener and fits it into part"
-   ],
-   "ks": [
-    1
-   ],
-   "n": 2,
-   "dur": 1.0,
-   "desc_md": "Operates power driver to fasten screw",
-   "desc_mi": "Fetches fastener and fits it into part"
-  },
-  {
-   "t0": 2.0,
-   "t1": 7.0,
+   "t1": 6.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens part using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds blue workpiece at work point"
    ],
    "ks": [
+    1,
     2,
     3,
     4,
-    5,
-    6
+    5
    ],
-   "n": 3,
+   "n": 2,
    "dur": 5.0,
-   "desc_md": "Fastens part using power driver",
-   "desc_mi": "Holds workpiece steady"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue workpiece at work point"
   },
   {
-   "t0": 7.0,
+   "t0": 6.0,
    "t1": 9.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Places finished assembly on conveyor belt · MI: Waits"
+    "R: Grasps workpiece from left hand and transports · L: Holds and releases workpiece to right hand"
    ],
    "ks": [
+    6,
     7,
     8
    ],
-   "n": 4,
-   "dur": 2.0,
-   "desc_md": "Places finished assembly on conveyor belt",
-   "desc_mi": "Waits"
+   "n": 3,
+   "dur": 3.0,
+   "desc_md": "Grasps workpiece from left hand and transports",
+   "desc_mi": "Holds and releases workpiece to right hand"
   },
   {
    "t0": 9.0,
-   "t1": 10.0,
+   "t1": 12.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw into workpiece · L: Holds the workpiece"
    ],
    "ks": [
-    9
-   ],
-   "n": 5,
-   "dur": 1.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece steady"
-  },
-  {
-   "t0": 10.0,
-   "t1": 12.0,
-   "md": "OP",
-   "mi": "OP",
-   "obs": [
-    "MD: Grasps fastener from left hand · MI: Hands fastener to right hand"
-   ],
-   "ks": [
+    9,
     10,
     11
    ],
-   "n": 6,
-   "dur": 2.0,
-   "desc_md": "Grasps fastener from left hand",
-   "desc_mi": "Hands fastener to right hand"
+   "n": 4,
+   "dur": 3.0,
+   "desc_md": "Fastens screw into workpiece",
+   "desc_mi": "Holds the workpiece"
   },
   {
    "t0": 12.0,
@@ -144,15 +114,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Holds workpiece"
+    "R: Reaches for electric screwdriver · L: Holds blue workpiece"
    ],
    "ks": [
     12
    ],
-   "n": 7,
+   "n": 5,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
-   "desc_mi": "Holds workpiece"
+   "desc_md": "Reaches for electric screwdriver",
+   "desc_mi": "Holds blue workpiece"
   },
   {
    "t0": 13.0,
@@ -160,7 +130,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece in place"
+    "R: Fastens screw using electric screwdriver · L: Holds blue workpiece at work point"
    ],
    "ks": [
     13,
@@ -175,10 +145,10 @@
     22,
     23
    ],
-   "n": 8,
+   "n": 6,
    "dur": 11.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece in place"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue workpiece at work point"
   },
   {
    "t0": 24.0,
@@ -186,7 +156,7 @@
    "md": "NV",
    "mi": "D",
    "obs": [
-    "MD: Waits · MI: Holds the workpiece"
+    "R: Not visible · L: Holds the workpiece at the work point"
    ],
    "ks": [
     24,
@@ -197,27 +167,42 @@
     29,
     30
    ],
-   "n": 9,
+   "n": 7,
    "dur": 7.0,
-   "desc_md": "Waits",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Not visible",
+   "desc_mi": "Holds the workpiece at the work point"
   },
   {
    "t0": 31.0,
+   "t1": 32.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "R: Reaches for screw from bin · L: Holds blue workpiece"
+   ],
+   "ks": [
+    31
+   ],
+   "n": 8,
+   "dur": 1.0,
+   "desc_md": "Reaches for screw from bin",
+   "desc_mi": "Holds blue workpiece"
+  },
+  {
+   "t0": 32.0,
    "t1": 33.0,
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: Waits · MI: Waits"
+    "R: Waits · L: Holds the workpiece"
    ],
    "ks": [
-    31,
     32
    ],
-   "n": 10,
-   "dur": 2.0,
+   "n": 9,
+   "dur": 1.0,
    "desc_md": "Waits",
-   "desc_mi": "Waits"
+   "desc_mi": "Holds the workpiece"
   },
   {
    "t0": 33.0,
@@ -225,7 +210,7 @@
    "md": "NV",
    "mi": "D",
    "obs": [
-    "MD: Waits · MI: Holds the workpiece"
+    "R: Not visible · L: Holds the workpiece at the work point"
    ],
    "ks": [
     33,
@@ -233,10 +218,10 @@
     35,
     36
    ],
-   "n": 11,
+   "n": 10,
    "dur": 4.0,
-   "desc_md": "Waits",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Not visible",
+   "desc_mi": "Holds the workpiece at the work point"
   },
   {
    "t0": 37.0,
@@ -244,15 +229,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Reaches for power driver · MI: Holds fastener"
+    "R: Reaches toward the workpiece · L: Holds the workpiece"
    ],
    "ks": [
     37
    ],
-   "n": 12,
+   "n": 11,
    "dur": 1.0,
-   "desc_md": "Reaches for power driver",
-   "desc_mi": "Holds fastener"
+   "desc_md": "Reaches toward the workpiece",
+   "desc_mi": "Holds the workpiece"
   },
   {
    "t0": 38.0,
@@ -260,7 +245,7 @@
    "md": "D",
    "mi": "NV",
    "obs": [
-    "MD: Holds the assembly · MI: Holds the assembly"
+    "R: Holds the workpiece · L: Not visible"
    ],
    "ks": [
     38,
@@ -268,26 +253,26 @@
     40,
     41
    ],
-   "n": 13,
+   "n": 12,
    "dur": 4.0,
-   "desc_md": "Holds the assembly",
-   "desc_mi": "Holds the assembly"
+   "desc_md": "Holds the workpiece",
+   "desc_mi": "Not visible"
   },
   {
    "t0": 42.0,
    "t1": 43.0,
    "md": "OP",
-   "mi": "S",
+   "mi": "NV",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds workpiece at work point"
    ],
    "ks": [
     42
    ],
-   "n": 14,
+   "n": 13,
    "dur": 1.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece steady"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds workpiece at work point"
   },
   {
    "t0": 43.0,
@@ -295,15 +280,15 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Moves finished part toward conveyor · MI: Reaches for fastener in blue bin"
+    "R: Reaches for screw from bin · L: Reaches for blue workpiece from bin"
    ],
    "ks": [
     43
    ],
-   "n": 15,
+   "n": 14,
    "dur": 1.0,
-   "desc_md": "Moves finished part toward conveyor",
-   "desc_mi": "Reaches for fastener in blue bin"
+   "desc_md": "Reaches for screw from bin",
+   "desc_mi": "Reaches for blue workpiece from bin"
   },
   {
    "t0": 44.0,
@@ -311,14 +296,14 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Places finished assembly on conveyor belt · MI: Waits"
+    "R: Places blue component on conveyor belt · L: Waits"
    ],
    "ks": [
     44
    ],
-   "n": 16,
+   "n": 15,
    "dur": 1.0,
-   "desc_md": "Places finished assembly on conveyor belt",
+   "desc_md": "Places blue component on conveyor belt",
    "desc_mi": "Waits"
   },
   {
@@ -327,16 +312,16 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds the workpiece · MI: Reaches for and grasps blue part"
+    "R: Holds blue workpiece on mat · L: Reaches for and grasps blue workpiece"
    ],
    "ks": [
     45,
     46
    ],
-   "n": 17,
+   "n": 16,
    "dur": 2.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Reaches for and grasps blue part"
+   "desc_md": "Holds blue workpiece on mat",
+   "desc_mi": "Reaches for and grasps blue workpiece"
   },
   {
    "t0": 47.0,
@@ -344,16 +329,16 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens part using power driver · MI: Holds the workpiece"
+    "R: Fastens screw into workpiece using electric screwdriver · L: Holds the blue plastic workpiece"
    ],
    "ks": [
     47,
     48
    ],
-   "n": 18,
+   "n": 17,
    "dur": 2.0,
-   "desc_md": "Fastens part using power driver",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Fastens screw into workpiece using electric screwdriver",
+   "desc_mi": "Holds the blue plastic workpiece"
   },
   {
    "t0": 49.0,
@@ -361,66 +346,96 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Places workpiece on brown mat"
+    "R: Reaches for and grasps electric screwdriver · L: Places blue workpiece on work point"
    ],
    "ks": [
     49
    ],
-   "n": 19,
+   "n": 18,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
-   "desc_mi": "Places workpiece on brown mat"
+   "desc_md": "Reaches for and grasps electric screwdriver",
+   "desc_mi": "Places blue workpiece on work point"
   },
   {
    "t0": 50.0,
    "t1": 51.0,
-   "md": "D",
+   "md": "OP",
    "mi": "TR",
    "obs": [
-    "MD: Holds power driver · MI: Reaches for and grasps fastener from bin"
+    "R: Holds electric screwdriver over workpiece · L: Transports screw to the workpiece"
    ],
    "ks": [
     50
    ],
-   "n": 20,
+   "n": 19,
    "dur": 1.0,
-   "desc_md": "Holds power driver",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_md": "Holds electric screwdriver over workpiece",
+   "desc_mi": "Transports screw to the workpiece"
   },
   {
    "t0": 51.0,
+   "t1": 52.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "R: Fastens screw using electric screwdriver · L: Holds screw in place for fastening"
+   ],
+   "ks": [
+    51
+   ],
+   "n": 20,
+   "dur": 1.0,
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds screw in place for fastening"
+  },
+  {
+   "t0": 52.0,
    "t1": 55.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds blue component at work point"
    ],
    "ks": [
-    51,
     52,
     53,
     54
    ],
    "n": 21,
-   "dur": 4.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece steady"
+   "dur": 3.0,
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue component at work point"
   },
   {
    "t0": 55.0,
+   "t1": 56.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Holds electric screwdriver · L: Holds blue workpiece"
+   ],
+   "ks": [
+    55
+   ],
+   "n": 22,
+   "dur": 1.0,
+   "desc_md": "Holds electric screwdriver",
+   "desc_mi": "Holds blue workpiece"
+  },
+  {
+   "t0": 56.0,
    "t1": 57.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Places finished assembly on conveyor belt · MI: Waits"
+    "R: Places finished workpiece on conveyor belt · L: Waits"
    ],
    "ks": [
-    55,
     56
    ],
-   "n": 22,
-   "dur": 2.0,
-   "desc_md": "Places finished assembly on conveyor belt",
+   "n": 23,
+   "dur": 1.0,
+   "desc_md": "Places finished workpiece on conveyor belt",
    "desc_mi": "Waits"
   },
   {
@@ -429,14 +444,14 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Places finished assembly on conveyor · MI: Reaches for and grasps blue workpiece"
+    "R: Places finished component on conveyor belt · L: Reaches for and grasps blue workpiece"
    ],
    "ks": [
     57
    ],
-   "n": 23,
+   "n": 24,
    "dur": 1.0,
-   "desc_md": "Places finished assembly on conveyor",
+   "desc_md": "Places finished component on conveyor belt",
    "desc_mi": "Reaches for and grasps blue workpiece"
   },
   {
@@ -445,15 +460,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds the workpiece · MI: Reaches for and grasps blue part"
+    "R: Holds the workpiece · L: Reaches for and grasps blue workpiece"
    ],
    "ks": [
     58
    ],
-   "n": 24,
+   "n": 25,
    "dur": 1.0,
    "desc_md": "Holds the workpiece",
-   "desc_mi": "Reaches for and grasps blue part"
+   "desc_mi": "Reaches for and grasps blue workpiece"
   },
   {
    "t0": 59.0,
@@ -461,15 +476,15 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds blue plastic workpiece"
    ],
    "ks": [
     59
    ],
-   "n": 25,
+   "n": 26,
    "dur": 1.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece steady"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue plastic workpiece"
   },
   {
    "t0": 60.0,
@@ -477,15 +492,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Holds the workpiece"
+    "R: Moves electric screwdriver toward workpiece · L: Holds blue workpiece at work point"
    ],
    "ks": [
     60
    ],
-   "n": 26,
+   "n": 27,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Moves electric screwdriver toward workpiece",
+   "desc_mi": "Holds blue workpiece at work point"
   },
   {
    "t0": 61.0,
@@ -493,15 +508,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds power driver · MI: Reaches for and grasps fastener from bin"
+    "R: Holds electric screwdriver · L: Reaches for and grasps screw from bin"
    ],
    "ks": [
     61
    ],
-   "n": 27,
+   "n": 28,
    "dur": 1.0,
-   "desc_md": "Holds power driver",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_md": "Holds electric screwdriver",
+   "desc_mi": "Reaches for and grasps screw from bin"
   },
   {
    "t0": 62.0,
@@ -509,7 +524,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds the workpiece"
+    "R: Fastens screw using electric screwdriver · L: Holds blue workpiece at work point"
    ],
    "ks": [
     62,
@@ -518,41 +533,26 @@
     65,
     66
    ],
-   "n": 28,
+   "n": 29,
    "dur": 5.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue workpiece at work point"
   },
   {
    "t0": 67.0,
-   "t1": 68.0,
-   "md": "TR",
-   "mi": "TR",
-   "obs": [
-    "MD: Reaches for and grasps blue workpiece · MI: Releases blue workpiece to right hand"
-   ],
-   "ks": [
-    67
-   ],
-   "n": 29,
-   "dur": 1.0,
-   "desc_md": "Reaches for and grasps blue workpiece",
-   "desc_mi": "Releases blue workpiece to right hand"
-  },
-  {
-   "t0": 68.0,
    "t1": 69.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Places finished assembly on conveyor belt · MI: Waits"
+    "R: Transports workpiece to conveyor belt · L: Waits"
    ],
    "ks": [
+    67,
     68
    ],
    "n": 30,
-   "dur": 1.0,
-   "desc_md": "Places finished assembly on conveyor belt",
+   "dur": 2.0,
+   "desc_md": "Transports workpiece to conveyor belt",
    "desc_mi": "Waits"
   },
   {
@@ -561,31 +561,31 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds the workpiece · MI: Reaches for and grasps blue part"
+    "R: Holds the blue workpiece · L: Reaches for and grasps blue workpiece"
    ],
    "ks": [
     69
    ],
    "n": 31,
    "dur": 1.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Reaches for and grasps blue part"
+   "desc_md": "Holds the blue workpiece",
+   "desc_mi": "Reaches for and grasps blue workpiece"
   },
   {
    "t0": 70.0,
    "t1": 71.0,
    "md": "OP",
-   "mi": "OP",
+   "mi": "TR",
    "obs": [
-    "MD: Positions and holds the blue workpiece · MI: Positions and holds the blue workpiece"
+    "R: Grasps and takes workpiece from left hand · L: Hands workpiece to right hand"
    ],
    "ks": [
     70
    ],
    "n": 32,
    "dur": 1.0,
-   "desc_md": "Positions and holds the blue workpiece",
-   "desc_mi": "Positions and holds the blue workpiece"
+   "desc_md": "Grasps and takes workpiece from left hand",
+   "desc_mi": "Hands workpiece to right hand"
   },
   {
    "t0": 71.0,
@@ -593,14 +593,14 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds the workpiece"
+    "R: Fastens screw into workpiece · L: Holds the workpiece"
    ],
    "ks": [
     71
    ],
    "n": 33,
    "dur": 1.0,
-   "desc_md": "Fastens screw using power driver",
+   "desc_md": "Fastens screw into workpiece",
    "desc_mi": "Holds the workpiece"
   },
   {
@@ -609,15 +609,15 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Places workpiece on work surface"
+    "R: Reaches for and grasps electric screwdriver · L: Places blue workpiece on work point"
    ],
    "ks": [
     72
    ],
    "n": 34,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
-   "desc_mi": "Places workpiece on work surface"
+   "desc_md": "Reaches for and grasps electric screwdriver",
+   "desc_mi": "Places blue workpiece on work point"
   },
   {
    "t0": 73.0,
@@ -625,84 +625,99 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds power driver · MI: Reaches for and grasps fastener from bin"
+    "R: Holds electric screwdriver and waits · L: Grasps screw and moves to workpiece"
    ],
    "ks": [
     73
    ],
    "n": 35,
    "dur": 1.0,
-   "desc_md": "Holds power driver",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_md": "Holds electric screwdriver and waits",
+   "desc_mi": "Grasps screw and moves to workpiece"
   },
   {
    "t0": 74.0,
+   "t1": 76.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "R: Fastens screw using electric screwdriver · L: Holds blue workpiece in place"
+   ],
+   "ks": [
+    74,
+    75
+   ],
+   "n": 36,
+   "dur": 2.0,
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue workpiece in place"
+  },
+  {
+   "t0": 76.0,
    "t1": 79.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds the blue plastic workpiece"
    ],
    "ks": [
-    74,
-    75,
     76,
     77,
     78
    ],
-   "n": 36,
-   "dur": 5.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece steady"
+   "n": 37,
+   "dur": 3.0,
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds the blue plastic workpiece"
   },
   {
    "t0": 79.0,
+   "t1": 80.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Grasps and takes workpiece from left hand · L: Holds and releases workpiece to right hand"
+   ],
+   "ks": [
+    79
+   ],
+   "n": 38,
+   "dur": 1.0,
+   "desc_md": "Grasps and takes workpiece from left hand",
+   "desc_mi": "Holds and releases workpiece to right hand"
+  },
+  {
+   "t0": 80.0,
    "t1": 81.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Moves finished assembly to conveyor belt · MI: Waits"
+    "R: Places blue component on conveyor belt · L: Waits"
    ],
    "ks": [
-    79,
     80
    ],
-   "n": 37,
-   "dur": 2.0,
-   "desc_md": "Moves finished assembly to conveyor belt",
+   "n": 39,
+   "dur": 1.0,
+   "desc_md": "Places blue component on conveyor belt",
    "desc_mi": "Waits"
   },
   {
    "t0": 81.0,
-   "t1": 82.0,
-   "md": "TR",
-   "mi": "TR",
-   "obs": [
-    "MD: Holds finished assembly · MI: Reaches for and grasps blue workpiece"
-   ],
-   "ks": [
-    81
-   ],
-   "n": 38,
-   "dur": 1.0,
-   "desc_md": "Holds finished assembly",
-   "desc_mi": "Reaches for and grasps blue workpiece"
-  },
-  {
-   "t0": 82.0,
    "t1": 83.0,
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds the workpiece · MI: Reaches for and grasps blue part"
+    "R: Holds blue workpiece on mat · L: Reaches for and grasps blue workpiece"
    ],
    "ks": [
+    81,
     82
    ],
-   "n": 39,
-   "dur": 1.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Reaches for and grasps blue part"
+   "n": 40,
+   "dur": 2.0,
+   "desc_md": "Holds blue workpiece on mat",
+   "desc_mi": "Reaches for and grasps blue workpiece"
   },
   {
    "t0": 83.0,
@@ -710,15 +725,15 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens part using power driver · MI: Holds the workpiece"
+    "R: Fits screw into the workpiece · L: Holds the blue workpiece"
    ],
    "ks": [
     83
    ],
-   "n": 40,
+   "n": 41,
    "dur": 1.0,
-   "desc_md": "Fastens part using power driver",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Fits screw into the workpiece",
+   "desc_mi": "Holds the blue workpiece"
   },
   {
    "t0": 84.0,
@@ -726,99 +741,99 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Reaches for and grasps blue workpiece"
+    "R: Reaches for and grasps electric screwdriver · L: Reaches for and grasps blue workpiece"
    ],
    "ks": [
     84
    ],
-   "n": 41,
+   "n": 42,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
+   "desc_md": "Reaches for and grasps electric screwdriver",
    "desc_mi": "Reaches for and grasps blue workpiece"
   },
   {
    "t0": 85.0,
-   "t1": 86.0,
+   "t1": 87.0,
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds power driver · MI: Reaches for and grasps fastener from bin"
+    "R: Holds electric screwdriver and waits · L: Grasps blue component from bin and transports"
    ],
    "ks": [
-    85
-   ],
-   "n": 42,
-   "dur": 1.0,
-   "desc_md": "Holds power driver",
-   "desc_mi": "Reaches for and grasps fastener from bin"
-  },
-  {
-   "t0": 86.0,
-   "t1": 87.0,
-   "md": "TR",
-   "mi": "TR",
-   "obs": [
-    "MD: Holds power driver · MI: Reaches for and grasps blue workpiece"
-   ],
-   "ks": [
+    85,
     86
    ],
    "n": 43,
-   "dur": 1.0,
-   "desc_md": "Holds power driver",
-   "desc_mi": "Reaches for and grasps blue workpiece"
+   "dur": 2.0,
+   "desc_md": "Holds electric screwdriver and waits",
+   "desc_mi": "Grasps blue component from bin and transports"
   },
   {
    "t0": 87.0,
-   "t1": 91.0,
+   "t1": 88.0,
+   "md": "D",
+   "mi": "OP",
+   "obs": [
+    "R: Holds electric screwdriver · L: Positions screw into workpiece"
+   ],
+   "ks": [
+    87
+   ],
+   "n": 44,
+   "dur": 1.0,
+   "desc_md": "Holds electric screwdriver",
+   "desc_mi": "Positions screw into workpiece"
+  },
+  {
+   "t0": 88.0,
+   "t1": 92.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds blue plastic workpiece"
    ],
    "ks": [
-    87,
     88,
     89,
-    90
+    90,
+    91
    ],
-   "n": 44,
+   "n": 45,
    "dur": 4.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece steady"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue plastic workpiece"
   },
   {
-   "t0": 91.0,
+   "t0": 92.0,
    "t1": 93.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Places finished assembly on conveyor belt · MI: Waits"
+    "R: Places blue component on conveyor belt · L: Waits"
    ],
    "ks": [
-    91,
     92
    ],
-   "n": 45,
-   "dur": 2.0,
-   "desc_md": "Places finished assembly on conveyor belt",
+   "n": 46,
+   "dur": 1.0,
+   "desc_md": "Places blue component on conveyor belt",
    "desc_mi": "Waits"
   },
   {
    "t0": 93.0,
    "t1": 94.0,
-   "md": "TR",
-   "mi": "TR",
+   "md": "D",
+   "mi": "D",
    "obs": [
-    "MD: Places finished assembly on conveyor · MI: Reaches for and grasps blue workpiece"
+    "R: Moves workpiece toward conveyor belt · L: Waits"
    ],
    "ks": [
     93
    ],
-   "n": 46,
+   "n": 47,
    "dur": 1.0,
-   "desc_md": "Places finished assembly on conveyor",
-   "desc_mi": "Reaches for and grasps blue workpiece"
+   "desc_md": "Moves workpiece toward conveyor belt",
+   "desc_mi": "Waits"
   },
   {
    "t0": 94.0,
@@ -826,15 +841,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds the workpiece · MI: Reaches for and grasps blue part"
+    "R: Holds the blue workpiece · L: Grasps blue component from bin"
    ],
    "ks": [
     94
    ],
-   "n": 47,
+   "n": 48,
    "dur": 1.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Reaches for and grasps blue part"
+   "desc_md": "Holds the blue workpiece",
+   "desc_mi": "Grasps blue component from bin"
   },
   {
    "t0": 95.0,
@@ -842,31 +857,31 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens part using power driver · MI: Holds the workpiece"
+    "R: Fits screw into the workpiece · L: Holds the workpiece"
    ],
    "ks": [
     95
    ],
-   "n": 48,
+   "n": 49,
    "dur": 1.0,
-   "desc_md": "Fastens part using power driver",
+   "desc_md": "Fits screw into the workpiece",
    "desc_mi": "Holds the workpiece"
   },
   {
    "t0": 96.0,
    "t1": 97.0,
-   "md": "TR",
-   "mi": "D",
+   "md": "TR+OP",
+   "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Holds the workpiece"
+    "R: Brings screw to workpiece and fits it · L: Holds blue workpiece at work point"
    ],
    "ks": [
     96
    ],
-   "n": 49,
+   "n": 50,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Brings screw to workpiece and fits it",
+   "desc_mi": "Holds blue workpiece at work point"
   },
   {
    "t0": 97.0,
@@ -874,34 +889,49 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds power driver · MI: Reaches for and grasps fastener from bin"
+    "R: Holds electric screwdriver · L: Reaches for and grasps screw from bin"
    ],
    "ks": [
     97
    ],
-   "n": 50,
+   "n": 51,
    "dur": 1.0,
-   "desc_md": "Holds power driver",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_md": "Holds electric screwdriver",
+   "desc_mi": "Reaches for and grasps screw from bin"
   },
   {
    "t0": 98.0,
+   "t1": 99.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "R: Fastens screw using electric screwdriver · L: Holds screw in place for fastening"
+   ],
+   "ks": [
+    98
+   ],
+   "n": 52,
+   "dur": 1.0,
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds screw in place for fastening"
+  },
+  {
+   "t0": 99.0,
    "t1": 102.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens part using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds the workpiece"
    ],
    "ks": [
-    98,
     99,
     100,
     101
    ],
-   "n": 51,
-   "dur": 4.0,
-   "desc_md": "Fastens part using power driver",
-   "desc_mi": "Holds workpiece steady"
+   "n": 53,
+   "dur": 3.0,
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds the workpiece"
   },
   {
    "t0": 102.0,
@@ -909,14 +939,14 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Places finished assembly on conveyor belt · MI: Waits"
+    "R: Places blue component on conveyor belt · L: Waits"
    ],
    "ks": [
     102
    ],
-   "n": 52,
+   "n": 54,
    "dur": 1.0,
-   "desc_md": "Places finished assembly on conveyor belt",
+   "desc_md": "Places blue component on conveyor belt",
    "desc_mi": "Waits"
   },
   {
@@ -925,15 +955,15 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps blue workpiece · MI: Reaches for and grasps silver fastener"
+    "R: Places finished workpiece on conveyor belt · L: Reaches for and grasps blue workpiece"
    ],
    "ks": [
     103
    ],
-   "n": 53,
+   "n": 55,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps blue workpiece",
-   "desc_mi": "Reaches for and grasps silver fastener"
+   "desc_md": "Places finished workpiece on conveyor belt",
+   "desc_mi": "Reaches for and grasps blue workpiece"
   },
   {
    "t0": 104.0,
@@ -941,15 +971,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds the workpiece · MI: Reaches for and grasps blue part"
+    "R: Holds blue workpiece · L: Reaches for and grasps blue component"
    ],
    "ks": [
     104
    ],
-   "n": 54,
+   "n": 56,
    "dur": 1.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Reaches for and grasps blue part"
+   "desc_md": "Holds blue workpiece",
+   "desc_mi": "Reaches for and grasps blue component"
   },
   {
    "t0": 105.0,
@@ -957,48 +987,48 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds the workpiece"
+    "R: Fastens screw into workpiece · L: Holds the workpiece"
    ],
    "ks": [
     105,
     106
    ],
-   "n": 55,
+   "n": 57,
    "dur": 2.0,
-   "desc_md": "Fastens screw using power driver",
+   "desc_md": "Fastens screw into workpiece",
    "desc_mi": "Holds the workpiece"
   },
   {
    "t0": 107.0,
    "t1": 108.0,
-   "md": "TR",
+   "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Reaches for and grasps fastener from bin"
+    "R: Holds electric screwdriver · L: Reaches for and grasps screw from bin"
    ],
    "ks": [
     107
    ],
-   "n": 56,
+   "n": 58,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_md": "Holds electric screwdriver",
+   "desc_mi": "Reaches for and grasps screw from bin"
   },
   {
    "t0": 108.0,
    "t1": 109.0,
    "md": "D",
-   "mi": "TR+OP",
+   "mi": "OP",
    "obs": [
-    "MD: Holds power driver and waits · MI: Picks fastener and fits to workpiece"
+    "R: Holds electric screwdriver · L: Fits screw into workpiece"
    ],
    "ks": [
     108
    ],
-   "n": 57,
+   "n": 59,
    "dur": 1.0,
-   "desc_md": "Holds power driver and waits",
-   "desc_mi": "Picks fastener and fits to workpiece"
+   "desc_md": "Holds electric screwdriver",
+   "desc_mi": "Fits screw into workpiece"
   },
   {
    "t0": 109.0,
@@ -1006,15 +1036,15 @@
    "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: Operates power driver to fasten screw · MI: Holds workpiece and guides fastener"
+    "R: Fastens screw using electric screwdriver · L: Holds screw in place for fastening"
    ],
    "ks": [
     109
    ],
-   "n": 58,
+   "n": 60,
    "dur": 1.0,
-   "desc_md": "Operates power driver to fasten screw",
-   "desc_mi": "Holds workpiece and guides fastener"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds screw in place for fastening"
   },
   {
    "t0": 110.0,
@@ -1022,17 +1052,17 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds blue plastic workpiece"
    ],
    "ks": [
     110,
     111,
     112
    ],
-   "n": 59,
+   "n": 61,
    "dur": 3.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece steady"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue plastic workpiece"
   },
   {
    "t0": 113.0,
@@ -1040,16 +1070,16 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Moves finished assembly to conveyor belt · MI: Waits"
+    "R: Grasps workpiece and places it on conveyor · L: Holds and releases workpiece to right hand"
    ],
    "ks": [
     113,
     114
    ],
-   "n": 60,
+   "n": 62,
    "dur": 2.0,
-   "desc_md": "Moves finished assembly to conveyor belt",
-   "desc_mi": "Waits"
+   "desc_md": "Grasps workpiece and places it on conveyor",
+   "desc_mi": "Holds and releases workpiece to right hand"
   },
   {
    "t0": 115.0,
@@ -1057,16 +1087,16 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds the workpiece · MI: Reaches for and grasps blue part"
+    "R: Holds blue plastic component · L: Reaches for and grasps blue component from bin"
    ],
    "ks": [
     115,
     116
    ],
-   "n": 61,
+   "n": 63,
    "dur": 2.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Reaches for and grasps blue part"
+   "desc_md": "Holds blue plastic component",
+   "desc_mi": "Reaches for and grasps blue component from bin"
   },
   {
    "t0": 117.0,
@@ -1074,31 +1104,31 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds the workpiece"
+    "R: Fastens screw into workpiece using electric screwdriver · L: Holds the blue plastic workpiece"
    ],
    "ks": [
     117
    ],
-   "n": 62,
+   "n": 64,
    "dur": 1.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Fastens screw into workpiece using electric screwdriver",
+   "desc_mi": "Holds the blue plastic workpiece"
   },
   {
    "t0": 118.0,
    "t1": 119.0,
    "md": "TR",
-   "mi": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Reaches for and grasps power driver · MI: Places workpiece on brown mat"
+    "R: Reaches for and grasps electric screwdriver · L: Holds blue workpiece at work point"
    ],
    "ks": [
     118
    ],
-   "n": 63,
+   "n": 65,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps power driver",
-   "desc_mi": "Places workpiece on brown mat"
+   "desc_md": "Reaches for and grasps electric screwdriver",
+   "desc_mi": "Holds blue workpiece at work point"
   },
   {
    "t0": 119.0,
@@ -1106,52 +1136,52 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds power driver · MI: Reaches for and grasps fastener from bin"
+    "R: Holds electric screwdriver · L: Grasps screw from bin"
    ],
    "ks": [
     119,
     120
    ],
-   "n": 64,
+   "n": 66,
    "dur": 2.0,
-   "desc_md": "Holds power driver",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_md": "Holds electric screwdriver",
+   "desc_mi": "Grasps screw from bin"
   },
   {
    "t0": 121.0,
-   "t1": 126.0,
+   "t1": 122.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "R: Moves electric screwdriver toward workpiece · L: Holds blue workpiece at work point"
+   ],
+   "ks": [
+    121
+   ],
+   "n": 67,
+   "dur": 1.0,
+   "desc_md": "Moves electric screwdriver toward workpiece",
+   "desc_mi": "Holds blue workpiece at work point"
+  },
+  {
+   "t0": 122.0,
+   "t1": 127.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw into workpiece using power driver · MI: Holds workpiece steady for fastening"
+    "R: Fastens screw using electric screwdriver · L: Holds blue workpiece at work point"
    ],
    "ks": [
-    121,
     122,
     123,
     124,
-    125
-   ],
-   "n": 65,
-   "dur": 5.0,
-   "desc_md": "Fastens screw into workpiece using power driver",
-   "desc_mi": "Holds workpiece steady for fastening"
-  },
-  {
-   "t0": 126.0,
-   "t1": 127.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: Holds the assembly · MI: Holds the assembly"
-   ],
-   "ks": [
+    125,
     126
    ],
-   "n": 66,
-   "dur": 1.0,
-   "desc_md": "Holds the assembly",
-   "desc_mi": "Holds the assembly"
+   "n": 68,
+   "dur": 5.0,
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds blue workpiece at work point"
   },
   {
    "t0": 127.0,
@@ -1159,14 +1189,14 @@
    "md": "TR",
    "mi": "NV",
    "obs": [
-    "MD: Places finished assembly on conveyor belt · MI: Waits"
+    "R: Places blue component on conveyor belt · L: Waits"
    ],
    "ks": [
     127
    ],
-   "n": 67,
+   "n": 69,
    "dur": 1.0,
-   "desc_md": "Places finished assembly on conveyor belt",
+   "desc_md": "Places blue component on conveyor belt",
    "desc_mi": "Waits"
   },
   {
@@ -1175,12 +1205,12 @@
    "md": "NV",
    "mi": "NV",
    "obs": [
-    "MD: Waits · MI: Waits"
+    "R: Waits · L: Waits"
    ],
    "ks": [
     128
    ],
-   "n": 68,
+   "n": 70,
    "dur": 1.0,
    "desc_md": "Waits",
    "desc_mi": "Waits"
@@ -1191,15 +1221,15 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Places finished assembly on conveyor · MI: Reaches for and grasps fastener"
+    "R: Moves hand away from conveyor belt · L: Reaches for blue component from bin"
    ],
    "ks": [
     129
    ],
-   "n": 69,
+   "n": 71,
    "dur": 1.0,
-   "desc_md": "Places finished assembly on conveyor",
-   "desc_mi": "Reaches for and grasps fastener"
+   "desc_md": "Moves hand away from conveyor belt",
+   "desc_mi": "Reaches for blue component from bin"
   },
   {
    "t0": 130.0,
@@ -1207,15 +1237,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Waits · MI: Reaches for and grasps fastener bin"
+    "R: Waits · L: Transports screw bin to work point"
    ],
    "ks": [
     130
    ],
-   "n": 70,
+   "n": 72,
    "dur": 1.0,
    "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps fastener bin"
+   "desc_mi": "Transports screw bin to work point"
   },
   {
    "t0": 131.0,
@@ -1223,62 +1253,47 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: Waits · MI: Holds fastener bin"
+    "R: Waits · L: Holds screw bin"
    ],
    "ks": [
     131
    ],
-   "n": 71,
+   "n": 73,
    "dur": 1.0,
    "desc_md": "Waits",
-   "desc_mi": "Holds fastener bin"
+   "desc_mi": "Holds screw bin"
   },
   {
    "t0": 132.0,
    "t1": 133.0,
    "md": "TR",
-   "mi": "D",
+   "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps fastener bin · MI: Waits"
+    "R: Reaches for and grasps screw from bin · L: Reaches for and grasps workpiece from bin"
    ],
    "ks": [
     132
    ],
-   "n": 72,
+   "n": 74,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps fastener bin",
-   "desc_mi": "Waits"
-  },
-  {
-   "t0": 133.0,
-   "t1": 134.0,
-   "md": "TR",
-   "mi": "TR",
-   "obs": [
-    "MD: Reaches for and grasps fastener from bin · MI: Reaches for and grasps workpiece from bin"
-   ],
-   "ks": [
-    133
-   ],
-   "n": 73,
-   "dur": 1.0,
-   "desc_md": "Reaches for and grasps fastener from bin",
+   "desc_md": "Reaches for and grasps screw from bin",
    "desc_mi": "Reaches for and grasps workpiece from bin"
   },
   {
-   "t0": 134.0,
+   "t0": 133.0,
    "t1": 135.0,
    "md": "TR",
    "mi": "NV",
    "obs": [
-    "MD: Reaches for and grasps fastener from bin · MI: Waits"
+    "R: Reaches for and grasps screw from bin · L: Waits"
    ],
    "ks": [
+    133,
     134
    ],
-   "n": 74,
-   "dur": 1.0,
-   "desc_md": "Reaches for and grasps fastener from bin",
+   "n": 75,
+   "dur": 2.0,
+   "desc_md": "Reaches for and grasps screw from bin",
    "desc_mi": "Waits"
   },
   {
@@ -1287,15 +1302,15 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Reaches for and grasps fastener from bin · MI: Reaches for and grasps workpiece from bin"
+    "R: Reaches for and grasps screw from bin · L: Reaches for blue plastic workpiece"
    ],
    "ks": [
     135
    ],
-   "n": 75,
+   "n": 76,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps fastener from bin",
-   "desc_mi": "Reaches for and grasps workpiece from bin"
+   "desc_md": "Reaches for and grasps screw from bin",
+   "desc_mi": "Reaches for blue plastic workpiece"
   },
   {
    "t0": 136.0,
@@ -1303,14 +1318,14 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens part using power driver · MI: Holds the workpiece"
+    "R: Fastens screw using electric screwdriver · L: Holds the workpiece"
    ],
    "ks": [
     136
    ],
-   "n": 76,
+   "n": 77,
    "dur": 1.0,
-   "desc_md": "Fastens part using power driver",
+   "desc_md": "Fastens screw using electric screwdriver",
    "desc_mi": "Holds the workpiece"
   },
   {
@@ -1319,15 +1334,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Waits · MI: Reaches for and grasps fastener from bin"
+    "R: Waits · L: Reaches for and grasps screw from bin"
    ],
    "ks": [
     137
    ],
-   "n": 77,
+   "n": 78,
    "dur": 1.0,
    "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_mi": "Reaches for and grasps screw from bin"
   },
   {
    "t0": 138.0,
@@ -1335,176 +1350,116 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Reaches for fastener from left hand · MI: Holds fastener for right hand"
+    "R: Reaches for and grasps screw from bin · L: Waits"
    ],
    "ks": [
     138
    ],
-   "n": 78,
+   "n": 79,
    "dur": 1.0,
-   "desc_md": "Reaches for fastener from left hand",
-   "desc_mi": "Holds fastener for right hand"
+   "desc_md": "Reaches for and grasps screw from bin",
+   "desc_mi": "Waits"
   },
   {
    "t0": 139.0,
-   "t1": 141.0,
+   "t1": 140.0,
    "md": "D",
    "mi": "NV",
    "obs": [
-    "MD: Waits · MI: Not visible"
+    "R: Waits · L: Not visible"
    ],
    "ks": [
-    139,
-    140
-   ],
-   "n": 79,
-   "dur": 2.0,
-   "desc_md": "Waits",
-   "desc_mi": "Not visible"
-  },
-  {
-   "t0": 141.0,
-   "t1": 142.0,
-   "md": "D",
-   "mi": "TR",
-   "obs": [
-    "MD: Waits · MI: Reaches for and grasps silver fastener"
-   ],
-   "ks": [
-    141
+    139
    ],
    "n": 80,
    "dur": 1.0,
    "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps silver fastener"
+   "desc_mi": "Not visible"
   },
   {
-   "t0": 142.0,
-   "t1": 143.0,
-   "md": "S",
-   "mi": "OP",
+   "t0": 140.0,
+   "t1": 141.0,
+   "md": "OP",
+   "mi": "NV",
    "obs": [
-    "MD: Holds the workpiece · MI: Operates power driver to fasten screw"
+    "R: Fastens screw using electric screwdriver · L: Holds workpiece at work point"
    ],
    "ks": [
-    142
+    140
    ],
    "n": 81,
    "dur": 1.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Operates power driver to fasten screw"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds workpiece at work point"
   },
   {
-   "t0": 143.0,
-   "t1": 144.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: Waits · MI: Holds the workpiece"
-   ],
-   "ks": [
-    143
-   ],
-   "n": 82,
-   "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Holds the workpiece"
-  },
-  {
-   "t0": 144.0,
-   "t1": 145.0,
+   "t0": 141.0,
+   "t1": 146.0,
    "md": "S",
    "mi": "OP",
    "obs": [
-    "MD: Holds the workpiece · MI: Fits fastener into the workpiece"
+    "R: Holds the workpiece · L: Fits screw into workpiece"
    ],
    "ks": [
-    144
-   ],
-   "n": 83,
-   "dur": 1.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Fits fastener into the workpiece"
-  },
-  {
-   "t0": 145.0,
-   "t1": 146.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: Holds the workpiece · MI: Waits"
-   ],
-   "ks": [
+    141,
+    142,
+    143,
+    144,
     145
    ],
-   "n": 84,
-   "dur": 1.0,
+   "n": 82,
+   "dur": 5.0,
    "desc_md": "Holds the workpiece",
-   "desc_mi": "Waits"
+   "desc_mi": "Fits screw into workpiece"
   },
   {
    "t0": 146.0,
-   "t1": 147.0,
+   "t1": 148.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Fastens screw using power driver · MI: Holds workpiece steady"
+    "R: Fastens screw using electric screwdriver · L: Holds the blue plastic workpiece"
    ],
    "ks": [
-    146
-   ],
-   "n": 85,
-   "dur": 1.0,
-   "desc_md": "Fastens screw using power driver",
-   "desc_mi": "Holds workpiece steady"
-  },
-  {
-   "t0": 147.0,
-   "t1": 148.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [
-    "MD: Holds the workpiece · MI: Operates power driver to fasten screw"
-   ],
-   "ks": [
+    146,
     147
    ],
-   "n": 86,
-   "dur": 1.0,
-   "desc_md": "Holds the workpiece",
-   "desc_mi": "Operates power driver to fasten screw"
+   "n": 83,
+   "dur": 2.0,
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds the blue plastic workpiece"
   },
   {
    "t0": 148.0,
    "t1": 149.0,
-   "md": "D",
-   "mi": "D",
+   "md": "OP",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Holds the workpiece"
+    "R: Positions screw on the workpiece · L: Holds and stabilizes the workpiece"
    ],
    "ks": [
     148
    ],
-   "n": 87,
+   "n": 84,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Holds the workpiece"
+   "desc_md": "Positions screw on the workpiece",
+   "desc_mi": "Holds and stabilizes the workpiece"
   },
   {
    "t0": 149.0,
    "t1": 149.983,
-   "md": "D",
-   "mi": "TR",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Waits · MI: Reaches for and grasps fastener from bin"
+    "R: Fastens screw using electric screwdriver · L: Holds the workpiece"
    ],
    "ks": [
     149
    ],
-   "n": 88,
+   "n": 85,
    "dur": 0.98,
-   "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps fastener from bin"
+   "desc_md": "Fastens screw using electric screwdriver",
+   "desc_mi": "Holds the workpiece"
   }
  ]
 }

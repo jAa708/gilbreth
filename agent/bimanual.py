@@ -122,8 +122,9 @@ def main():
         desc = {(d['t0'], d['t1']): d for d in json.loads((sal / 'filas_desc_agente.json').read_text(encoding='utf-8'))}
     for f in filas:
         d = desc.get((f['t0'], f['t1']), {})
-        f['desc_md'] = d.get('desc_md') or salidas.nombre(f['md'], a.idioma)
-        f['desc_mi'] = d.get('desc_mi') or salidas.nombre(f['mi'], a.idioma)
+        texto = lambda v: v.strip() if isinstance(v, str) and v.strip() else None   # sin esquema estricto puede no ser texto
+        f['desc_md'] = texto(d.get('desc_md')) or salidas.nombre(f['md'], a.idioma)
+        f['desc_mi'] = texto(d.get('desc_mi')) or salidas.nombre(f['mi'], a.idioma)
         der, izq = ('R', 'L') if a.idioma == 'en' else ('MD', 'MI')
         f['obs'] = [f"{der}: {f['desc_md']} · {izq}: {f['desc_mi']}"]
     ind = salidas.indicadores(filas)
