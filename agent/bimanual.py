@@ -110,9 +110,10 @@ def main():
     desc = {(d['t0'], d['t1']): d for d in json.loads((sal / 'filas_desc_agente.json').read_text(encoding='utf-8'))}
     for f in filas:
         d = desc.get((f['t0'], f['t1']), {})
-        f['desc_md'] = d.get('desc_md') or salidas.NOMBRE[f['md']]
-        f['desc_mi'] = d.get('desc_mi') or salidas.NOMBRE[f['mi']]
-        f['obs'] = [f"MD: {f['desc_md']} · MI: {f['desc_mi']}"]
+        f['desc_md'] = d.get('desc_md') or salidas.nombre(f['md'], a.idioma)
+        f['desc_mi'] = d.get('desc_mi') or salidas.nombre(f['mi'], a.idioma)
+        der, izq = ('R', 'L') if a.idioma == 'en' else ('MD', 'MI')
+        f['obs'] = [f"{der}: {f['desc_md']} · {izq}: {f['desc_mi']}"]
     ind = salidas.indicadores(filas)
     ficha = json.loads(Path(ns.ficha).read_text(encoding='utf-8'))
     meta = {'producto': ficha.get('product', ''), 'operacion': ficha.get('typical_cycle', ''),
@@ -128,14 +129,14 @@ def main():
     cod_seg = {int(round(o['t0'])): (o['md'], o['mi']) for o in pred}
     eventos = errores.detectar(pi, cod_seg, {s: sens_de(pi, s, s + 1) for s in cod_seg})
     (sal / 'errores.json').write_text(json.dumps(eventos, ensure_ascii=False, indent=1), encoding='utf-8')
-    salidas.escribir_excel(filas, ind, meta, sal / 'diagrama_bimanual.xlsx', eventos=eventos)
-    salidas.escribir_html(filas, ind, meta, sal / 'img', sal / 'revision.html', eventos=eventos)
+    salidas.escribir_excel(filas, ind, meta, sal / 'diagrama_bimanual.xlsx', eventos=eventos, idioma=a.idioma)
+    salidas.escribir_html(filas, ind, meta, sal / 'img', sal / 'revision.html', eventos=eventos, idioma=a.idioma)
     (sal / 'diagrama.json').write_text(json.dumps({'meta': {**meta, 'camara': ficha.get('camera_and_operator', '')},
                                                    'indicadores': ind, 'filas': filas}, ensure_ascii=False, indent=1),
                                        encoding='utf-8')
     import os, revision
     revision.pagina(sal / 'diagrama.json', a.video, sal / 'revisar.html',
-                    src=os.path.relpath(a.video, sal).replace(os.sep, '/'))
+                    src=os.path.relpath(a.video, sal).replace(os.sep, '/'), idioma=a.idioma)
     print(json.dumps(ind, ensure_ascii=False))
     print('Listo:', sal / 'diagrama_bimanual.xlsx', '·', sal / 'revision.html', '·', sal / 'revisar.html (editar y aprobar)')
 

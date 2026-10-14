@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="/*IDIOMA*/">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -146,7 +146,7 @@ document.getElementById('fin').onclick = () => { filas[activa].t1 = +v.currentTi
 document.getElementById('okSig').onclick = () => { filas[activa].ok = true; document.querySelector('#f' + activa + ' .okc').checked = true;
   guardar(); pintarFila(activa); ir(activa + 1); };
 document.getElementById('exportar').onclick = () => {
-  const salida = { modo: 'revision_agente', video: '/*VIDEO*/', convencion: 'MD = mano derecha del operario; MI = izquierda',
+  const salida = { modo: 'revision_agente', video: '/*VIDEO*/', convencion: '/*CONVENCION*/',
     validadas: filas.filter(f => f.ok).length, filas: filas.map((f, i) => ({...f, original:{cmd:ORIGINAL[i].cmd, cmi:ORIGINAL[i].cmi,
     t0:ORIGINAL[i].t0, t1:ORIGINAL[i].t1}, cambiada: !!cambiada(i)})) };
   const a = document.createElement('a');
