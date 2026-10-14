@@ -116,7 +116,7 @@ def excel_bytes(carpeta, huella=None):
     d, ev = cargar(carpeta, huella)[:2]
     with tempfile.TemporaryDirectory() as tmp:
         ruta = Path(tmp) / 'bimanual_chart.xlsx'
-        salidas.escribir_excel(d['filas'], salidas.indicadores(d['filas']), d['meta'], ruta, eventos=ev)
+        salidas.escribir_excel(d['filas'], salidas.indicadores(d['filas']), d['meta'], ruta, eventos=ev, idioma='en')
         return ruta.read_bytes()
 
 
