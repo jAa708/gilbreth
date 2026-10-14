@@ -154,10 +154,14 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
               'response_format': {'type': 'json_schema', 'json_schema': {'name': nombre, 'strict': True, 'schema': esquema}}}
     if getattr(a, 'ollama', False):
         cuerpo['reasoning_effort'] = 'none'
+    url = a.base.rstrip('/')
+    url += '/chat/completions' if url.endswith('/v1') else '/v1/chat/completions'
+    cabeceras = {'Content-Type': 'application/json'}
+    if os.environ.get('GILBRETH_API_KEY'):          # endpoint alojado (p. ej. AMD): la clave solo por variable de entorno
+        cabeceras['Authorization'] = 'Bearer ' + os.environ['GILBRETH_API_KEY']
     for intento in range(3):
         try:
-            req = urllib.request.Request(a.base.rstrip('/') + '/v1/chat/completions', data=json.dumps(cuerpo).encode(),
-                                         headers={'Content-Type': 'application/json'})
+            req = urllib.request.Request(url, data=json.dumps(cuerpo).encode(), headers=cabeceras)
             t0 = time.time()
             r = json.loads(urllib.request.urlopen(req, timeout=900).read())
             if os.environ.get('GILBRETH_LATENCIAS'):          # banco: latencia y tokens de cada consulta
@@ -168,6 +172,9 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
             m = re.search(r'\{.*\}', texto, re.S)
             return json.loads(m.group(0)) if m else {}
         except Exception as e:                      # reintento corto: el servidor puede estar ocupado
+            if isinstance(e, urllib.error.HTTPError) and e.code == 400 and 'response_format' in cuerpo:
+                cuerpo.pop('response_format')       # API sin salida estructurada: el JSON se saca del texto
+                continue
             if intento == 2:
                 return {'_error': str(e)[:200]}
             time.sleep(3)

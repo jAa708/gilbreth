@@ -325,23 +325,124 @@ if vista == 'Accuracy & AMD':
         st.markdown('Gemma 4 31B (Google DeepMind) served with **vLLM on an AMD Instinct MI300X** (192 GB, ROCm). '
                     'Speed and memory figures from the MI300X run will be shown here.')
 
+def config(clave, defecto=''):
+    """Variable de entorno o secreto de Streamlit (en Community Cloud la clave va en Settings → Secrets)."""
+    if os.environ.get(clave):
+        return os.environ[clave]
+    try:
+        return str(st.secrets.get(clave, defecto))
+    except Exception:                      # sin secrets.toml
+        return defecto
+
+
+PASOS_EN = {'1/5': 'Tracking both hands (MediaPipe, CPU)', '2/5': 'Frames, hand crops and hand speed for every second',
+            '3/5': 'Operation sheet: the vision model looks at 6 frames of the video',
+            '4/5': 'Coding every second, hand by hand', '5/5': 'Chart rows, row descriptions and method alerts'}
+
+
+def correr_agente(vid, npz, run, base, modelo):
+    """Corre agent/bimanual.py contra el endpoint configurado y muestra el avance; devuelve True si terminó bien."""
+    import subprocess, time
+    env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
+    if config('GILBRETH_API_KEY'):
+        env['GILBRETH_API_KEY'] = config('GILBRETH_API_KEY')
+    cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
+           '--modelo', modelo, '--idioma', 'en', '--hilos', config('GILBRETH_THREADS', '8'), '--puntos', str(npz)]
+    run.mkdir(parents=True, exist_ok=True)
+    (run / 'corriendo').write_text('1')
+    cola, t0 = [], time.time()
+    with st.status('The agent is charting your video…', expanded=True) as estado:
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding='utf-8',
+                             errors='replace', env=env, cwd=str(RAIZ))
+        for linea in p.stdout:
+            cola = (cola + [linea.rstrip()])[-25:]
+            if linea[:3] in PASOS_EN:
+                estado.write(f'{PASOS_EN[linea[:3]]} · {time.time() - t0:.0f} s')
+        p.wait()
+        (run / 'corriendo').unlink(missing_ok=True)
+        ok = p.returncode == 0 and (run / 'diagrama.json').exists()
+        if ok:
+            (run / 'tiempo.json').write_text(json.dumps({'wall_s': round(time.time() - t0, 1)}))
+            estado.update(label=f'Done in {time.time() - t0:.0f} s', state='complete', expanded=False)
+        else:
+            estado.update(label='The agent stopped before finishing', state='error')
+            st.code('\n'.join(cola))
+    return ok
+
+
+def mostrar_resultado(run, motor):
+    d2 = json.loads((run / 'diagrama.json').read_text(encoding='utf-8'))
+    ev2 = json.loads((run / 'errores.json').read_text(encoding='utf-8')) if (run / 'errores.json').exists() else []
+    filas2 = d2['filas']
+    pot2 = mejora.potencial(filas2)
+    wall = json.loads((run / 'tiempo.json').read_text())['wall_s'] if (run / 'tiempo.json').exists() else None
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric('Observed time', f"{pot2['tiempo_s']:.0f} s")
+    c2.metric('Estimated after the plan', f"{pot2['nuevo_s']:.0f} s", f"-{pot2['ahorro_pct']:.0f} %", delta_color='inverse')
+    c3.metric('Output per shift', f"+{pot2['capacidad_pct']:.0f} %")
+    if wall:
+        c4.metric('Agent wall time', f'{wall:.0f} s', f'≈ {pot2["tiempo_s"] / 60 * RITMO_A_MANO:.0f} min by hand',
+                  delta_color='off')
+    st.caption(f'Computed just now by {motor}. First draft from the vision model, not yet reviewed by an engineer.')
+    st.altair_chart(linea_tiempo(filas2), width="stretch")
+    st.dataframe(tabla_filas(filas2)[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
+                 width="stretch", height=380)
+    if pot2['palancas']:
+        st.subheader('Top improvements')
+        for p in pot2['palancas'][:3]:
+            st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** ({p['pct']:.0f} %). {p['evidence']}")
+    if ev2:
+        st.subheader('Method alerts')
+        st.dataframe(alertas_agrupadas(ev2), hide_index=True, width="stretch")
+    a, b = st.columns(2)
+    if (run / 'diagrama_bimanual.xlsx').exists():
+        a.download_button('Download the chart (Excel)', (run / 'diagrama_bimanual.xlsx').read_bytes(),
+                          'bimanual_chart.xlsx', width="stretch")
+    b.download_button('Download the raw result (JSON)', json.dumps(d2, ensure_ascii=False, indent=1), 'diagrama.json',
+                      width="stretch")
+
+
 if vista == 'Try your own video':
-    st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU and gives '
-                'a first look at each hand. The full chart needs the vision model on the AMD GPU server.')
+    base, modelo = config('GILBRETH_VLLM_URL'), config('GILBRETH_MODEL', 'google/gemma-4-31B-it')
+    motor = config('GILBRETH_ENGINE', 'Gemma 4 31B on AMD Instinct MI300X (vLLM + ROCm)')
+    st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU'
+                + (f'; the full chart is computed by **{motor}**.' if base else
+                   ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))
     up = st.file_uploader('Video', type=['mp4', 'mov', 'avi', 'mkv'])
-    base = os.environ.get('GILBRETH_VLLM_URL', '')
     if up is not None:
-        import numpy as np
+        import cv2
         import extraer_puntos
         from manos import cargar as cargar_npz, pista, sensores
-        with tempfile.TemporaryDirectory() as tmp:
-            vid = Path(tmp) / ('video' + Path(up.name).suffix)
+        clave = f'{up.name}:{up.size}'
+        if st.session_state.get('subida', {}).get('clave') != clave:
+            tmp = Path(tempfile.mkdtemp(prefix='gilbreth_'))
+            vid = tmp / ('video' + Path(up.name).suffix.lower())
             vid.write_bytes(up.getvalue())
+            cap = cv2.VideoCapture(str(vid))
+            n_cuadros, fps = cap.get(cv2.CAP_PROP_FRAME_COUNT), cap.get(cv2.CAP_PROP_FPS) or 0
+            cap.release()
+            st.session_state['subida'] = {'clave': clave, 'dir': str(tmp), 'video': str(vid),
+                                          'dur': n_cuadros / fps if fps else 0}
+        sub = st.session_state['subida']
+        tmp, vid = Path(sub['dir']), Path(sub['video'])
+        npz, run = tmp / 'puntos.npz', tmp / 'run'
+        if sub['dur'] > 125:
+            st.error(f"This video is {sub['dur']:.0f} s long. Please upload 2 minutes or less.")
+            st.stop()
+        if not npz.exists():
             barra = st.progress(0.0, 'Tracking hands…')
-            nf, nd = extraer_puntos.extraer(vid, Path(tmp) / 'puntos.npz', lambda x: barra.progress(x, 'Tracking hands…'))
+            nf, nd = extraer_puntos.extraer(vid, npz, lambda x: barra.progress(x, 'Tracking hands…'))
             barra.progress(1.0, f'{nf} frames, {nd} hand detections')
-            pi = pista(*cargar_npz(Path(tmp) / 'puntos.npz'))
-        if not pi:
+        pi = pista(*cargar_npz(npz))
+        if pi and base and not (run / 'diagrama.json').exists():
+            if (run / 'corriendo').exists():
+                st.info('The agent is still working on this video. Wait a moment and press the button below.')
+                st.button('Refresh')
+            elif st.button(f'Chart it with the full agent · {motor}', type='primary'):
+                correr_agente(vid, npz, run, base, modelo)
+        if (run / 'diagrama.json').exists():
+            mostrar_resultado(run, motor)
+        elif not pi:
             st.warning('No hands found. Film from above, with both hands and the work area in view.')
         else:
             dur = int(max(pi)) + 1
