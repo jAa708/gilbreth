@@ -32,6 +32,7 @@ def main():
     ap.add_argument('--calibrar-hasta', type=float, default=None, help='usar solo los segundos < N de ese JSON')
     ap.add_argument('--idioma', default='es', choices=['es', 'en'], help='idioma de las descripciones por fila')
     ap.add_argument('--sin-previo', action='store_true', help='no usar el previo de movimiento de IMPACT (CC BY-NC-SA): modo MIT puro')
+    ap.add_argument('--sin-descripciones', action='store_true', help='sin la 2.ª pasada de descripciones (más rápido)')
     a = ap.parse_args()
     sal = Path(a.salida)
     sal.mkdir(parents=True, exist_ok=True)
@@ -111,12 +112,14 @@ def main():
     # 2.ª pasada SEPARADA: descripción en español por mano y fila (meterla en la misma consulta empeoraba los códigos)
     (sal / 'pred_final.json').write_text(json.dumps(pred, ensure_ascii=False), encoding='utf-8')
     ns.pred, ns.etiqueta = str(sal / 'pred_final.json'), 'agente'
-    print('   descripciones por fila…', flush=True)
-    ag.cmd_describir(ns)
-    if ag.SIN_CUPO.is_set():
-        print('STOP: the model endpoint says the daily quota is used up; try again after it resets.', flush=True)
-        sys.exit(3)
-    desc = {(d['t0'], d['t1']): d for d in json.loads((sal / 'filas_desc_agente.json').read_text(encoding='utf-8'))}
+    desc = {}
+    if not a.sin_descripciones:
+        print('   descripciones por fila…', flush=True)
+        ag.cmd_describir(ns)
+        if ag.SIN_CUPO.is_set():
+            print('STOP: the model endpoint says the daily quota is used up; try again after it resets.', flush=True)
+            sys.exit(3)
+        desc = {(d['t0'], d['t1']): d for d in json.loads((sal / 'filas_desc_agente.json').read_text(encoding='utf-8'))}
     for f in filas:
         d = desc.get((f['t0'], f['t1']), {})
         f['desc_md'] = d.get('desc_md') or salidas.nombre(f['md'], a.idioma)

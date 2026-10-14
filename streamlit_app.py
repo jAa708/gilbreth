@@ -351,6 +351,8 @@ def correr_agente(vid, npz, run, base, modelo):
             env[clave] = config(clave)
     cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
            '--modelo', modelo, '--idioma', 'en', '--hilos', config('GILBRETH_THREADS', '8'), '--puntos', str(npz)]
+    if config('GILBRETH_LIVE_DESC', '1') == '0':      # endpoint compartido y lento: sin la 2.ª pasada de descripciones
+        cmd.append('--sin-descripciones')
     run.mkdir(parents=True, exist_ok=True)
     (run / 'corriendo').write_text('1')
     cola, t0 = [], time.time()
@@ -450,8 +452,14 @@ if vista == 'Try your own video':
             if (run / 'corriendo').exists():
                 st.info('The agent is still working on this video. Wait a moment and press the button below.')
                 st.button('Refresh')
-            elif st.button(f'Chart it with the full agent · {motor}', type='primary'):
-                correr_agente(vid, npz, run, base, modelo)
+            else:
+                ritmo = float(config('GILBRETH_LIVE_REQ_PER_MIN', '0') or 0)
+                if ritmo:
+                    pide = sub['dur'] + 1 + (0 if config('GILBRETH_LIVE_DESC', '1') == '0' else sub['dur'] / 2)
+                    st.caption(f'One request per second of video on a shared endpoint: about {pide / ritmo:.0f} min '
+                               f'for this {sub["dur"]:.0f}-second clip.')
+                if st.button(f'Chart it with the full agent · {motor}', type='primary'):
+                    correr_agente(vid, npz, run, base, modelo)
         if (run / 'diagrama.json').exists():
             mostrar_resultado(run, motor)
         elif not pi:
