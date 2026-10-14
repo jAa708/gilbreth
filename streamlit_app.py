@@ -21,7 +21,7 @@ ACT = {'OP': 'Operation', 'TR+OP': 'Transport + operation', 'TR': 'Transport', '
 SYM = {'OP': '○', 'TR+OP': '○', 'TR': '⇨', 'S': '▽', 'D': 'D', 'NV': '·'}
 COLORES = {'Operation': '#2e7d32', 'Transport + operation': '#66bb6a', 'Transport': '#1e88e5', 'Hold': '#fb8c00',
            'Delay': '#e53935', 'Not visible': '#9e9e9e'}
-MANO_EN = {'R': 'right', 'L': 'left', 'RL': 'both'}
+MANO_EN = {'R': 'right', 'L': 'left', 'RL': 'both', 'LR': 'both'}
 RITMO_A_MANO = 60 / (284 / 60)      # minutos de trabajo manual por minuto de video, medido en el LEGO (≈ 12,7)
 # costo patronal por hora (verificados el 12-oct-2026; detalle en docs/SOURCES.md)
 COSTOS = {
@@ -224,6 +224,8 @@ if vista == 'Bimanual chart':
                    'other hand operates; a hand that holds while the other one fetches is waiting, so it is D.')
         sel = st.dataframe(df[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
                            width="stretch", height=460, on_select='rerun', selection_mode='single-row')
+        if d['meta'].get('nota_desc_en'):
+            st.caption(d['meta']['nota_desc_en'])
     fila = sel.selection.rows[0] if sel and sel.selection.rows else 0
     f = filas[fila]
     with der:
@@ -260,7 +262,7 @@ if vista == 'Improvement plan':
     if pot['palancas']:
         dfp = pd.DataFrame([{'Change': p['title'], 'Seconds saved per unit': p['segundos']} for p in pot['palancas']])
         st.altair_chart(alt.Chart(dfp).mark_bar(color='#2e7d32').encode(
-            x='Seconds saved per unit:Q', y=alt.Y('Change:N', sort='-x', title=None),
+            x='Seconds saved per unit:Q', y=alt.Y('Change:N', sort='-x', title=None, axis=alt.Axis(labelLimit=420)),
             tooltip=list(dfp.columns)).properties(height=40 + 40 * len(dfp)), width="stretch")
     for p in pot['palancas']:
         with st.container(border=True):

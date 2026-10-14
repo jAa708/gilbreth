@@ -66,10 +66,10 @@ streamlit run streamlit_app.py
 ```bash
 vllm serve google/gemma-4-31B-it --max-model-len 16384 --limit-mm-per-prompt '{"image": 8, "video": 0}'
 python agent/bimanual.py video.mp4 --salida run1 --base http://127.0.0.1:8000 --modelo google/gemma-4-31B-it --idioma en
-# review the first cycle in run1/revisar.html, export revisado.json, then:
+# review the first cycle in run1/revisar.html and export the JSON (it downloads as diagrama_revisado.json), then:
 python agent/bimanual.py video.mp4 --salida run1 --base http://127.0.0.1:8000 --modelo google/gemma-4-31B-it \
-       --calibrar revisado.json --calibrar-hasta 60 --idioma en
-python scripts/make_example.py run1 video.mp4 examples/my_operation --title "My operation"
+       --calibrar diagrama_revisado.json --calibrar-hasta 60 --idioma en
+python scripts/make_example.py run1 video.mp4 examples/my_operation --title "My operation" --copy-video
 ```
 Docker: `docker build -t gilbreth . && docker run -p 8501:8501 gilbreth`.
 Wiring check without a large GPU: serve a small model with Ollama (`gemma4:e2b`) and add `--ollama --base
@@ -84,6 +84,9 @@ the 31B model.
   (KIT, development: 49.8 % vs 62.4 %), because the gate cannot trust a model trained on so few seconds.
 - `examples/impact_gearbox/` is **CC BY-NC-SA 4.0, not MIT**: video, frames and labels from the IMPACT dataset,
   with attribution and the changes made, in that folder's README. Non-commercial use only.
+- `examples/factory_plastic/`, `factory_cardboard/` and `factory_screw/` are **CC BY 4.0**: excerpts of *Factory
+  Manipulation Videos* by Procedural Robotics Inc. (Hugging Face `procedural-robotics/factory-manipulation-videos`),
+  re-encoded and cut to seconds 60–210; details in [`docs/FACTORY_EXAMPLES_LICENSE.md`](docs/FACTORY_EXAMPLES_LICENSE.md).
 - The LEGO example video is shared with the permission of the person filmed.
 - Datasets used for measurement: IMPACT (Hugging Face `KratosWen/IMPACT`, CC BY-NC-SA 4.0) and KIT Bimanual Actions
   (Dreher, Wächter, Asfour; `bimanual-actions.humanoids.kit.edu`).

@@ -16,9 +16,15 @@ if ! curl -sf localhost:8000/health >/dev/null; then
   docker run -d --name gemma --network host --ipc host --device /dev/kfd --device /dev/dri --group-add video \
     --shm-size 16g -v ~/.cache/huggingface:/root/.cache/huggingface -e HF_TOKEN \
     vllm/vllm-openai-rocm:gemma4 \
-    vllm serve "$MODEL" --max-model-len 16384 --limit-mm-per-prompt '{"image": 8, "video": 0}'
+    --model "$MODEL" --max-model-len 16384 --limit-mm-per-prompt '{"image": 8, "video": 0}'
+  # the image's entrypoint is already `vllm serve`, so the model goes as --model
   t0=$(date +%s)
-  until curl -sf localhost:8000/health >/dev/null; do sleep 10; done
+  until curl -sf localhost:8000/health >/dev/null; do
+    if [ $(( $(date +%s) - t0 )) -gt 2400 ] || ! docker ps -q -f name=gemma | grep -q .; then
+      echo "vLLM did not become healthy; last log lines:"; docker logs gemma 2>&1 | tail -60; exit 1
+    fi
+    sleep 10
+  done
   echo "server_ready_s,$(( $(date +%s) - t0 ))" >> runs/tiempos.csv
 fi
 

@@ -23,6 +23,19 @@ Pre-registered criterion for the final test (v9 ≥ Gemma in workshop and kitche
 - Temporal model (GRU + 10 Hz GBM): helped on IMPACT only, lost on KIT workshop → not shipped.
 - Asking for descriptions in the same request as the codes: codes got worse (70 → 45 %) → descriptions are a
   separate second pass.
+- Sharper activity boundaries (12–14 Oct, development set KIT subject 2 + IMPACT; pass mark: +1.0 point on the
+  total and no part losing more than 0.5). 63–80 % of the remaining errors sit in the second next to a change, so
+  four ways of moving the boundary were tested; none passed:
+  - move the boundary to the best split point of the 10 Hz hand-speed signal: −0.64 (68.82 → 68.18 %);
+  - remove isolated one-second segments: −5.05 (many one-second changes are real);
+  - motion features at half-second resolution: −0.09 (64.95 → 64.86 %, motion prior trained without the
+    development operators);
+  - ask Gemma, with 8 frames 0.25 s apart, in which frame the change happens (654 questions, same reference):
+    −1.04 (64.95 → 63.91 %). It fixed 61 seconds and broke 84; with perfect answers the ceiling would have been
+    +10.6.
+
+  The boundary is not recoverable below one second with these signals, so the shipped system keeps 1-second
+  resolution and reports the ±1 s agreement next to the exact one.
 
 ## MIT-pure mode (no IMPACT-derived motion prior)
 Decision set KIT subject 2 (total): v9 with prior 62.4 % · v9 without prior **49.8 %** (= Gemma; the gate rejects the

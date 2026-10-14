@@ -1,7 +1,6 @@
 # Derived from IMPACT (CC BY-NC-SA 4.0): distributed separately, never in this MIT repo
-models/*.npz
-# Downloaded at first use
-models/*.task
+models/*
+!models/README.md
 # Local runs
 resultado*/
 runs/

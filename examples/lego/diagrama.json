@@ -8,7 +8,8 @@
   "convencion_texto": "▽ solo si la otra mano opera; sostener mientras la otra va por la pieza o folleto = D (curso).",
   "title_en": "LEGO Creator 5761 Mini Digger, full assembly (56 pieces)",
   "motor_en": "Gemma 4 31B (4-bit QAT) on a cloud NVIDIA A100 (development run, to be replaced by the AMD MI300X run)",
-  "minutos_a_mano": 60
+  "minutos_a_mano": 60,
+  "nota_desc_en": "Row descriptions were written by Gemma in Spanish in this development run and translated to English; the original text is kept in desc_md_es / desc_mi_es."
  },
  "indicadores": {
   "duracion_s": 284.0,
@@ -46,8 +47,10 @@
    ],
    "n": 1,
    "dur": 1.0,
-   "desc_md": "Alcanza y toma pieza negra del montón",
-   "desc_mi": "Espera"
+   "desc_md": "Reaches for and grasps a black piece from the pile",
+   "desc_mi": "Waits",
+   "desc_md_es": "Alcanza y toma pieza negra del montón",
+   "desc_mi_es": "Espera"
   },
   {
    "t0": 1.0,
@@ -64,8 +67,10 @@
    ],
    "n": 2,
    "dur": 2.0,
-   "desc_md": "espera",
-   "desc_mi": "transporte"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "transporte"
   },
   {
    "t0": 3.0,
@@ -81,8 +86,10 @@
    ],
    "n": 3,
    "dur": 1.0,
-   "desc_md": "operación",
-   "desc_mi": "operación"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "operación"
   },
   {
    "t0": 4.0,
@@ -98,8 +105,10 @@
    ],
    "n": 4,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 5.0,
@@ -120,8 +129,10 @@
    ],
    "n": 5,
    "dur": 6.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 11.0,
@@ -137,8 +148,10 @@
    ],
    "n": 6,
    "dur": 1.0,
-   "desc_md": "Alcanza y toma pieza gris del montón",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps a grey piece from the pile",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Alcanza y toma pieza gris del montón",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 12.0,
@@ -155,8 +168,10 @@
    ],
    "n": 7,
    "dur": 2.0,
-   "desc_md": "Encaja y presiona pieza negra en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a black piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza negra en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 14.0,
@@ -172,8 +187,10 @@
    ],
    "n": 8,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 15.0,
@@ -189,8 +206,10 @@
    ],
    "n": 9,
    "dur": 1.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 16.0,
@@ -206,8 +225,10 @@
    ],
    "n": 10,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 17.0,
@@ -224,8 +245,10 @@
    ],
    "n": 11,
    "dur": 2.0,
-   "desc_md": "Encaja y presiona pieza gris en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a grey piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza gris en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 19.0,
@@ -244,8 +267,10 @@
    ],
    "n": 12,
    "dur": 4.0,
-   "desc_md": "Sostiene pieza amarilla",
-   "desc_mi": "Manipula y consulta manual de instrucciones"
+   "desc_md": "Holds a yellow piece",
+   "desc_mi": "Handles and reads the instruction booklet",
+   "desc_md_es": "Sostiene pieza amarilla",
+   "desc_mi_es": "Manipula y consulta manual de instrucciones"
   },
   {
    "t0": 23.0,
@@ -261,8 +286,10 @@
    ],
    "n": 13,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 24.0,
@@ -279,8 +306,10 @@
    ],
    "n": 14,
    "dur": 2.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 26.0,
@@ -296,8 +325,10 @@
    ],
    "n": 15,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "transporte"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "transporte"
   },
   {
    "t0": 27.0,
@@ -315,8 +346,10 @@
    ],
    "n": 16,
    "dur": 3.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 30.0,
@@ -332,8 +365,10 @@
    ],
    "n": 17,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 31.0,
@@ -349,8 +384,10 @@
    ],
    "n": 18,
    "dur": 1.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 32.0,
@@ -366,8 +403,10 @@
    ],
    "n": 19,
    "dur": 1.0,
-   "desc_md": "Alcanza y toma pieza gris del montón",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps a grey piece from the pile",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Alcanza y toma pieza gris del montón",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 33.0,
@@ -384,8 +423,10 @@
    ],
    "n": 20,
    "dur": 2.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 35.0,
@@ -401,8 +442,10 @@
    ],
    "n": 21,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 36.0,
@@ -418,8 +461,10 @@
    ],
    "n": 22,
    "dur": 1.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 37.0,
@@ -435,8 +480,10 @@
    ],
    "n": 23,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 38.0,
@@ -453,8 +500,10 @@
    ],
    "n": 24,
    "dur": 2.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 40.0,
@@ -470,8 +519,10 @@
    ],
    "n": 25,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "transporte"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "transporte"
   },
   {
    "t0": 41.0,
@@ -490,8 +541,10 @@
    ],
    "n": 26,
    "dur": 4.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 45.0,
@@ -508,8 +561,10 @@
    ],
    "n": 27,
    "dur": 2.0,
-   "desc_md": "espera",
-   "desc_mi": "transporte"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "transporte"
   },
   {
    "t0": 47.0,
@@ -530,8 +585,10 @@
    ],
    "n": 28,
    "dur": 6.0,
-   "desc_md": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a yellow piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 53.0,
@@ -548,8 +605,10 @@
    ],
    "n": 29,
    "dur": 2.0,
-   "desc_md": "no visible",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "no visible",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 55.0,
@@ -566,8 +625,10 @@
    ],
    "n": 30,
    "dur": 2.0,
-   "desc_md": "espera",
-   "desc_mi": "operación"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "operación"
   },
   {
    "t0": 57.0,
@@ -584,8 +645,10 @@
    ],
    "n": 31,
    "dur": 2.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 59.0,
@@ -608,8 +671,10 @@
    ],
    "n": 32,
    "dur": 8.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 67.0,
@@ -626,8 +691,10 @@
    ],
    "n": 33,
    "dur": 2.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 69.0,
@@ -644,8 +711,10 @@
    ],
    "n": 34,
    "dur": 3.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 72.0,
@@ -660,8 +729,10 @@
    ],
    "n": 35,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 73.0,
@@ -680,8 +751,10 @@
    ],
    "n": 36,
    "dur": 5.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 78.0,
@@ -696,8 +769,10 @@
    ],
    "n": 37,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 79.0,
@@ -713,8 +788,10 @@
    ],
    "n": 38,
    "dur": 2.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 81.0,
@@ -730,8 +807,10 @@
    ],
    "n": 39,
    "dur": 2.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 83.0,
@@ -746,8 +825,10 @@
    ],
    "n": 40,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 84.0,
@@ -762,8 +843,10 @@
    ],
    "n": 41,
    "dur": 1.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 85.0,
@@ -778,8 +861,10 @@
    ],
    "n": 42,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 86.0,
@@ -795,8 +880,10 @@
    ],
    "n": 43,
    "dur": 2.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 88.0,
@@ -811,8 +898,10 @@
    ],
    "n": 44,
    "dur": 1.0,
-   "desc_md": "Espera",
-   "desc_mi": "Alcanza y toma pieza amarilla del montón"
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for and grasps a yellow piece from the pile",
+   "desc_md_es": "Espera",
+   "desc_mi_es": "Alcanza y toma pieza amarilla del montón"
   },
   {
    "t0": 89.0,
@@ -827,8 +916,10 @@
    ],
    "n": 45,
    "dur": 1.0,
-   "desc_md": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a yellow piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 90.0,
@@ -844,8 +935,10 @@
    ],
    "n": 46,
    "dur": 2.0,
-   "desc_md": "Sostiene pieza amarilla",
-   "desc_mi": "Alcanza y toma pieza amarilla del montón"
+   "desc_md": "Holds a yellow piece",
+   "desc_mi": "Reaches for and grasps a yellow piece from the pile",
+   "desc_md_es": "Sostiene pieza amarilla",
+   "desc_mi_es": "Alcanza y toma pieza amarilla del montón"
   },
   {
    "t0": 92.0,
@@ -867,8 +960,10 @@
    ],
    "n": 47,
    "dur": 8.0,
-   "desc_md": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a yellow piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 100.0,
@@ -884,8 +979,10 @@
    ],
    "n": 48,
    "dur": 2.0,
-   "desc_md": "Sostiene pieza amarilla",
-   "desc_mi": "Alcanza y toma pieza amarilla del montón"
+   "desc_md": "Holds a yellow piece",
+   "desc_mi": "Reaches for and grasps a yellow piece from the pile",
+   "desc_md_es": "Sostiene pieza amarilla",
+   "desc_mi_es": "Alcanza y toma pieza amarilla del montón"
   },
   {
    "t0": 102.0,
@@ -900,8 +997,10 @@
    ],
    "n": 49,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 103.0,
@@ -926,8 +1025,10 @@
    ],
    "n": 50,
    "dur": 11.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 114.0,
@@ -942,8 +1043,10 @@
    ],
    "n": 51,
    "dur": 1.0,
-   "desc_md": "Se aleja del punto de ensamblaje",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Moves away from the assembly point",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Se aleja del punto de ensamblaje",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 115.0,
@@ -959,8 +1062,10 @@
    ],
    "n": 52,
    "dur": 2.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 117.0,
@@ -976,8 +1081,10 @@
    ],
    "n": 53,
    "dur": 2.0,
-   "desc_md": "Alcanza y toma pieza amarilla del montón",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps a yellow piece from the pile",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Alcanza y toma pieza amarilla del montón",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 119.0,
@@ -1001,8 +1108,10 @@
    ],
    "n": 54,
    "dur": 10.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 129.0,
@@ -1022,8 +1131,10 @@
    ],
    "n": 55,
    "dur": 6.0,
-   "desc_md": "Sostiene el conjunto",
-   "desc_mi": "Consulta el manual de instrucciones"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reads the instruction booklet",
+   "desc_md_es": "Sostiene el conjunto",
+   "desc_mi_es": "Consulta el manual de instrucciones"
   },
   {
    "t0": 135.0,
@@ -1041,8 +1152,10 @@
    ],
    "n": 56,
    "dur": 4.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 139.0,
@@ -1057,8 +1170,10 @@
    ],
    "n": 57,
    "dur": 1.0,
-   "desc_md": "Espera",
-   "desc_mi": "Transporta el conjunto"
+   "desc_md": "Waits",
+   "desc_mi": "Moves the assembly",
+   "desc_md_es": "Espera",
+   "desc_mi_es": "Transporta el conjunto"
   },
   {
    "t0": 140.0,
@@ -1073,8 +1188,10 @@
    ],
    "n": 58,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 141.0,
@@ -1094,8 +1211,10 @@
    ],
    "n": 59,
    "dur": 6.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 147.0,
@@ -1110,8 +1229,10 @@
    ],
    "n": 60,
    "dur": 1.0,
-   "desc_md": "Alcanza y toma pieza gris del montón",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps a grey piece from the pile",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Alcanza y toma pieza gris del montón",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 148.0,
@@ -1127,8 +1248,10 @@
    ],
    "n": 61,
    "dur": 2.0,
-   "desc_md": "Encaja y presiona pieza en el conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza en el conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 150.0,
@@ -1144,8 +1267,10 @@
    ],
    "n": 62,
    "dur": 2.0,
-   "desc_md": "Alcanza y toma pieza gris del montón",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps a grey piece from the pile",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Alcanza y toma pieza gris del montón",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 152.0,
@@ -1162,8 +1287,10 @@
    ],
    "n": 63,
    "dur": 3.0,
-   "desc_md": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a yellow piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 155.0,
@@ -1178,8 +1305,10 @@
    ],
    "n": 64,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 156.0,
@@ -1194,8 +1323,10 @@
    ],
    "n": 65,
    "dur": 1.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 157.0,
@@ -1210,8 +1341,10 @@
    ],
    "n": 66,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 158.0,
@@ -1227,8 +1360,10 @@
    ],
    "n": 67,
    "dur": 2.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 160.0,
@@ -1243,8 +1378,10 @@
    ],
    "n": 68,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 161.0,
@@ -1262,8 +1399,10 @@
    ],
    "n": 69,
    "dur": 4.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 165.0,
@@ -1278,8 +1417,10 @@
    ],
    "n": 70,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 166.0,
@@ -1297,8 +1438,10 @@
    ],
    "n": 71,
    "dur": 4.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 170.0,
@@ -1313,8 +1456,10 @@
    ],
    "n": 72,
    "dur": 1.0,
-   "desc_md": "Alcanza y toma pieza del montón",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps a piece from the pile",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Alcanza y toma pieza del montón",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 171.0,
@@ -1340,8 +1485,10 @@
    ],
    "n": 73,
    "dur": 12.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 183.0,
@@ -1356,8 +1503,10 @@
    ],
    "n": 74,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 184.0,
@@ -1377,8 +1526,10 @@
    ],
    "n": 75,
    "dur": 6.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 190.0,
@@ -1393,8 +1544,10 @@
    ],
    "n": 76,
    "dur": 1.0,
-   "desc_md": "Alcanza y toma pieza negra del montón",
-   "desc_mi": "Espera"
+   "desc_md": "Reaches for and grasps a black piece from the pile",
+   "desc_mi": "Waits",
+   "desc_md_es": "Alcanza y toma pieza negra del montón",
+   "desc_mi_es": "Espera"
   },
   {
    "t0": 191.0,
@@ -1411,8 +1564,10 @@
    ],
    "n": 77,
    "dur": 3.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 194.0,
@@ -1427,8 +1582,10 @@
    ],
    "n": 78,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 195.0,
@@ -1443,8 +1600,10 @@
    ],
    "n": 79,
    "dur": 1.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 196.0,
@@ -1459,8 +1618,10 @@
    ],
    "n": 80,
    "dur": 1.0,
-   "desc_md": "Alcanza y toma pieza gris del montón",
-   "desc_mi": "Sostiene pieza gris"
+   "desc_md": "Reaches for and grasps a grey piece from the pile",
+   "desc_mi": "Holds a grey piece",
+   "desc_md_es": "Alcanza y toma pieza gris del montón",
+   "desc_mi_es": "Sostiene pieza gris"
   },
   {
    "t0": 197.0,
@@ -1475,8 +1636,10 @@
    ],
    "n": 81,
    "dur": 1.0,
-   "desc_md": "Encaja pieza gris en el conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits a grey piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja pieza gris en el conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 198.0,
@@ -1491,8 +1654,10 @@
    ],
    "n": 82,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 199.0,
@@ -1507,8 +1672,10 @@
    ],
    "n": 83,
    "dur": 1.0,
-   "desc_md": "Sostiene el conjunto",
-   "desc_mi": "Encaja y presiona pieza gris"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses a grey piece",
+   "desc_md_es": "Sostiene el conjunto",
+   "desc_mi_es": "Encaja y presiona pieza gris"
   },
   {
    "t0": 200.0,
@@ -1524,8 +1691,10 @@
    ],
    "n": 84,
    "dur": 2.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 202.0,
@@ -1544,8 +1713,10 @@
    ],
    "n": 85,
    "dur": 5.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 207.0,
@@ -1560,8 +1731,10 @@
    ],
    "n": 86,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 208.0,
@@ -1576,8 +1749,10 @@
    ],
    "n": 87,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "transporte"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "transporte"
   },
   {
    "t0": 209.0,
@@ -1592,8 +1767,10 @@
    ],
    "n": 88,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 210.0,
@@ -1612,8 +1789,10 @@
    ],
    "n": 89,
    "dur": 5.0,
-   "desc_md": "Encaja y presiona pieza gris en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a grey piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza gris en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 215.0,
@@ -1628,8 +1807,10 @@
    ],
    "n": 90,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 216.0,
@@ -1646,8 +1827,10 @@
    ],
    "n": 91,
    "dur": 3.0,
-   "desc_md": "Encaja y presiona pieza negra en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a black piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza negra en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 219.0,
@@ -1662,8 +1845,10 @@
    ],
    "n": 92,
    "dur": 1.0,
-   "desc_md": "Alcanza y toma pieza negra del montón",
-   "desc_mi": "Sostiene pieza negra"
+   "desc_md": "Reaches for and grasps a black piece from the pile",
+   "desc_mi": "Holds a black piece",
+   "desc_md_es": "Alcanza y toma pieza negra del montón",
+   "desc_mi_es": "Sostiene pieza negra"
   },
   {
    "t0": 220.0,
@@ -1679,8 +1864,10 @@
    ],
    "n": 93,
    "dur": 2.0,
-   "desc_md": "Encaja pieza negra en el chasis",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits a black piece onto the chassis",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja pieza negra en el chasis",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 222.0,
@@ -1695,8 +1882,10 @@
    ],
    "n": 94,
    "dur": 1.0,
-   "desc_md": "espera",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "espera",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 223.0,
@@ -1731,8 +1920,10 @@
    ],
    "n": 95,
    "dur": 21.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 244.0,
@@ -1747,8 +1938,10 @@
    ],
    "n": 96,
    "dur": 1.0,
-   "desc_md": "transporte",
-   "desc_mi": "espera"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "transporte",
+   "desc_mi_es": "espera"
   },
   {
    "t0": 245.0,
@@ -1768,8 +1961,10 @@
    ],
    "n": 97,
    "dur": 6.0,
-   "desc_md": "Encaja y presiona pieza gris en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a grey piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza gris en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 251.0,
@@ -1785,8 +1980,10 @@
    ],
    "n": 98,
    "dur": 2.0,
-   "desc_md": "Sostiene el conjunto",
-   "desc_mi": "Encaja y presiona la pieza"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses the piece",
+   "desc_md_es": "Sostiene el conjunto",
+   "desc_mi_es": "Encaja y presiona la pieza"
   },
   {
    "t0": 253.0,
@@ -1801,8 +1998,10 @@
    ],
    "n": 99,
    "dur": 1.0,
-   "desc_md": "Encaja y presiona pieza sobre el conjunto",
-   "desc_mi": "Sostiene y estabiliza el vehículo"
+   "desc_md": "Fits and presses a piece onto the assembly",
+   "desc_mi": "Holds and steadies the vehicle",
+   "desc_md_es": "Encaja y presiona pieza sobre el conjunto",
+   "desc_mi_es": "Sostiene y estabiliza el vehículo"
   },
   {
    "t0": 254.0,
@@ -1817,8 +2016,10 @@
    ],
    "n": 100,
    "dur": 1.0,
-   "desc_md": "Sostiene el conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Sostiene el conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   },
   {
    "t0": 255.0,
@@ -1858,8 +2059,10 @@
    ],
    "n": 101,
    "dur": 26.0,
-   "desc_md": "operación",
-   "desc_mi": "sostiene"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "operación",
+   "desc_mi_es": "sostiene"
   },
   {
    "t0": 281.0,
@@ -1874,8 +2077,10 @@
    ],
    "n": 102,
    "dur": 1.0,
-   "desc_md": "Sostiene el conjunto",
-   "desc_mi": "Alcanza la pieza de trabajo"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for the workpiece",
+   "desc_md_es": "Sostiene el conjunto",
+   "desc_mi_es": "Alcanza la pieza de trabajo"
   },
   {
    "t0": 282.0,
@@ -1890,8 +2095,10 @@
    ],
    "n": 103,
    "dur": 1.0,
-   "desc_md": "sostiene",
-   "desc_mi": "operación"
+   "desc_md": null,
+   "desc_mi": null,
+   "desc_md_es": "sostiene",
+   "desc_mi_es": "operación"
   },
   {
    "t0": 283.0,
@@ -1906,8 +2113,10 @@
    ],
    "n": 104,
    "dur": 1.0,
-   "desc_md": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi": "Sostiene el conjunto"
+   "desc_md": "Fits and presses a yellow piece onto the assembly",
+   "desc_mi": "Holds the assembly",
+   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
+   "desc_mi_es": "Sostiene el conjunto"
   }
  ]
 }

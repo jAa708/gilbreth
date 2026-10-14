@@ -7,7 +7,8 @@
 - the chart computed from them.
 
 It may be used only for non-commercial purposes, and adaptations must keep the same licence. See
-`LICENSE-DATA-IMPACT` (the dataset's own licence text) and https://creativecommons.org/licenses/by-nc-sa/4.0/.
+`LICENSE-DATA-IMPACT` (a summary of the dataset's licence notice; the original is
+https://github.com/Kratos-Wen/IMPACT/blob/main/LICENSE-DATA) and https://creativecommons.org/licenses/by-nc-sa/4.0/.
 
 **Attribution:** *IMPACT: A Dataset for Multi-Granularity Human Procedural Action Understanding in Industrial Assembly*,
 version 1.1, https://kratos-wen.github.io/IMPACT/ (Hugging Face: `KratosWen/IMPACT`). Trial `LE07UF17_Reassembly_A_004`,
