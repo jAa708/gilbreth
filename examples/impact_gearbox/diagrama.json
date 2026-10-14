@@ -1,43 +1,45 @@
 {
  "meta": {
-  "producto": "Caja reductora (IMPACT)",
-  "operacion": "Rearmado de una caja reductora con herramientas",
-  "lugar": "Puesto de taller, cámara cenital",
-  "video": "LE07UF17_Reassembly_A_004_top.mp4",
-  "fecha": "2026-10-12",
-  "convencion_texto": "Convención del curso: ▽ solo si la otra mano opera.",
+  "producto": "A small black mechanical assembly is being assembled.",
+  "operacion": "The right hand typically holds the workpiece in the center while the left hand fetches tools or parts from the bottom to perform assembly tasks.",
+  "lugar": "Supply areas: bottom (blue and red bins). Work point: center. Instructions: left side of the table.",
+  "video": "video.mp4",
+  "fecha": "2026-10-14",
+  "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
+  "camara": "Operator is at the top. The right hand (magenta) appears on the left/center and the left hand (cyan) appears on the center/right of the image.",
+  "run": "gearbox",
   "title_en": "Gearbox reassembly with tools (IMPACT dataset, unseen operator)",
-  "motor_en": "Gemma 4 31B (4-bit QAT) on a cloud NVIDIA A100 (development run, to be replaced by the AMD MI300X run)",
+  "motor_en": "Gemma 4 31B on AMD GPUs (AMD Token Factory, shared endpoint)",
   "licencia_en": "Video and labels: IMPACT dataset (KratosWen/IMPACT on Hugging Face), CC BY-NC-SA 4.0. This example (chart and frames) is shared under the same licence, for non-commercial use."
  },
  "indicadores": {
-  "duracion_s": 224.0,
-  "filas": 79,
+  "duracion_s": 223.7,
+  "filas": 73,
   "MD": {
-   "OP": 43.8,
-   "S": 21.9,
-   "D": 21.4,
-   "TR": 12.9
+   "OP": 42.9,
+   "D": 25.8,
+   "S": 18.3,
+   "TR": 13.0
   },
-  "MD_productivo_pct": 43.8,
-  "MD_improductivo_pct": 43.3,
+  "MD_productivo_pct": 42.9,
+  "MD_improductivo_pct": 44.1,
   "MI": {
-   "S": 41.1,
-   "OP": 24.1,
-   "D": 19.6,
-   "TR": 15.2
+   "S": 41.6,
+   "D": 21.0,
+   "OP": 19.2,
+   "TR": 18.2
   },
-  "MI_productivo_pct": 24.1,
-  "MI_improductivo_pct": 60.7
+  "MI_productivo_pct": 19.2,
+  "MI_improductivo_pct": 62.6
  },
  "filas": [
   {
-   "t0": 0.0,
+   "t0": 0,
    "t1": 3.0,
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Grasps tool from blue bin and moves center · L: Holds workpiece in center"
    ],
    "ks": [
     0,
@@ -45,7 +47,9 @@
     2
    ],
    "n": 1,
-   "dur": 3.0
+   "dur": 3.0,
+   "desc_md": "Grasps tool from blue bin and moves center",
+   "desc_mi": "Holds workpiece in center"
   },
   {
    "t0": 3.0,
@@ -53,13 +57,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Reaches for and grasps tool from bin"
    ],
    "ks": [
     3
    ],
    "n": 2,
-   "dur": 1.0
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for and grasps tool from bin"
   },
   {
    "t0": 4.0,
@@ -67,41 +73,32 @@
    "md": "S",
    "mi": "OP",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Operates on the assembly with tool"
    ],
    "ks": [
     4
    ],
    "n": 3,
-   "dur": 1.0
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Operates on the assembly with tool"
   },
   {
    "t0": 5.0,
-   "t1": 6.0,
-   "md": "OP",
-   "mi": "OP",
-   "obs": [
-    "0-60 s reviewed (human labels)"
-   ],
-   "ks": [
-    5
-   ],
-   "n": 4,
-   "dur": 1.0
-  },
-  {
-   "t0": 6.0,
    "t1": 7.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Fastens part using screwdriver"
    ],
    "ks": [
+    5,
     6
    ],
-   "n": 5,
-   "dur": 1.0
+   "n": 4,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fastens part using screwdriver"
   },
   {
    "t0": 7.0,
@@ -109,7 +106,7 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Grasps workpiece from bin and moves to center · L: Holds the assembly"
    ],
    "ks": [
     7,
@@ -120,8 +117,10 @@
     12,
     13
    ],
-   "n": 6,
-   "dur": 7.0
+   "n": 5,
+   "dur": 7.0,
+   "desc_md": "Grasps workpiece from bin and moves to center",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 14.0,
@@ -129,14 +128,16 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Fits and adjusts part on assembly · L: Holds the assembly"
    ],
    "ks": [
     14,
     15
    ],
-   "n": 7,
-   "dur": 2.0
+   "n": 6,
+   "dur": 2.0,
+   "desc_md": "Fits and adjusts part on assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 16.0,
@@ -144,7 +145,7 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Holds the assembly"
    ],
    "ks": [
     16,
@@ -153,8 +154,10 @@
     19,
     20
    ],
-   "n": 8,
-   "dur": 5.0
+   "n": 7,
+   "dur": 5.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 21.0,
@@ -162,15 +165,17 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Fits and adjusts part on assembly · L: Holds the assembly"
    ],
    "ks": [
     21,
     22,
     23
    ],
-   "n": 9,
-   "dur": 3.0
+   "n": 8,
+   "dur": 3.0,
+   "desc_md": "Fits and adjusts part on assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 24.0,
@@ -178,27 +183,31 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Holds the assembly"
    ],
    "ks": [
     24
    ],
-   "n": 10,
-   "dur": 1.0
+   "n": 9,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 25.0,
    "t1": 26.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Fastens part using screwdriver"
    ],
    "ks": [
     25
    ],
-   "n": 11,
-   "dur": 1.0
+   "n": 10,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fastens part using screwdriver"
   },
   {
    "t0": 26.0,
@@ -206,43 +215,49 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Holds the assembly"
    ],
    "ks": [
     26
    ],
-   "n": 12,
-   "dur": 1.0
+   "n": 11,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 27.0,
-   "t1": 30.0,
+   "t1": 29.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Reaches for and grasps part from bin · L: Holds the assembly"
    ],
    "ks": [
     27,
-    28,
-    29
+    28
    ],
-   "n": 13,
-   "dur": 3.0
+   "n": 12,
+   "dur": 2.0,
+   "desc_md": "Reaches for and grasps part from bin",
+   "desc_mi": "Holds the assembly"
   },
   {
-   "t0": 30.0,
+   "t0": 29.0,
    "t1": 31.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Fits small part into the assembly · L: Holds the assembly"
    ],
    "ks": [
+    29,
     30
    ],
-   "n": 14,
-   "dur": 1.0
+   "n": 13,
+   "dur": 2.0,
+   "desc_md": "Fits small part into the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 31.0,
@@ -250,14 +265,16 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Reaches for the workpiece · L: Holds the assembly"
    ],
    "ks": [
     31,
     32
    ],
-   "n": 15,
-   "dur": 2.0
+   "n": 14,
+   "dur": 2.0,
+   "desc_md": "Reaches for the workpiece",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 33.0,
@@ -265,7 +282,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Fits and adjusts part in assembly · L: Holds the assembly"
    ],
    "ks": [
     33,
@@ -281,8 +298,10 @@
     43,
     44
    ],
-   "n": 16,
-   "dur": 12.0
+   "n": 15,
+   "dur": 12.0,
+   "desc_md": "Fits and adjusts part in assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 45.0,
@@ -290,14 +309,16 @@
    "md": "S",
    "mi": "OP",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Uses tool to fasten part"
    ],
    "ks": [
     45,
     46
    ],
-   "n": 17,
-   "dur": 2.0
+   "n": 16,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Uses tool to fasten part"
   },
   {
    "t0": 47.0,
@@ -305,13 +326,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Holds the assembly"
    ],
    "ks": [
     47
    ],
-   "n": 18,
-   "dur": 1.0
+   "n": 17,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 48.0,
@@ -319,7 +342,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Fits and adjusts part on assembly · L: Holds the assembly"
    ],
    "ks": [
     48,
@@ -330,8 +353,10 @@
     53,
     54
    ],
-   "n": 19,
-   "dur": 7.0
+   "n": 18,
+   "dur": 7.0,
+   "desc_md": "Fits and adjusts part on assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 55.0,
@@ -339,20 +364,24 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "0-60 s reviewed (human labels)"
+    "R: Holds the assembly · L: Holds the assembly"
    ],
    "ks": [
     55
    ],
-   "n": 20,
-   "dur": 1.0
+   "n": 19,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 56.0,
    "t1": 61.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits and adjusts part on assembly · L: Holds the assembly"
+   ],
    "ks": [
     56,
     57,
@@ -360,311 +389,347 @@
     59,
     60
    ],
-   "n": 21,
-   "dur": 5.0
+   "n": 20,
+   "dur": 5.0,
+   "desc_md": "Fits and adjusts part on assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 61.0,
-   "t1": 62.0,
-   "md": "TR",
+   "t1": 63.0,
+   "md": "D",
    "mi": "D",
-   "obs": [],
-   "ks": [
-    61
+   "obs": [
+    "R: Holds the assembly · L: Holds and adjusts the assembly"
    ],
-   "n": 22,
-   "dur": 1.0
+   "ks": [
+    61,
+    62
+   ],
+   "n": 21,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds and adjusts the assembly"
   },
   {
-   "t0": 62.0,
+   "t0": 63.0,
    "t1": 65.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Uses tool to fasten part on assembly · L: Holds the assembly"
+   ],
    "ks": [
-    62,
     63,
     64
    ],
-   "n": 23,
-   "dur": 3.0
+   "n": 22,
+   "dur": 2.0,
+   "desc_md": "Uses tool to fasten part on assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 65.0,
    "t1": 67.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Reaches for and grasps black ring part"
+   ],
    "ks": [
     65,
     66
    ],
-   "n": 24,
-   "dur": 2.0
+   "n": 23,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for and grasps black ring part"
   },
   {
    "t0": 67.0,
-   "t1": 68.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [],
-   "ks": [
-    67
-   ],
-   "n": 25,
-   "dur": 1.0
-  },
-  {
-   "t0": 68.0,
-   "t1": 70.0,
+   "t1": 69.0,
    "md": "D",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Holds and adjusts the assembly"
+   ],
    "ks": [
-    68,
+    67,
+    68
+   ],
+   "n": 24,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds and adjusts the assembly"
+  },
+  {
+   "t0": 69.0,
+   "t1": 70.0,
+   "md": "D",
+   "mi": "TR",
+   "obs": [
+    "R: Holds the assembly · L: Reaches toward the assembly"
+   ],
+   "ks": [
     69
    ],
-   "n": 26,
-   "dur": 2.0
+   "n": 25,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches toward the assembly"
   },
   {
    "t0": 70.0,
    "t1": 72.0,
    "md": "TR",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Reaches for and grasps part from bin · L: Holds the assembly"
+   ],
    "ks": [
     70,
     71
    ],
-   "n": 27,
-   "dur": 2.0
+   "n": 26,
+   "dur": 2.0,
+   "desc_md": "Reaches for and grasps part from bin",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 72.0,
-   "t1": 78.0,
+   "t1": 75.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits and presses part into assembly · L: Holds the assembly"
+   ],
    "ks": [
     72,
     73,
-    74,
-    75,
+    74
+   ],
+   "n": 27,
+   "dur": 3.0,
+   "desc_md": "Fits and presses part into assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 75.0,
+   "t1": 76.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "R: Adjusts and positions the assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    75
+   ],
+   "n": 28,
+   "dur": 1.0,
+   "desc_md": "Adjusts and positions the assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 76.0,
+   "t1": 78.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Fits and presses part into assembly · L: Holds the assembly"
+   ],
+   "ks": [
     76,
     77
    ],
-   "n": 28,
-   "dur": 6.0
+   "n": 29,
+   "dur": 2.0,
+   "desc_md": "Fits and presses part into assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 78.0,
    "t1": 79.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [],
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Holds the assembly · L: Holds the screwdriver"
+   ],
    "ks": [
     78
    ],
-   "n": 29,
-   "dur": 1.0
+   "n": 30,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the screwdriver"
   },
   {
    "t0": 79.0,
-   "t1": 82.0,
+   "t1": 88.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Transports tool from bin to assembly"
+   ],
    "ks": [
     79,
     80,
-    81
-   ],
-   "n": 30,
-   "dur": 3.0
-  },
-  {
-   "t0": 82.0,
-   "t1": 84.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [],
-   "ks": [
+    81,
     82,
-    83
-   ],
-   "n": 31,
-   "dur": 2.0
-  },
-  {
-   "t0": 84.0,
-   "t1": 85.0,
-   "md": "D",
-   "mi": "TR",
-   "obs": [],
-   "ks": [
-    84
-   ],
-   "n": 32,
-   "dur": 1.0
-  },
-  {
-   "t0": 85.0,
-   "t1": 86.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [],
-   "ks": [
-    85
-   ],
-   "n": 33,
-   "dur": 1.0
-  },
-  {
-   "t0": 86.0,
-   "t1": 87.0,
-   "md": "D",
-   "mi": "TR",
-   "obs": [],
-   "ks": [
-    86
-   ],
-   "n": 34,
-   "dur": 1.0
-  },
-  {
-   "t0": 87.0,
-   "t1": 88.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [],
-   "ks": [
+    83,
+    84,
+    85,
+    86,
     87
    ],
-   "n": 35,
-   "dur": 1.0
+   "n": 31,
+   "dur": 9.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Transports tool from bin to assembly"
   },
   {
    "t0": 88.0,
+   "t1": 89.0,
+   "md": "S",
+   "mi": "OP",
+   "obs": [
+    "R: Holds the assembly · L: Fits and presses part into assembly"
+   ],
+   "ks": [
+    88
+   ],
+   "n": 32,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses part into assembly"
+  },
+  {
+   "t0": 89.0,
    "t1": 90.0,
    "md": "D",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Adjusts tool or part"
+   ],
    "ks": [
-    88,
     89
    ],
-   "n": 36,
-   "dur": 2.0
+   "n": 33,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Adjusts tool or part"
   },
   {
    "t0": 90.0,
    "t1": 94.0,
    "md": "S",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Fits and presses part into assembly"
+   ],
    "ks": [
     90,
     91,
     92,
     93
    ],
-   "n": 37,
-   "dur": 4.0
+   "n": 34,
+   "dur": 4.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses part into assembly"
   },
   {
    "t0": 94.0,
    "t1": 95.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits and presses part into assembly · L: Holds the assembly"
+   ],
    "ks": [
     94
    ],
-   "n": 38,
-   "dur": 1.0
+   "n": 35,
+   "dur": 1.0,
+   "desc_md": "Fits and presses part into assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 95.0,
-   "t1": 97.0,
+   "t1": 98.0,
    "md": "TR",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Reaches for and grasps part from bin · L: Holds the assembly"
+   ],
    "ks": [
     95,
-    96
+    96,
+    97
    ],
-   "n": 39,
-   "dur": 2.0
+   "n": 36,
+   "dur": 3.0,
+   "desc_md": "Reaches for and grasps part from bin",
+   "desc_mi": "Holds the assembly"
   },
   {
-   "t0": 97.0,
-   "t1": 99.0,
-   "md": "OP",
-   "mi": "S",
-   "obs": [],
-   "ks": [
-    97,
-    98
-   ],
-   "n": 40,
-   "dur": 2.0
-  },
-  {
-   "t0": 99.0,
-   "t1": 100.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [],
-   "ks": [
-    99
-   ],
-   "n": 41,
-   "dur": 1.0
-  },
-  {
-   "t0": 100.0,
+   "t0": 98.0,
    "t1": 102.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits and presses part into assembly · L: Holds the assembly"
+   ],
    "ks": [
+    98,
+    99,
     100,
     101
    ],
-   "n": 42,
-   "dur": 2.0
+   "n": 37,
+   "dur": 4.0,
+   "desc_md": "Fits and presses part into assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 102.0,
    "t1": 103.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Reaches for part in red bin"
+   ],
    "ks": [
     102
    ],
-   "n": 43,
-   "dur": 1.0
+   "n": 38,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for part in red bin"
   },
   {
    "t0": 103.0,
    "t1": 104.0,
    "md": "TR",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Reaches for and grasps part from bin · L: Holds the assembly"
+   ],
    "ks": [
     103
    ],
-   "n": 44,
-   "dur": 1.0
+   "n": 39,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps part from bin",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 104.0,
    "t1": 116.0,
    "md": "S",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Fits and fastens small part"
+   ],
    "ks": [
     104,
     105,
@@ -679,148 +744,192 @@
     114,
     115
    ],
-   "n": 45,
-   "dur": 12.0
+   "n": 40,
+   "dur": 12.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and fastens small part"
   },
   {
    "t0": 116.0,
    "t1": 117.0,
    "md": "OP",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Fits and adjusts part on assembly"
+   ],
    "ks": [
     116
    ],
-   "n": 46,
-   "dur": 1.0
+   "n": 41,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and adjusts part on assembly"
   },
   {
    "t0": 117.0,
    "t1": 119.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Reaches for and grasps part from bin"
+   ],
    "ks": [
     117,
     118
    ],
-   "n": 47,
-   "dur": 2.0
+   "n": 42,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for and grasps part from bin"
   },
   {
    "t0": 119.0,
-   "t1": 120.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [],
-   "ks": [
-    119
-   ],
-   "n": 48,
-   "dur": 1.0
-  },
-  {
-   "t0": 120.0,
-   "t1": 121.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [],
-   "ks": [
-    120
-   ],
-   "n": 49,
-   "dur": 1.0
-  },
-  {
-   "t0": 121.0,
    "t1": 124.0,
    "md": "D",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly and tool · L: Holds the assembly and tool"
+   ],
    "ks": [
+    119,
+    120,
     121,
     122,
     123
    ],
-   "n": 50,
-   "dur": 3.0
+   "n": 43,
+   "dur": 5.0,
+   "desc_md": "Holds the assembly and tool",
+   "desc_mi": "Holds the assembly and tool"
   },
   {
    "t0": 124.0,
    "t1": 125.0,
    "md": "S",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Fits and presses part into assembly"
+   ],
    "ks": [
     124
    ],
-   "n": 51,
-   "dur": 1.0
+   "n": 44,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses part into assembly"
   },
   {
    "t0": 125.0,
    "t1": 128.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Reaches for and grasps part from bin"
+   ],
    "ks": [
     125,
     126,
     127
    ],
-   "n": 52,
-   "dur": 3.0
+   "n": 45,
+   "dur": 3.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for and grasps part from bin"
   },
   {
    "t0": 128.0,
+   "t1": 130.0,
+   "md": "S",
+   "mi": "OP",
+   "obs": [
+    "R: Holds the assembly · L: Fits and presses part into assembly"
+   ],
+   "ks": [
+    128,
+    129
+   ],
+   "n": 46,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses part into assembly"
+  },
+  {
+   "t0": 130.0,
+   "t1": 131.0,
+   "md": "D",
+   "mi": "TR",
+   "obs": [
+    "R: Holds the assembly · L: Reaches toward the assembly"
+   ],
+   "ks": [
+    130
+   ],
+   "n": 47,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches toward the assembly"
+  },
+  {
+   "t0": 131.0,
    "t1": 136.0,
    "md": "S",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Fits and presses part into assembly"
+   ],
    "ks": [
-    128,
-    129,
-    130,
     131,
     132,
     133,
     134,
     135
    ],
-   "n": 53,
-   "dur": 8.0
+   "n": 48,
+   "dur": 5.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses part into assembly"
   },
   {
    "t0": 136.0,
    "t1": 138.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Adjusts grip on the assembly"
+   ],
    "ks": [
     136,
     137
    ],
-   "n": 54,
-   "dur": 2.0
+   "n": 49,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Adjusts grip on the assembly"
   },
   {
    "t0": 138.0,
    "t1": 139.0,
    "md": "TR",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Reaches for and grasps green screwdriver · L: Holds the assembly"
+   ],
    "ks": [
     138
    ],
-   "n": 55,
-   "dur": 1.0
+   "n": 50,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps green screwdriver",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 139.0,
    "t1": 166.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits green part into assembly · L: Holds the assembly"
+   ],
    "ks": [
     139,
     140,
@@ -850,219 +959,302 @@
     164,
     165
    ],
-   "n": 56,
-   "dur": 27.0
+   "n": 51,
+   "dur": 27.0,
+   "desc_md": "Fits green part into assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 166.0,
    "t1": 168.0,
    "md": "TR",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Reaches for and grasps green screwdriver · L: Holds the assembly"
+   ],
    "ks": [
     166,
     167
    ],
-   "n": 57,
-   "dur": 2.0
+   "n": 52,
+   "dur": 2.0,
+   "desc_md": "Reaches for and grasps green screwdriver",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 168.0,
    "t1": 171.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Reaches for and grasps part from bin"
+   ],
    "ks": [
     168,
     169,
     170
    ],
-   "n": 58,
-   "dur": 3.0
+   "n": 53,
+   "dur": 3.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for and grasps part from bin"
   },
   {
    "t0": 171.0,
    "t1": 172.0,
    "md": "TR",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Grasps part from red bin and transports"
+   ],
    "ks": [
     171
    ],
-   "n": 59,
-   "dur": 1.0
+   "n": 54,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Grasps part from red bin and transports"
   },
   {
    "t0": 172.0,
    "t1": 175.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Reaches for and grasps part from bin"
+   ],
    "ks": [
     172,
     173,
     174
    ],
-   "n": 60,
-   "dur": 3.0
+   "n": 55,
+   "dur": 3.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for and grasps part from bin"
   },
   {
    "t0": 175.0,
+   "t1": 176.0,
+   "md": "S",
+   "mi": "OP",
+   "obs": [
+    "R: Holds the assembly · L: Fits small part into assembly"
+   ],
+   "ks": [
+    175
+   ],
+   "n": 56,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits small part into assembly"
+  },
+  {
+   "t0": 176.0,
+   "t1": 177.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Holds the assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    176
+   ],
+   "n": 57,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 177.0,
    "t1": 178.0,
    "md": "S",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Fastens part using screwdriver"
+   ],
    "ks": [
-    175,
-    176,
     177
    ],
-   "n": 61,
-   "dur": 3.0
+   "n": 58,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fastens part using screwdriver"
   },
   {
    "t0": 178.0,
    "t1": 179.0,
    "md": "D",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Holds the assembly"
+   ],
    "ks": [
     178
    ],
-   "n": 62,
-   "dur": 1.0
+   "n": 59,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 179.0,
    "t1": 181.0,
    "md": "S",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Fits small part into assembly"
+   ],
    "ks": [
     179,
     180
    ],
-   "n": 63,
-   "dur": 2.0
+   "n": 60,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits small part into assembly"
   },
   {
    "t0": 181.0,
    "t1": 182.0,
    "md": "D",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Holds the assembly"
+   ],
    "ks": [
     181
    ],
-   "n": 64,
-   "dur": 1.0
+   "n": 61,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 182.0,
    "t1": 185.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits and presses small part into assembly · L: Holds the assembly"
+   ],
    "ks": [
     182,
     183,
     184
    ],
-   "n": 65,
-   "dur": 3.0
+   "n": 62,
+   "dur": 3.0,
+   "desc_md": "Fits and presses small part into assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 185.0,
    "t1": 186.0,
    "md": "OP",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds and stabilizes the assembly · L: Fits and presses part into assembly"
+   ],
    "ks": [
     185
    ],
-   "n": 66,
-   "dur": 1.0
+   "n": 63,
+   "dur": 1.0,
+   "desc_md": "Holds and stabilizes the assembly",
+   "desc_mi": "Fits and presses part into assembly"
   },
   {
    "t0": 186.0,
-   "t1": 188.0,
+   "t1": 187.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits and presses part into assembly · L: Holds the assembly"
+   ],
    "ks": [
-    186,
+    186
+   ],
+   "n": 64,
+   "dur": 1.0,
+   "desc_md": "Fits and presses part into assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 187.0,
+   "t1": 188.0,
+   "md": "D",
+   "mi": "TR",
+   "obs": [
+    "R: Holds the assembly · L: Transports part to the assembly"
+   ],
+   "ks": [
     187
    ],
-   "n": 67,
-   "dur": 2.0
+   "n": 65,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Transports part to the assembly"
   },
   {
    "t0": 188.0,
    "t1": 189.0,
    "md": "OP",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds and stabilizes the assembly · L: Fits small part into the assembly"
+   ],
    "ks": [
     188
    ],
-   "n": 68,
-   "dur": 1.0
+   "n": 66,
+   "dur": 1.0,
+   "desc_md": "Holds and stabilizes the assembly",
+   "desc_mi": "Fits small part into the assembly"
   },
   {
    "t0": 189.0,
-   "t1": 190.0,
-   "md": "OP",
-   "mi": "S",
-   "obs": [],
-   "ks": [
-    189
-   ],
-   "n": 69,
-   "dur": 1.0
-  },
-  {
-   "t0": 190.0,
-   "t1": 191.0,
-   "md": "OP",
-   "mi": "OP",
-   "obs": [],
-   "ks": [
-    190
-   ],
-   "n": 70,
-   "dur": 1.0
-  },
-  {
-   "t0": 191.0,
    "t1": 192.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits and presses part into assembly · L: Holds the assembly"
+   ],
    "ks": [
+    189,
+    190,
     191
    ],
-   "n": 71,
-   "dur": 1.0
+   "n": 67,
+   "dur": 3.0,
+   "desc_md": "Fits and presses part into assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 192.0,
    "t1": 194.0,
    "md": "TR",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Transports screwdriver toward the assembly · L: Holds the assembly"
+   ],
    "ks": [
     192,
     193
    ],
-   "n": 72,
-   "dur": 2.0
+   "n": 68,
+   "dur": 2.0,
+   "desc_md": "Transports screwdriver toward the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 194.0,
    "t1": 207.0,
    "md": "OP",
    "mi": "S",
-   "obs": [],
+   "obs": [
+    "R: Fits and presses small part into assembly · L: Holds the assembly"
+   ],
    "ks": [
     194,
     195,
@@ -1078,91 +1270,87 @@
     205,
     206
    ],
-   "n": 73,
-   "dur": 13.0
+   "n": 69,
+   "dur": 13.0,
+   "desc_md": "Fits and presses small part into assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 207.0,
    "t1": 209.0,
    "md": "TR",
    "mi": "D",
-   "obs": [],
+   "obs": [
+    "R: Reaches for and grasps green screwdriver · L: Holds the assembly"
+   ],
    "ks": [
     207,
     208
    ],
-   "n": 74,
-   "dur": 2.0
+   "n": 70,
+   "dur": 2.0,
+   "desc_md": "Reaches for and grasps green screwdriver",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 209.0,
    "t1": 211.0,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Reaches for and grasps tool from bin"
+   ],
    "ks": [
     209,
     210
    ],
-   "n": 75,
-   "dur": 2.0
+   "n": 71,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for and grasps tool from bin"
   },
   {
    "t0": 211.0,
-   "t1": 214.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [],
-   "ks": [
-    211,
-    212,
-    213
-   ],
-   "n": 76,
-   "dur": 3.0
-  },
-  {
-   "t0": 214.0,
-   "t1": 215.0,
-   "md": "OP",
-   "mi": "OP",
-   "obs": [],
-   "ks": [
-    214
-   ],
-   "n": 77,
-   "dur": 1.0
-  },
-  {
-   "t0": 215.0,
    "t1": 220.0,
    "md": "S",
    "mi": "OP",
-   "obs": [],
+   "obs": [
+    "R: Holds the assembly · L: Operates tool on the assembly"
+   ],
    "ks": [
+    211,
+    212,
+    213,
+    214,
     215,
     216,
     217,
     218,
     219
    ],
-   "n": 78,
-   "dur": 5.0
+   "n": 72,
+   "dur": 9.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Operates tool on the assembly"
   },
   {
    "t0": 220.0,
-   "t1": 224.0,
+   "t1": 223.733,
    "md": "D",
    "mi": "TR",
-   "obs": [],
+   "obs": [
+    "R: Waits · L: Reaches for and grasps orange screwdriver"
+   ],
    "ks": [
     220,
     221,
     222,
     223
    ],
-   "n": 79,
-   "dur": 4.0
+   "n": 73,
+   "dur": 3.73,
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for and grasps orange screwdriver"
   }
  ]
 }

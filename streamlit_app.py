@@ -304,9 +304,15 @@ if vista == 'Accuracy & AMD':
         ['IMPACT assembly, 4 new operators (982)', '45.7 %', '70.0 %', '73.6 %'],
     ], columns=['Test set', 'Constant baseline', 'Vision model alone', 'With 30–70 s of human review']),
         hide_index=True, width="stretch")
-    st.caption('Most remaining errors are about *when* an activity starts or ends (±1 s), not *which* activity it is: '
-               'with ±1 s tolerance the KIT result is 87 %. Times are observed times, not standard times (no rating or '
-               'allowances).')
+    st.caption('LEGO: lab run of v7 (11 Oct); with 92 hand-seconds, pipeline differences move that figure by about '
+               'ten points, so the KIT test is the one to rely on. Most remaining errors are about *when* an '
+               'activity starts or ends (±1 s), not *which* activity it is: with ±1 s tolerance the KIT result is 87 %. '
+               'Times are observed times, not standard times (no rating or allowances).')
+    st.markdown('**The examples in this app, run on AMD** (the shipped pipeline, gate on)')
+    st.dataframe(pd.DataFrame([
+        ['Gearbox, operator never seen, human labels from second 60 (307 hand-seconds)', '70.0 %', '73.9 %'],
+        ['LEGO, same blind human labels (92 hand-seconds, second look)', '58.7 %', '62.0 %'],
+    ], columns=['Example', 'Vision model alone', 'Gilbreth']), hide_index=True, width="stretch")
     st.subheader('Running on AMD')
     if B.get('runs'):
         st.markdown(f"Model **{B.get('modelo', '')}** served on **{B.get('gpu') or 'AMD GPUs'}**"

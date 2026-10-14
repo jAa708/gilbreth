@@ -51,8 +51,16 @@ system frozen and the protocol written down beforehand.
 | Test set | Constant baseline | Gemma alone | **Gilbreth (30–70 s reviewed)** |
 |---|---|---|---|
 | KIT Bimanual, **new person**, workshop + kitchen (3,305 hand-seconds) | 48–55 % | 67.5 % | **77.1 %** (±1 s: 87.2 %) |
-| LEGO assembly, blind human labels (92) | — | 64.1 % | **71.7 %** |
+| LEGO assembly, blind human labels (92) | — | 64.1 % | **71.7 %** ¹ |
 | IMPACT assembly, 4 new operators (982) | 45.7 % | 70.0 % | **73.6 %** |
+
+¹ Lab run of v7 (11 Oct), which trains the calibrated model with a different routine than the shipped pipeline.
+With 92 hand-seconds that difference moves the LEGO figure by about ten points; the KIT test is the one to rely on.
+
+**The examples in the app, run on AMD Token Factory** (the shipped pipeline, gate on):
+- gearbox, operator never seen, human labels from second 60 (307 hand-seconds): Gemma alone 70.0 % → Gilbreth
+  **73.9 %**;
+- LEGO against the same blind human labels (92 hand-seconds, second look): 58.7 % → **62.0 %**.
 
 Most remaining errors are about *when* an activity starts or ends (±1 s), not *which* activity it is. Details and
 everything we tried and dropped: [`docs/RESULTS.md`](docs/RESULTS.md).

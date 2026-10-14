@@ -80,7 +80,7 @@
   "tipo": "espera_sosteniendo",
   "mano": "L",
   "t0": 27,
-  "t1": 30,
+  "t1": 29,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -140,11 +140,11 @@
   "detalle": "las dos manos en espera (o con el folleto)"
  },
  {
-  "tipo": "espera_sosteniendo",
-  "mano": "L",
+  "tipo": "ambas_ociosas",
+  "mano": "RL",
   "t0": 61,
-  "t1": 62,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
+  "t1": 63,
+  "detalle": "las dos manos en espera (o con el folleto)"
  },
  {
   "tipo": "espera_sosteniendo",
@@ -170,9 +170,23 @@
  {
   "tipo": "ambas_ociosas",
   "mano": "RL",
-  "t0": 68,
-  "t1": 70,
+  "t0": 67,
+  "t1": 69,
   "detalle": "las dos manos en espera (o con el folleto)"
+ },
+ {
+  "tipo": "espera_sosteniendo",
+  "mano": "R",
+  "t0": 69,
+  "t1": 70,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
+ },
+ {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 69,
+  "t1": 70,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
  },
  {
   "tipo": "espera_sosteniendo",
@@ -190,9 +204,23 @@
  },
  {
   "tipo": "espera_sosteniendo",
+  "mano": "L",
+  "t0": 75,
+  "t1": 76,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
+ },
+ {
+  "tipo": "ambas_ociosas",
+  "mano": "RL",
+  "t0": 78,
+  "t1": 79,
+  "detalle": "las dos manos en espera (o con el folleto)"
+ },
+ {
+  "tipo": "espera_sosteniendo",
   "mano": "R",
   "t0": 79,
-  "t1": 82,
+  "t1": 88,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -203,30 +231,16 @@
   "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
  },
  {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 84,
-  "t1": 85,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 86,
-  "t1": 87,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
   "tipo": "sostiene_y_viaja",
   "mano": "L",
   "t0": 86,
-  "t1": 87,
+  "t1": 88,
   "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
  },
  {
   "tipo": "ambas_ociosas",
   "mano": "RL",
-  "t0": 88,
+  "t0": 89,
   "t1": 90,
   "detalle": "las dos manos en espera (o con el folleto)"
  },
@@ -234,7 +248,7 @@
   "tipo": "espera_sosteniendo",
   "mano": "L",
   "t0": 95,
-  "t1": 97,
+  "t1": 98,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -243,13 +257,6 @@
   "t0": 95.6,
   "t1": 96.39999999999999,
   "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
- },
- {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 99,
-  "t1": 100,
-  "detalle": "las dos manos en espera (o con el folleto)"
  },
  {
   "tipo": "espera_sosteniendo",
@@ -304,13 +311,6 @@
   "tipo": "ambas_ociosas",
   "mano": "RL",
   "t0": 119,
-  "t1": 120,
-  "detalle": "las dos manos en espera (o con el folleto)"
- },
- {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 121,
   "t1": 124,
   "detalle": "las dos manos en espera (o con el folleto)"
  },
@@ -334,6 +334,20 @@
   "t0": 125.2,
   "t1": 127.69999999999999,
   "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "espera_sosteniendo",
+  "mano": "R",
+  "t0": 130,
+  "t1": 131,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
+ },
+ {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 130,
+  "t1": 131,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
  },
  {
   "tipo": "espera_sosteniendo",
@@ -443,6 +457,13 @@
  {
   "tipo": "ambas_ociosas",
   "mano": "RL",
+  "t0": 176,
+  "t1": 177,
+  "detalle": "las dos manos en espera (o con el folleto)"
+ },
+ {
+  "tipo": "ambas_ociosas",
+  "mano": "RL",
   "t0": 178,
   "t1": 179,
   "detalle": "las dos manos en espera (o con el folleto)"
@@ -453,6 +474,13 @@
   "t0": 181,
   "t1": 182,
   "detalle": "las dos manos en espera (o con el folleto)"
+ },
+ {
+  "tipo": "espera_sosteniendo",
+  "mano": "R",
+  "t0": 187,
+  "t1": 188,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "espera_sosteniendo",

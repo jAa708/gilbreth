@@ -37,6 +37,17 @@ Pre-registered criterion for the final test (v9 ≥ Gemma in workshop and kitche
   The boundary is not recoverable below one second with these signals, so the shipped system keeps 1-second
   resolution and reports the ±1 s agreement next to the exact one.
 
+## Second look on AMD (14 Oct): the examples as shipped
+The app's examples were recomputed end to end on AMD Token Factory (Gemma-4-31B-IT, shared endpoint, JSON object
+output with the schema in the prompt) with the shipped pipeline (gate on).
+- Gearbox (IMPACT `LE07UF17_Reassembly_A_004`, operator never seen, first 60 s reviewed with the dataset's human
+  labels), from second 60, 307 hand-seconds: Gemma alone **70.0 %**, Gilbreth **73.9 %** (A100 development run of
+  the same example: 67.8 % and 76.2 %).
+- LEGO against the two blind batches labelled by a person (92 hand-seconds, already used as a test, so this is a second look):
+  Gemma alone **58.7 %**, Gilbreth **62.0 %** (A100 example: 60.9 %). The 71.7 % in the table above came from the lab
+  run of v7 on 11 Oct, which trains the calibrated model with a different routine than the shipped pipeline;
+  with 92 hand-seconds that difference moves the figure by about ten points, so it is not a robust number. The KIT test (3,305 hand-seconds) is.
+
 ## MIT-pure mode (no IMPACT-derived motion prior)
 Decision set KIT subject 2 (total): v9 with prior 62.4 % · v9 without prior **49.8 %** (= Gemma; the gate rejects the
 calibrated model in 9/9 tasks because, trained on half of the reviewed seconds, it is too weak). Second look on KIT

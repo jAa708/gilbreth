@@ -1,56 +1,54 @@
 {
  "meta": {
-  "producto": "LEGO Creator 3-en-1 nº 5761 «Mini Digger», modelo 1 (56 piezas)",
-  "operacion": "Armado completo siguiendo el folleto. v7: calibrado con el minuto de oro revisado (0-70 s)",
-  "lugar": "Mesa con piezas clasificadas por color; folleto de instrucciones",
-  "video": "20260914_083930.mp4",
-  "fecha": "2026-10-12",
-  "convencion_texto": "▽ solo si la otra mano opera; sostener mientras la otra va por la pieza o folleto = D (curso).",
+  "producto": "A small yellow and black toy vehicle assembly.",
+  "operacion": "The left hand typically holds the workpiece in the center while the right hand fetches small parts from the bottom and fits them onto the assembly.",
+  "lugar": "Supply areas: bottom center and bottom right. Work point: center. Instructions: top center.",
+  "video": "video.mp4",
+  "fecha": "2026-10-14",
+  "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
+  "camara": "Operator is at the top. Right hand (magenta) appears on the left side of the image; left hand (cyan) appears on the right side.",
+  "run": "lego",
   "title_en": "LEGO Creator 5761 Mini Digger, full assembly (56 pieces)",
-  "motor_en": "Gemma 4 31B (4-bit QAT) on a cloud NVIDIA A100 (development run, to be replaced by the AMD MI300X run)",
-  "minutos_a_mano": 60,
-  "nota_desc_en": "Row descriptions were written by Gemma in Spanish in this development run and translated to English; the original text is kept in desc_md_es / desc_mi_es."
+  "motor_en": "Gemma 4 31B on AMD GPUs (AMD Token Factory, shared endpoint)",
+  "minutos_a_mano": 60
  },
  "indicadores": {
   "duracion_s": 284.0,
-  "filas": 104,
+  "filas": 123,
   "MD": {
-   "OP": 71.5,
-   "TR": 13.4,
-   "D": 13.0,
-   "S": 1.4,
+   "OP": 64.8,
+   "D": 16.9,
+   "TR": 14.4,
+   "S": 3.2,
    "NV": 0.7
   },
-  "MD_productivo_pct": 71.5,
-  "MD_improductivo_pct": 15.1,
+  "MD_productivo_pct": 64.8,
+  "MD_improductivo_pct": 20.8,
   "MI": {
-   "S": 70.8,
-   "D": 21.5,
-   "TR": 4.9,
-   "OP": 2.8
+   "S": 63.7,
+   "D": 26.1,
+   "TR": 5.3,
+   "OP": 4.9
   },
-  "MI_productivo_pct": 2.8,
-  "MI_improductivo_pct": 92.3
+  "MI_productivo_pct": 4.9,
+  "MI_improductivo_pct": 89.8
  },
  "filas": [
   {
-   "t0": 0.0,
+   "t0": 0,
    "t1": 1.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza negra del montón · MI: Espera",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps grey part · L: Waits"
    ],
    "ks": [
     0
    ],
    "n": 1,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps a black piece from the pile",
-   "desc_mi": "Waits",
-   "desc_md_es": "Alcanza y toma pieza negra del montón",
-   "desc_mi_es": "Espera"
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Waits"
   },
   {
    "t0": 1.0,
@@ -58,8 +56,7 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: espera · MI: transporte",
-    "0-70 s revisado por Juan"
+    "R: Waits · L: Reaches for and grasps yellow part"
    ],
    "ks": [
     1,
@@ -67,10 +64,8 @@
    ],
    "n": 2,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "transporte"
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for and grasps yellow part"
   },
   {
    "t0": 3.0,
@@ -78,18 +73,15 @@
    "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: operación · MI: operación",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses black part onto assembly · L: Holds and stabilizes the vehicle assembly"
    ],
    "ks": [
     3
    ],
    "n": 3,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "operación"
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds and stabilizes the vehicle assembly"
   },
   {
    "t0": 4.0,
@@ -97,18 +89,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Grasps small part from supply area · L: Holds the assembly"
    ],
    "ks": [
     4
    ],
    "n": 4,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Grasps small part from supply area",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 5.0,
@@ -116,8 +105,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     5,
@@ -129,10 +117,8 @@
    ],
    "n": 5,
    "dur": 6.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 11.0,
@@ -140,18 +126,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza gris del montón · MI: Sostiene el conjunto",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps grey part · L: Holds the assembly"
    ],
    "ks": [
     11
    ],
    "n": 6,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps a grey piece from the pile",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Alcanza y toma pieza gris del montón",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 12.0,
@@ -159,8 +142,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja y presiona pieza negra en conjunto · MI: Sostiene el conjunto",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses black part onto assembly · L: Holds the vehicle assembly"
    ],
    "ks": [
     12,
@@ -168,10 +150,8 @@
    ],
    "n": 7,
    "dur": 2.0,
-   "desc_md": "Fits and presses a black piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza negra en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
   },
   {
    "t0": 14.0,
@@ -179,18 +159,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps grey part · L: Holds the assembly"
    ],
    "ks": [
     14
    ],
    "n": 8,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 15.0,
@@ -198,18 +175,15 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps grey part · L: Holds the assembly"
    ],
    "ks": [
     15
    ],
    "n": 9,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 16.0,
@@ -217,18 +191,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps grey part · L: Holds the assembly"
    ],
    "ks": [
     16
    ],
    "n": 10,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 17.0,
@@ -236,8 +207,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja y presiona pieza gris en conjunto · MI: Sostiene el conjunto",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses grey part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     17,
@@ -245,10 +215,8 @@
    ],
    "n": 11,
    "dur": 2.0,
-   "desc_md": "Fits and presses a grey piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza gris en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Fits and presses grey part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 19.0,
@@ -256,8 +224,7 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: Sostiene pieza amarilla · MI: Manipula y consulta manual de instrucciones",
-    "0-70 s revisado por Juan"
+    "R: Holds yellow part while consulting instructions · L: Handles and flips through instruction manual"
    ],
    "ks": [
     19,
@@ -267,10 +234,8 @@
    ],
    "n": 12,
    "dur": 4.0,
-   "desc_md": "Holds a yellow piece",
-   "desc_mi": "Handles and reads the instruction booklet",
-   "desc_md_es": "Sostiene pieza amarilla",
-   "desc_mi_es": "Manipula y consulta manual de instrucciones"
+   "desc_md": "Holds yellow part while consulting instructions",
+   "desc_mi": "Handles and flips through instruction manual"
   },
   {
    "t0": 23.0,
@@ -278,18 +243,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Carries yellow part toward assembly · L: Holds the assembly"
    ],
    "ks": [
     23
    ],
    "n": 13,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Carries yellow part toward assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 24.0,
@@ -297,8 +259,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses grey part onto assembly · L: Holds the vehicle assembly"
    ],
    "ks": [
     24,
@@ -306,10 +267,8 @@
    ],
    "n": 14,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses grey part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
   },
   {
    "t0": 26.0,
@@ -317,18 +276,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: espera · MI: transporte",
-    "0-70 s revisado por Juan"
+    "R: Waits · L: Puts down the assembly"
    ],
    "ks": [
     26
    ],
    "n": 15,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "transporte"
+   "desc_md": "Waits",
+   "desc_mi": "Puts down the assembly"
   },
   {
    "t0": 27.0,
@@ -336,8 +292,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses yellow part onto assembly · L: Holds the vehicle assembly"
    ],
    "ks": [
     27,
@@ -346,10 +301,8 @@
    ],
    "n": 16,
    "dur": 3.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
   },
   {
    "t0": 30.0,
@@ -357,18 +310,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Carries grey part toward the assembly · L: Holds the assembly"
    ],
    "ks": [
     30
    ],
    "n": 17,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Carries grey part toward the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 31.0,
@@ -376,18 +326,15 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     31
    ],
    "n": 18,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 32.0,
@@ -395,18 +342,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza gris del montón · MI: Sostiene el conjunto",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps grey part from pile · L: Holds the assembly"
    ],
    "ks": [
     32
    ],
    "n": 19,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps a grey piece from the pile",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Alcanza y toma pieza gris del montón",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps grey part from pile",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 33.0,
@@ -414,8 +358,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses grey part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     33,
@@ -423,10 +366,8 @@
    ],
    "n": 20,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses grey part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 35.0,
@@ -434,18 +375,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps grey part · L: Holds the assembly"
    ],
    "ks": [
     35
    ],
    "n": 21,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 36.0,
@@ -453,18 +391,15 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses grey part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     36
    ],
    "n": 22,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses grey part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 37.0,
@@ -472,18 +407,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Reaches toward the workpiece · L: Holds the assembly"
    ],
    "ks": [
     37
    ],
    "n": 23,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches toward the workpiece",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 38.0,
@@ -491,8 +423,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     38,
@@ -500,10 +431,8 @@
    ],
    "n": 24,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 40.0,
@@ -511,18 +440,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: espera · MI: transporte",
-    "0-70 s revisado por Juan"
+    "R: Waits · L: Reaches for and grasps yellow part"
    ],
    "ks": [
     40
    ],
    "n": 25,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "transporte"
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for and grasps yellow part"
   },
   {
    "t0": 41.0,
@@ -530,8 +456,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses yellow part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     41,
@@ -541,10 +466,8 @@
    ],
    "n": 26,
    "dur": 4.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 45.0,
@@ -552,8 +475,7 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: espera · MI: transporte",
-    "0-70 s revisado por Juan"
+    "R: Waits · L: Transports workpiece to center work point"
    ],
    "ks": [
     45,
@@ -561,10 +483,8 @@
    ],
    "n": 27,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "transporte"
+   "desc_md": "Waits",
+   "desc_mi": "Transports workpiece to center work point"
   },
   {
    "t0": 47.0,
@@ -572,8 +492,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja y presiona pieza amarilla en conjunto · MI: Sostiene el conjunto",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses yellow part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     47,
@@ -585,10 +504,8 @@
    ],
    "n": 28,
    "dur": 6.0,
-   "desc_md": "Fits and presses a yellow piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 53.0,
@@ -596,8 +513,7 @@
    "md": "NV",
    "mi": "D",
    "obs": [
-    "MD: no visible · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Waits · L: Holds the assembly"
    ],
    "ks": [
     53,
@@ -605,10 +521,8 @@
    ],
    "n": 29,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "no visible",
-   "desc_mi_es": "espera"
+   "desc_md": "Waits",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 55.0,
@@ -616,8 +530,7 @@
    "md": "D",
    "mi": "OP",
    "obs": [
-    "MD: espera · MI: operación",
-    "0-70 s revisado por Juan"
+    "R: Waits · L: Fits and presses part onto assembly"
    ],
    "ks": [
     55,
@@ -625,10 +538,8 @@
    ],
    "n": 30,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "operación"
+   "desc_md": "Waits",
+   "desc_mi": "Fits and presses part onto assembly"
   },
   {
    "t0": 57.0,
@@ -636,8 +547,7 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps part from assembly · L: Holds the assembly"
    ],
    "ks": [
     57,
@@ -645,10 +555,8 @@
    ],
    "n": 31,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps part from assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 59.0,
@@ -656,8 +564,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene",
-    "0-70 s revisado por Juan"
+    "R: Fits and presses red part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     59,
@@ -671,10 +578,8 @@
    ],
    "n": 32,
    "dur": 8.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses red part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 67.0,
@@ -682,8 +587,7 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera",
-    "0-70 s revisado por Juan"
+    "R: Reaches for and grasps black part · L: Holds the assembly"
    ],
    "ks": [
     67,
@@ -691,10 +595,8 @@
    ],
    "n": 33,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps black part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 69.0,
@@ -702,7 +604,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     69,
@@ -711,10 +613,8 @@
    ],
    "n": 34,
    "dur": 3.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 72.0,
@@ -722,17 +622,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for and grasps black part · L: Holds the assembly"
    ],
    "ks": [
     72
    ],
    "n": 35,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps black part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 73.0,
@@ -740,7 +638,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     73,
@@ -751,10 +649,8 @@
    ],
    "n": 36,
    "dur": 5.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 78.0,
@@ -762,17 +658,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: espera · MI: espera"
+    "R: Handles instruction manual · L: Holds the assembly"
    ],
    "ks": [
     78
    ],
    "n": 37,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
+   "desc_md": "Handles instruction manual",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 79.0,
@@ -780,7 +674,7 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for parts in supply area · L: Holds and refers to instruction manual"
    ],
    "ks": [
     79,
@@ -788,10 +682,8 @@
    ],
    "n": 38,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for parts in supply area",
+   "desc_mi": "Holds and refers to instruction manual"
   },
   {
    "t0": 81.0,
@@ -799,7 +691,7 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: espera · MI: espera"
+    "R: Holds and stabilizes the instruction manual · L: Points to and reads the instructions"
    ],
    "ks": [
     81,
@@ -807,64 +699,26 @@
    ],
    "n": 39,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
+   "desc_md": "Holds and stabilizes the instruction manual",
+   "desc_mi": "Points to and reads the instructions"
   },
   {
    "t0": 83.0,
-   "t1": 84.0,
-   "md": "TR",
-   "mi": "D",
-   "obs": [
-    "MD: transporte · MI: espera"
-   ],
-   "ks": [
-    83
-   ],
-   "n": 40,
-   "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
-  },
-  {
-   "t0": 84.0,
-   "t1": 85.0,
-   "md": "OP",
-   "mi": "S",
-   "obs": [
-    "MD: operación · MI: sostiene"
-   ],
-   "ks": [
-    84
-   ],
-   "n": 41,
-   "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
-  },
-  {
-   "t0": 85.0,
    "t1": 86.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for and grasps grey part · L: Waits"
    ],
    "ks": [
+    83,
+    84,
     85
    ],
-   "n": 42,
-   "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "n": 40,
+   "dur": 3.0,
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Waits"
   },
   {
    "t0": 86.0,
@@ -872,18 +726,16 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses grey part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     86,
     87
    ],
-   "n": 43,
+   "n": 41,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses grey part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 88.0,
@@ -891,35 +743,31 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Espera · MI: Alcanza y toma pieza amarilla del montón"
+    "R: Waits · L: Reaches for and grasps yellow part"
    ],
    "ks": [
     88
    ],
-   "n": 44,
+   "n": 42,
    "dur": 1.0,
    "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps a yellow piece from the pile",
-   "desc_md_es": "Espera",
-   "desc_mi_es": "Alcanza y toma pieza amarilla del montón"
+   "desc_mi": "Reaches for and grasps yellow part"
   },
   {
    "t0": 89.0,
    "t1": 90.0,
    "md": "OP",
-   "mi": "S",
+   "mi": "OP",
    "obs": [
-    "MD: Encaja y presiona pieza amarilla en conjunto · MI: Sostiene el conjunto"
+    "R: Guides and presses part onto assembly · L: Fits yellow part onto vehicle"
    ],
    "ks": [
     89
    ],
-   "n": 45,
+   "n": 43,
    "dur": 1.0,
-   "desc_md": "Fits and presses a yellow piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Guides and presses part onto assembly",
+   "desc_mi": "Fits yellow part onto vehicle"
   },
   {
    "t0": 90.0,
@@ -927,18 +775,16 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Sostiene pieza amarilla · MI: Alcanza y toma pieza amarilla del montón"
+    "R: Holds the assembly · L: Reaches for and grasps yellow part"
    ],
    "ks": [
     90,
     91
    ],
-   "n": 46,
+   "n": 44,
    "dur": 2.0,
-   "desc_md": "Holds a yellow piece",
-   "desc_mi": "Reaches for and grasps a yellow piece from the pile",
-   "desc_md_es": "Sostiene pieza amarilla",
-   "desc_mi_es": "Alcanza y toma pieza amarilla del montón"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Reaches for and grasps yellow part"
   },
   {
    "t0": 92.0,
@@ -946,7 +792,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja y presiona pieza amarilla en conjunto · MI: Sostiene el conjunto"
+    "R: Fits and presses yellow part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     92,
@@ -958,77 +804,114 @@
     98,
     99
    ],
-   "n": 47,
+   "n": 45,
    "dur": 8.0,
-   "desc_md": "Fits and presses a yellow piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 100.0,
-   "t1": 102.0,
+   "t1": 103.0,
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Sostiene pieza amarilla · MI: Alcanza y toma pieza amarilla del montón"
+    "R: Holds yellow part · L: Reaches for and grasps yellow part"
    ],
    "ks": [
     100,
-    101
-   ],
-   "n": 48,
-   "dur": 2.0,
-   "desc_md": "Holds a yellow piece",
-   "desc_mi": "Reaches for and grasps a yellow piece from the pile",
-   "desc_md_es": "Sostiene pieza amarilla",
-   "desc_mi_es": "Alcanza y toma pieza amarilla del montón"
-  },
-  {
-   "t0": 102.0,
-   "t1": 103.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: espera · MI: espera"
-   ],
-   "ks": [
+    101,
     102
    ],
-   "n": 49,
-   "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
+   "n": 46,
+   "dur": 3.0,
+   "desc_md": "Holds yellow part",
+   "desc_mi": "Reaches for and grasps yellow part"
   },
   {
    "t0": 103.0,
+   "t1": 105.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Fits and presses yellow part onto assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    103,
+    104
+   ],
+   "n": 47,
+   "dur": 2.0,
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 105.0,
+   "t1": 106.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Holds the assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    105
+   ],
+   "n": 48,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 106.0,
+   "t1": 110.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Fits and presses yellow part onto assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    106,
+    107,
+    108,
+    109
+   ],
+   "n": 49,
+   "dur": 4.0,
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 110.0,
+   "t1": 111.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "R: Reaches for and grasps part from supply · L: Holds the assembly"
+   ],
+   "ks": [
+    110
+   ],
+   "n": 50,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps part from supply",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 111.0,
    "t1": 114.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
-    103,
-    104,
-    105,
-    106,
-    107,
-    108,
-    109,
-    110,
     111,
     112,
     113
    ],
-   "n": 50,
-   "dur": 11.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "n": 51,
+   "dur": 3.0,
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 114.0,
@@ -1036,17 +919,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Se aleja del punto de ensamblaje · MI: Sostiene el conjunto"
+    "R: Moves hand away from assembly · L: Holds the assembly"
    ],
    "ks": [
     114
    ],
-   "n": 51,
+   "n": 52,
    "dur": 1.0,
-   "desc_md": "Moves away from the assembly point",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Se aleja del punto de ensamblaje",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Moves hand away from assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 115.0,
@@ -1054,18 +935,16 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Adjusts and flips pages of instruction manual · L: Holds the vehicle assembly"
    ],
    "ks": [
     115,
     116
    ],
-   "n": 52,
+   "n": 53,
    "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Adjusts and flips pages of instruction manual",
+   "desc_mi": "Holds the vehicle assembly"
   },
   {
    "t0": 117.0,
@@ -1073,26 +952,24 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza amarilla del montón · MI: Sostiene el conjunto"
+    "R: Reaches for and grasps yellow part · L: Holds the assembly"
    ],
    "ks": [
     117,
     118
    ],
-   "n": 53,
+   "n": 54,
    "dur": 2.0,
-   "desc_md": "Reaches for and grasps a yellow piece from the pile",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Alcanza y toma pieza amarilla del montón",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps yellow part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 119.0,
-   "t1": 129.0,
+   "t1": 130.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses black part onto assembly · L: Holds the vehicle assembly"
    ],
    "ks": [
     119,
@@ -1104,37 +981,63 @@
     125,
     126,
     127,
-    128
+    128,
+    129
    ],
-   "n": 54,
-   "dur": 10.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "n": 55,
+   "dur": 11.0,
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
   },
   {
-   "t0": 129.0,
+   "t0": 130.0,
+   "t1": 132.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Holds the assembly · L: Handles the instruction manual"
+   ],
+   "ks": [
+    130,
+    131
+   ],
+   "n": 56,
+   "dur": 2.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Handles the instruction manual"
+  },
+  {
+   "t0": 132.0,
+   "t1": 133.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    132
+   ],
+   "n": 57,
+   "dur": 1.0,
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 133.0,
    "t1": 135.0,
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: Sostiene el conjunto · MI: Consulta el manual de instrucciones"
+    "R: Holds the assembly · L: Handles the instruction manual"
    ],
    "ks": [
-    129,
-    130,
-    131,
-    132,
     133,
     134
    ],
-   "n": 55,
-   "dur": 6.0,
+   "n": 58,
+   "dur": 2.0,
    "desc_md": "Holds the assembly",
-   "desc_mi": "Reads the instruction booklet",
-   "desc_md_es": "Sostiene el conjunto",
-   "desc_mi_es": "Consulta el manual de instrucciones"
+   "desc_mi": "Handles the instruction manual"
   },
   {
    "t0": 135.0,
@@ -1142,7 +1045,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses small part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     135,
@@ -1150,12 +1053,10 @@
     137,
     138
    ],
-   "n": 56,
+   "n": 59,
    "dur": 4.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses small part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 139.0,
@@ -1163,17 +1064,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Espera · MI: Transporta el conjunto"
+    "R: Waits · L: Transports workpiece to center work point"
    ],
    "ks": [
     139
    ],
-   "n": 57,
+   "n": 60,
    "dur": 1.0,
    "desc_md": "Waits",
-   "desc_mi": "Moves the assembly",
-   "desc_md_es": "Espera",
-   "desc_mi_es": "Transporta el conjunto"
+   "desc_mi": "Transports workpiece to center work point"
   },
   {
    "t0": 140.0,
@@ -1181,17 +1080,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: espera · MI: espera"
+    "R: Waits · L: Holds the assembly"
    ],
    "ks": [
     140
    ],
-   "n": 58,
+   "n": 61,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
+   "desc_md": "Waits",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 141.0,
@@ -1199,7 +1096,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses small yellow part onto assembly · L: Holds the vehicle assembly"
    ],
    "ks": [
     141,
@@ -1209,12 +1106,10 @@
     145,
     146
    ],
-   "n": 59,
+   "n": 62,
    "dur": 6.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses small yellow part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
   },
   {
    "t0": 147.0,
@@ -1222,17 +1117,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza gris del montón · MI: Sostiene el conjunto"
+    "R: Reaches for and grasps part from pile · L: Holds the assembly"
    ],
    "ks": [
     147
    ],
-   "n": 60,
+   "n": 63,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps a grey piece from the pile",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Alcanza y toma pieza gris del montón",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps part from pile",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 148.0,
@@ -1240,18 +1133,16 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja y presiona pieza en el conjunto · MI: Sostiene el conjunto"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     148,
     149
    ],
-   "n": 61,
+   "n": 64,
    "dur": 2.0,
-   "desc_md": "Fits and presses a piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza en el conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 150.0,
@@ -1259,18 +1150,16 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza gris del montón · MI: Sostiene el conjunto"
+    "R: Reaches for and grasps grey part · L: Holds the assembly"
    ],
    "ks": [
     150,
     151
    ],
-   "n": 62,
+   "n": 65,
    "dur": 2.0,
-   "desc_md": "Reaches for and grasps a grey piece from the pile",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Alcanza y toma pieza gris del montón",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 152.0,
@@ -1278,19 +1167,17 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja y presiona pieza amarilla en conjunto · MI: Sostiene el conjunto"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     152,
     153,
     154
    ],
-   "n": 63,
+   "n": 66,
    "dur": 3.0,
-   "desc_md": "Fits and presses a yellow piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 155.0,
@@ -1298,17 +1185,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for and grasps grey part · L: Holds the assembly"
    ],
    "ks": [
     155
    ],
-   "n": 64,
+   "n": 67,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps grey part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 156.0,
@@ -1316,54 +1201,48 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses grey part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     156
    ],
-   "n": 65,
+   "n": 68,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses grey part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 157.0,
-   "t1": 158.0,
+   "t1": 159.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for part from supply area · L: Holds the assembly"
    ],
    "ks": [
-    157
+    157,
+    158
    ],
-   "n": 66,
-   "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "n": 69,
+   "dur": 2.0,
+   "desc_md": "Reaches for part from supply area",
+   "desc_mi": "Holds the assembly"
   },
   {
-   "t0": 158.0,
+   "t0": 159.0,
    "t1": 160.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses yellow part onto assembly · L: Holds the assembly"
    ],
    "ks": [
-    158,
     159
    ],
-   "n": 67,
-   "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "n": 70,
+   "dur": 1.0,
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 160.0,
@@ -1371,17 +1250,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Moves hand away from instruction manual · L: Holds the assembly"
    ],
    "ks": [
     160
    ],
-   "n": 68,
+   "n": 71,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Moves hand away from instruction manual",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 161.0,
@@ -1389,7 +1266,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     161,
@@ -1397,12 +1274,10 @@
     163,
     164
    ],
-   "n": 69,
+   "n": 72,
    "dur": 4.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 165.0,
@@ -1410,17 +1285,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for and grasps small part · L: Holds the assembly"
    ],
    "ks": [
     165
    ],
-   "n": 70,
+   "n": 73,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps small part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 166.0,
@@ -1428,7 +1301,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     166,
@@ -1436,12 +1309,10 @@
     168,
     169
    ],
-   "n": 71,
+   "n": 74,
    "dur": 4.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 170.0,
@@ -1449,25 +1320,23 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza del montón · MI: Sostiene el conjunto"
+    "R: Reaches for part from supply area · L: Holds the assembly"
    ],
    "ks": [
     170
    ],
-   "n": 72,
+   "n": 75,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps a piece from the pile",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Alcanza y toma pieza del montón",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Reaches for part from supply area",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 171.0,
-   "t1": 183.0,
+   "t1": 177.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses yellow part onto assembly · L: Holds the vehicle assembly"
    ],
    "ks": [
     171,
@@ -1475,20 +1344,48 @@
     173,
     174,
     175,
-    176,
-    177,
+    176
+   ],
+   "n": 76,
+   "dur": 6.0,
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
+  },
+  {
+   "t0": 177.0,
+   "t1": 178.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Waits · L: Holds the assembly"
+   ],
+   "ks": [
+    177
+   ],
+   "n": 77,
+   "dur": 1.0,
+   "desc_md": "Waits",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 178.0,
+   "t1": 183.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
+   ],
+   "ks": [
     178,
     179,
     180,
     181,
     182
    ],
-   "n": 73,
-   "dur": 12.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "n": 78,
+   "dur": 5.0,
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 183.0,
@@ -1496,17 +1393,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for and grasps yellow part · L: Holds the assembly"
    ],
    "ks": [
     183
    ],
-   "n": 74,
+   "n": 79,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps yellow part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 184.0,
@@ -1514,7 +1409,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses yellow part onto assembly · L: Holds the vehicle assembly"
    ],
    "ks": [
     184,
@@ -1524,12 +1419,10 @@
     188,
     189
    ],
-   "n": 75,
+   "n": 80,
    "dur": 6.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses yellow part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
   },
   {
    "t0": 190.0,
@@ -1537,37 +1430,48 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza negra del montón · MI: Espera"
+    "R: Reaches for and grasps black part · L: Waits"
    ],
    "ks": [
     190
    ],
-   "n": 76,
+   "n": 81,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps a black piece from the pile",
-   "desc_mi": "Waits",
-   "desc_md_es": "Alcanza y toma pieza negra del montón",
-   "desc_mi_es": "Espera"
+   "desc_md": "Reaches for and grasps black part",
+   "desc_mi": "Waits"
   },
   {
    "t0": 191.0,
+   "t1": 193.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Handles small black part · L: Holds the assembly"
+   ],
+   "ks": [
+    191,
+    192
+   ],
+   "n": 82,
+   "dur": 2.0,
+   "desc_md": "Handles small black part",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 193.0,
    "t1": 194.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses grey part onto assembly · L: Holds the assembly"
    ],
    "ks": [
-    191,
-    192,
     193
    ],
-   "n": 77,
-   "dur": 3.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "n": 83,
+   "dur": 1.0,
+   "desc_md": "Fits and presses grey part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 194.0,
@@ -1575,17 +1479,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for and grasps small part · L: Holds the assembly"
    ],
    "ks": [
     194
    ],
-   "n": 78,
+   "n": 84,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps small part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 195.0,
@@ -1593,17 +1495,15 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses grey part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     195
    ],
-   "n": 79,
+   "n": 85,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "desc_md": "Fits and presses grey part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 196.0,
@@ -1611,112 +1511,100 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza gris del montón · MI: Sostiene pieza gris"
+    "R: Reaches for and grasps small part · L: Holds the assembly"
    ],
    "ks": [
     196
    ],
-   "n": 80,
+   "n": 86,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps a grey piece from the pile",
-   "desc_mi": "Holds a grey piece",
-   "desc_md_es": "Alcanza y toma pieza gris del montón",
-   "desc_mi_es": "Sostiene pieza gris"
+   "desc_md": "Reaches for and grasps small part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 197.0,
    "t1": 198.0,
-   "md": "OP",
-   "mi": "S",
+   "md": "D",
+   "mi": "D",
    "obs": [
-    "MD: Encaja pieza gris en el conjunto · MI: Sostiene el conjunto"
+    "R: Holds small part · L: Holds the assembly"
    ],
    "ks": [
     197
    ],
-   "n": 81,
+   "n": 87,
    "dur": 1.0,
-   "desc_md": "Fits a grey piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja pieza gris en el conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Holds small part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 198.0,
-   "t1": 199.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: espera · MI: espera"
-   ],
-   "ks": [
-    198
-   ],
-   "n": 82,
-   "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
-  },
-  {
-   "t0": 199.0,
    "t1": 200.0,
    "md": "S",
    "mi": "OP",
    "obs": [
-    "MD: Sostiene el conjunto · MI: Encaja y presiona pieza gris"
+    "R: Holds the yellow vehicle assembly · L: Fits grey part onto the assembly"
    ],
    "ks": [
+    198,
     199
    ],
-   "n": 83,
-   "dur": 1.0,
-   "desc_md": "Holds the assembly",
-   "desc_mi": "Fits and presses a grey piece",
-   "desc_md_es": "Sostiene el conjunto",
-   "desc_mi_es": "Encaja y presiona pieza gris"
+   "n": 88,
+   "dur": 2.0,
+   "desc_md": "Holds the yellow vehicle assembly",
+   "desc_mi": "Fits grey part onto the assembly"
   },
   {
    "t0": 200.0,
-   "t1": 202.0,
+   "t1": 201.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for and grasps black part · L: Waits"
    ],
    "ks": [
-    200,
-    201
+    200
    ],
-   "n": 84,
-   "dur": 2.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "n": 89,
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps black part",
+   "desc_mi": "Waits"
   },
   {
-   "t0": 202.0,
-   "t1": 207.0,
+   "t0": 201.0,
+   "t1": 206.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
    ],
    "ks": [
+    201,
     202,
     203,
     204,
-    205,
+    205
+   ],
+   "n": 90,
+   "dur": 5.0,
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 206.0,
+   "t1": 207.0,
+   "md": "S",
+   "mi": "OP",
+   "obs": [
+    "R: Holds the assembly · L: Fits and presses the part"
+   ],
+   "ks": [
     206
    ],
-   "n": 85,
-   "dur": 5.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "n": 91,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses the part"
   },
   {
    "t0": 207.0,
@@ -1724,17 +1612,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: espera · MI: espera"
+    "R: Holds small black part · L: Consults instruction manual"
    ],
    "ks": [
     207
    ],
-   "n": 86,
+   "n": 92,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
+   "desc_md": "Holds small black part",
+   "desc_mi": "Consults instruction manual"
   },
   {
    "t0": 208.0,
@@ -1742,17 +1628,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: espera · MI: transporte"
+    "R: Holds small black part · L: Adjusts instruction manual"
    ],
    "ks": [
     208
    ],
-   "n": 87,
+   "n": 93,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "transporte"
+   "desc_md": "Holds small black part",
+   "desc_mi": "Adjusts instruction manual"
   },
   {
    "t0": 209.0,
@@ -1760,17 +1644,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: espera · MI: espera"
+    "R: Consults instruction manual · L: Waits"
    ],
    "ks": [
     209
    ],
-   "n": 88,
+   "n": 94,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
+   "desc_md": "Consults instruction manual",
+   "desc_mi": "Waits"
   },
   {
    "t0": 210.0,
@@ -1778,7 +1660,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja y presiona pieza gris en conjunto · MI: Sostiene el conjunto"
+    "R: Fits and presses black part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     210,
@@ -1787,50 +1669,59 @@
     213,
     214
    ],
-   "n": 89,
+   "n": 95,
    "dur": 5.0,
-   "desc_md": "Fits and presses a grey piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza gris en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 215.0,
-   "t1": 216.0,
+   "t1": 217.0,
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: espera · MI: espera"
+    "R: Holds and adjusts the assembly · L: Holds and manipulates small part"
    ],
    "ks": [
-    215
+    215,
+    216
    ],
-   "n": 90,
-   "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
+   "n": 96,
+   "dur": 2.0,
+   "desc_md": "Holds and adjusts the assembly",
+   "desc_mi": "Holds and manipulates small part"
   },
   {
-   "t0": 216.0,
+   "t0": 217.0,
+   "t1": 218.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "R: Fits and presses black part onto assembly · L: Holds and stabilizes the vehicle assembly"
+   ],
+   "ks": [
+    217
+   ],
+   "n": 97,
+   "dur": 1.0,
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds and stabilizes the vehicle assembly"
+  },
+  {
+   "t0": 218.0,
    "t1": 219.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja y presiona pieza negra en conjunto · MI: Sostiene el conjunto"
+    "R: Fits and presses black part onto assembly · L: Holds the assembly"
    ],
    "ks": [
-    216,
-    217,
     218
    ],
-   "n": 91,
-   "dur": 3.0,
-   "desc_md": "Fits and presses a black piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza negra en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "n": 98,
+   "dur": 1.0,
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 219.0,
@@ -1838,70 +1729,64 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Alcanza y toma pieza negra del montón · MI: Sostiene pieza negra"
+    "R: Reaches for and grasps black part · L: Holds black part"
    ],
    "ks": [
     219
    ],
-   "n": 92,
+   "n": 99,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps a black piece from the pile",
-   "desc_mi": "Holds a black piece",
-   "desc_md_es": "Alcanza y toma pieza negra del montón",
-   "desc_mi_es": "Sostiene pieza negra"
+   "desc_md": "Reaches for and grasps black part",
+   "desc_mi": "Holds black part"
   },
   {
    "t0": 220.0,
-   "t1": 222.0,
+   "t1": 228.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Encaja pieza negra en el chasis · MI: Sostiene el conjunto"
+    "R: Fits and presses black part onto assembly · L: Holds the vehicle assembly"
    ],
    "ks": [
     220,
-    221
-   ],
-   "n": 93,
-   "dur": 2.0,
-   "desc_md": "Fits a black piece onto the chassis",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja pieza negra en el chasis",
-   "desc_mi_es": "Sostiene el conjunto"
-  },
-  {
-   "t0": 222.0,
-   "t1": 223.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: espera · MI: espera"
-   ],
-   "ks": [
-    222
-   ],
-   "n": 94,
-   "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "espera",
-   "desc_mi_es": "espera"
-  },
-  {
-   "t0": 223.0,
-   "t1": 244.0,
-   "md": "OP",
-   "mi": "S",
-   "obs": [
-    "MD: operación · MI: sostiene"
-   ],
-   "ks": [
+    221,
+    222,
     223,
     224,
     225,
     226,
-    227,
-    228,
+    227
+   ],
+   "n": 100,
+   "dur": 8.0,
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
+  },
+  {
+   "t0": 228.0,
+   "t1": 229.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "R: Moves hand toward the assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    228
+   ],
+   "n": 101,
+   "dur": 1.0,
+   "desc_md": "Moves hand toward the assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 229.0,
+   "t1": 241.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Fits and presses black part onto assembly · L: Holds the vehicle assembly"
+   ],
+   "ks": [
     229,
     230,
     231,
@@ -1913,17 +1798,60 @@
     237,
     238,
     239,
-    240,
-    241,
-    242,
+    240
+   ],
+   "n": 102,
+   "dur": 12.0,
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
+  },
+  {
+   "t0": 241.0,
+   "t1": 242.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Holds small part near assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    241
+   ],
+   "n": 103,
+   "dur": 1.0,
+   "desc_md": "Holds small part near assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 242.0,
+   "t1": 243.0,
+   "md": "S",
+   "mi": "OP",
+   "obs": [
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    242
+   ],
+   "n": 104,
+   "dur": 1.0,
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 243.0,
+   "t1": 244.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Holds the assembly · L: Holds the assembly"
+   ],
+   "ks": [
     243
    ],
-   "n": 95,
-   "dur": 21.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "n": 105,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 244.0,
@@ -1931,103 +1859,123 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: transporte · MI: espera"
+    "R: Reaches for and grasps small part · L: Holds the assembly"
    ],
    "ks": [
     244
    ],
-   "n": 96,
+   "n": 106,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "transporte",
-   "desc_mi_es": "espera"
+   "desc_md": "Reaches for and grasps small part",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 245.0,
-   "t1": 251.0,
-   "md": "OP",
-   "mi": "S",
-   "obs": [
-    "MD: Encaja y presiona pieza gris en conjunto · MI: Sostiene el conjunto"
-   ],
-   "ks": [
-    245,
-    246,
-    247,
-    248,
-    249,
-    250
-   ],
-   "n": 97,
-   "dur": 6.0,
-   "desc_md": "Fits and presses a grey piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza gris en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
-  },
-  {
-   "t0": 251.0,
-   "t1": 253.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [
-    "MD: Sostiene el conjunto · MI: Encaja y presiona la pieza"
-   ],
-   "ks": [
-    251,
-    252
-   ],
-   "n": 98,
-   "dur": 2.0,
-   "desc_md": "Holds the assembly",
-   "desc_mi": "Fits and presses the piece",
-   "desc_md_es": "Sostiene el conjunto",
-   "desc_mi_es": "Encaja y presiona la pieza"
-  },
-  {
-   "t0": 253.0,
-   "t1": 254.0,
-   "md": "OP",
-   "mi": "OP",
-   "obs": [
-    "MD: Encaja y presiona pieza sobre el conjunto · MI: Sostiene y estabiliza el vehículo"
-   ],
-   "ks": [
-    253
-   ],
-   "n": 99,
-   "dur": 1.0,
-   "desc_md": "Fits and presses a piece onto the assembly",
-   "desc_mi": "Holds and steadies the vehicle",
-   "desc_md_es": "Encaja y presiona pieza sobre el conjunto",
-   "desc_mi_es": "Sostiene y estabiliza el vehículo"
-  },
-  {
-   "t0": 254.0,
-   "t1": 255.0,
+   "t1": 246.0,
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: Sostiene el conjunto · MI: Sostiene el conjunto"
+    "R: Holds the assembly · L: Holds the assembly"
    ],
    "ks": [
-    254
+    245
    ],
-   "n": 100,
+   "n": 107,
    "dur": 1.0,
    "desc_md": "Holds the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Sostiene el conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_mi": "Holds the assembly"
   },
   {
-   "t0": 255.0,
-   "t1": 281.0,
+   "t0": 246.0,
+   "t1": 250.0,
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: operación · MI: sostiene"
+    "R: Fits and presses small part onto assembly · L: Holds the assembly"
+   ],
+   "ks": [
+    246,
+    247,
+    248,
+    249
+   ],
+   "n": 108,
+   "dur": 4.0,
+   "desc_md": "Fits and presses small part onto assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 250.0,
+   "t1": 251.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Delay · L: Delay"
+   ],
+   "ks": [
+    250
+   ],
+   "n": 109,
+   "dur": 1.0,
+   "desc_md": "Delay",
+   "desc_mi": "Delay"
+  },
+  {
+   "t0": 251.0,
+   "t1": 252.0,
+   "md": "S",
+   "mi": "OP",
+   "obs": [
+    "R: Hold · L: Operation"
+   ],
+   "ks": [
+    251
+   ],
+   "n": 110,
+   "dur": 1.0,
+   "desc_md": "Hold",
+   "desc_mi": "Operation"
+  },
+  {
+   "t0": 252.0,
+   "t1": 253.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Delay · L: Delay"
+   ],
+   "ks": [
+    252
+   ],
+   "n": 111,
+   "dur": 1.0,
+   "desc_md": "Delay",
+   "desc_mi": "Delay"
+  },
+  {
+   "t0": 253.0,
+   "t1": 255.0,
+   "md": "S",
+   "mi": "OP",
+   "obs": [
+    "R: Hold · L: Operation"
+   ],
+   "ks": [
+    253,
+    254
+   ],
+   "n": 112,
+   "dur": 2.0,
+   "desc_md": "Hold",
+   "desc_mi": "Operation"
+  },
+  {
+   "t0": 255.0,
+   "t1": 262.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Operation · L: Hold"
    ],
    "ks": [
     255,
@@ -2036,33 +1984,136 @@
     258,
     259,
     260,
-    261,
-    262,
+    261
+   ],
+   "n": 113,
+   "dur": 7.0,
+   "desc_md": "Operation",
+   "desc_mi": "Hold"
+  },
+  {
+   "t0": 262.0,
+   "t1": 263.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Delay · L: Delay"
+   ],
+   "ks": [
+    262
+   ],
+   "n": 114,
+   "dur": 1.0,
+   "desc_md": "Delay",
+   "desc_mi": "Delay"
+  },
+  {
+   "t0": 263.0,
+   "t1": 268.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Operation · L: Hold"
+   ],
+   "ks": [
     263,
     264,
     265,
     266,
-    267,
-    268,
+    267
+   ],
+   "n": 115,
+   "dur": 5.0,
+   "desc_md": "Operation",
+   "desc_mi": "Hold"
+  },
+  {
+   "t0": 268.0,
+   "t1": 269.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Delay · L: Delay"
+   ],
+   "ks": [
+    268
+   ],
+   "n": 116,
+   "dur": 1.0,
+   "desc_md": "Delay",
+   "desc_mi": "Delay"
+  },
+  {
+   "t0": 269.0,
+   "t1": 273.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Fits and presses part onto assembly · L: Holds the assembly"
+   ],
+   "ks": [
     269,
     270,
     271,
-    272,
+    272
+   ],
+   "n": 117,
+   "dur": 4.0,
+   "desc_md": "Fits and presses part onto assembly",
+   "desc_mi": "Holds the assembly"
+  },
+  {
+   "t0": 273.0,
+   "t1": 275.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Holds and adjusts the assembly · L: Holds and adjusts the assembly"
+   ],
+   "ks": [
     273,
-    274,
+    274
+   ],
+   "n": 118,
+   "dur": 2.0,
+   "desc_md": "Holds and adjusts the assembly",
+   "desc_mi": "Holds and adjusts the assembly"
+  },
+  {
+   "t0": 275.0,
+   "t1": 280.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Fits and presses black part onto assembly · L: Holds the vehicle assembly"
+   ],
+   "ks": [
     275,
     276,
     277,
     278,
-    279,
+    279
+   ],
+   "n": 119,
+   "dur": 5.0,
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds the vehicle assembly"
+  },
+  {
+   "t0": 280.0,
+   "t1": 281.0,
+   "md": "S",
+   "mi": "OP",
+   "obs": [
+    "R: Holds the assembly · L: Fits and presses black part onto vehicle"
+   ],
+   "ks": [
     280
    ],
-   "n": 101,
-   "dur": 26.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "operación",
-   "desc_mi_es": "sostiene"
+   "n": 120,
+   "dur": 1.0,
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses black part onto vehicle"
   },
   {
    "t0": 281.0,
@@ -2070,17 +2121,15 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Sostiene el conjunto · MI: Alcanza la pieza de trabajo"
+    "R: Holds the assembly · L: Reaches for the assembly"
    ],
    "ks": [
     281
    ],
-   "n": 102,
+   "n": 121,
    "dur": 1.0,
    "desc_md": "Holds the assembly",
-   "desc_mi": "Reaches for the workpiece",
-   "desc_md_es": "Sostiene el conjunto",
-   "desc_mi_es": "Alcanza la pieza de trabajo"
+   "desc_mi": "Reaches for the assembly"
   },
   {
    "t0": 282.0,
@@ -2088,35 +2137,31 @@
    "md": "S",
    "mi": "OP",
    "obs": [
-    "MD: sostiene · MI: operación"
+    "R: Holds the assembly · L: Fits and presses the part"
    ],
    "ks": [
     282
    ],
-   "n": 103,
+   "n": 122,
    "dur": 1.0,
-   "desc_md": null,
-   "desc_mi": null,
-   "desc_md_es": "sostiene",
-   "desc_mi_es": "operación"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses the part"
   },
   {
    "t0": 283.0,
    "t1": 284.0,
-   "md": "OP",
-   "mi": "S",
+   "md": "D",
+   "mi": "D",
    "obs": [
-    "MD: Encaja y presiona pieza amarilla en conjunto · MI: Sostiene el conjunto"
+    "R: Holds the assembly · L: Holds the assembly"
    ],
    "ks": [
     283
    ],
-   "n": 104,
+   "n": 123,
    "dur": 1.0,
-   "desc_md": "Fits and presses a yellow piece onto the assembly",
-   "desc_mi": "Holds the assembly",
-   "desc_md_es": "Encaja y presiona pieza amarilla en conjunto",
-   "desc_mi_es": "Sostiene el conjunto"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds the assembly"
   }
  ]
 }
