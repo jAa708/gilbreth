@@ -1,4 +1,24 @@
-# Running Gilbreth on AMD Developer Cloud (Instinct MI300X)
+# Running Gilbreth on AMD
+
+## Option A — AMD Token Factory (what the submission uses)
+Token Factory is AMD's model API catalog for the event: OpenAI-compatible endpoints running on AMD GPUs, with one
+key per team. Gemma 4 31B is listed as `Gemma-4-31B-IT` (text and images).
+
+- Base URL `https://developer.amd.com.cn/radeon/api/v1`; key in `GILBRETH_API_KEY` (never in files or the repo).
+- Shared limits per team key: 20 requests per minute per account, 8 at a time, and a daily spend cap; 429 answers
+  carry `Retry-After`. The agent keeps under the limit itself (`GILBRETH_RPM=18`) and backs off on 429.
+- Only `json_object` structured output is accepted for this model, so the agent sends `GILBRETH_JSON_MODE=object` and
+  puts the JSON schema in the prompt; when the daily cap is used up it stops cleanly (exit code 3).
+
+```bash
+export GILBRETH_API_KEY=...          # your team's key, in your own shell
+python scripts/tokenfactory_batch.py lego gearbox plastic cardboard screw
+```
+
+One second of video costs about 1.6 requests (one per second plus one per chart row for the descriptions), so a
+5-minute video takes about 26 minutes at 18 requests per minute.
+
+## Option B — your own AMD Instinct MI300X (AMD Developer Cloud)
 
 The CPU part (hand tracking and per-second packages) is prepared beforehand on any computer with
 `scripts/prepare_runs.py`. The VM on AMD Developer Cloud then only does the GPU part:

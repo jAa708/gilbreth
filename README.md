@@ -5,7 +5,8 @@ seconds come out — for the methods engineer to review and approve.**
 
 Built for the **AMD Developer Hackathon: ACT III** (Track 1, *Intelligent Industry*) by team **ArkhanLabs**
 (Juan David Sabogal Orozco, industrial engineering student, Cali, Colombia).
-Vision model: **Gemma 4 31B** served with **vLLM on an AMD Instinct MI300X (ROCm)**. Hand tracking: **MediaPipe**.
+Vision model: **Gemma 4 31B** served on **AMD GPUs** through **AMD Token Factory** (the event's OpenAI-compatible
+endpoint), or self-hosted with **vLLM on ROCm** (AMD Instinct MI300X). Hand tracking: **MediaPipe**.
 
 > Named after Frank and Lillian Gilbreth, who filmed workers a century ago to study and improve their motions.
 
@@ -34,7 +35,7 @@ running Gilbreth on the new video.
 1. **Hands** — MediaPipe tracks both hands at 10 fps; handedness from a ±2 s majority vote.
 2. **Operation sheet** — Gemma looks at 6 frames of the whole video and writes what is assembled, where the parts,
    tools and documents are, and the typical cycle. Nothing about the product is hard-coded.
-3. **Every second** — Gemma 4 31B on the MI300X gets 4 frames with the hands marked, a crop of each hand and
+3. **Every second** — Gemma 4 31B on AMD GPUs gets 4 frames with the hands marked, a crop of each hand and
    hand-speed data, and returns the activity of each hand as schema-checked JSON.
 4. **Human calibration (the human + AI loop)** — the engineer corrects the first cycle (≥ 30 s) in the review page.
    A small gradient-boosting model learns from that correction how much to trust the vision model versus the hand
@@ -62,7 +63,14 @@ everything we tried and dropped: [`docs/RESULTS.md`](docs/RESULTS.md).
 pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
-**Full agent** on a GPU server with vLLM (see [`docs/AMD.md`](docs/AMD.md) for the MI300X setup):
+**Full agent** on AMD Token Factory (shared Gemma 4 31B endpoint; your team's key in `GILBRETH_API_KEY`):
+```bash
+python scripts/tokenfactory_batch.py lego gearbox      # prepared runs/, 20 requests per minute, writes docs/benchmark.json
+```
+In the app, set `GILBRETH_VLLM_URL=https://developer.amd.com.cn/radeon/api/v1`, `GILBRETH_MODEL=Gemma-4-31B-IT`,
+`GILBRETH_JSON_MODE=object`, `GILBRETH_RPM=18` and `GILBRETH_API_KEY` (Streamlit secrets) to chart uploads live.
+
+**Full agent** on your own GPU server with vLLM (see [`docs/AMD.md`](docs/AMD.md) for the MI300X setup):
 ```bash
 vllm serve google/gemma-4-31B-it --max-model-len 16384 --limit-mm-per-prompt '{"image": 8, "video": 0}'
 python agent/bimanual.py video.mp4 --salida run1 --base http://127.0.0.1:8000 --modelo google/gemma-4-31B-it --idioma en

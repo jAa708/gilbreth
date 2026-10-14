@@ -10,8 +10,8 @@ Uso:
 Opciones: --convencion curso|oit (sostener mientras la otra mano transporta: D o S), --hilos 8, --sin-sensores,
           --sin-recortes, --etiqueta x
 """
-import argparse, base64, json, os, re, time, urllib.request
-from collections import Counter
+import argparse, base64, json, os, random, re, threading, time, urllib.error, urllib.request
+from collections import Counter, deque
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -148,10 +148,39 @@ def b64(p):
     return 'data:image/jpeg;base64,' + base64.b64encode(Path(p).read_bytes()).decode()
 
 
+# Endpoints compartidos (p. ej. AMD Token Factory): ritmo máximo por minuto, salida JSON sin esquema estricto y corte
+# limpio cuando se acaba el cupo del día. Todo por variables de entorno; sin ellas, el comportamiento es el de vLLM.
+MODO_JSON = os.environ.get('GILBRETH_JSON_MODE', 'schema')        # schema (vLLM) | object (Token Factory)
+RPM = float(os.environ.get('GILBRETH_RPM', '0') or 0)               # 0 = sin límite
+_turnos, _cerrojo = deque(), threading.Lock()
+SIN_CUPO = threading.Event()                                         # el endpoint dijo que no queda cupo hoy
+
+
+def _turno():
+    """Espera hasta que haya sitio en la ventana de 60 s (compartida por todos los hilos)."""
+    if RPM <= 0:
+        return
+    while True:
+        with _cerrojo:
+            ahora = time.time()
+            while _turnos and ahora - _turnos[0] > 60:
+                _turnos.popleft()
+            if len(_turnos) < RPM:
+                _turnos.append(ahora)
+                return
+            espera = 60.5 - (ahora - _turnos[0])
+        time.sleep(max(espera, 0.2))
+
+
 def llamar(a, contenido, esquema, nombre, max_tokens=900):
     cuerpo = {'model': a.modelo, 'temperature': 0.0, 'max_tokens': max_tokens,
               'messages': [{'role': 'user', 'content': contenido}],
               'response_format': {'type': 'json_schema', 'json_schema': {'name': nombre, 'strict': True, 'schema': esquema}}}
+    if MODO_JSON == 'object':                       # sin esquema estricto: el esquema va en el texto
+        cuerpo['response_format'] = {'type': 'json_object'}
+        cuerpo['messages'][0]['content'] = contenido + [{'type': 'text', 'text': (
+            'Return ONLY one JSON object that follows this JSON Schema exactly (same keys, allowed values only):\n'
+            + json.dumps(esquema, separators=(',', ':')))}]
     if getattr(a, 'ollama', False):
         cuerpo['reasoning_effort'] = 'none'
     url = a.base.rstrip('/')
@@ -159,7 +188,11 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
     cabeceras = {'Content-Type': 'application/json'}
     if os.environ.get('GILBRETH_API_KEY'):          # endpoint alojado (p. ej. AMD): la clave solo por variable de entorno
         cabeceras['Authorization'] = 'Bearer ' + os.environ['GILBRETH_API_KEY']
-    for intento in range(3):
+    fallos = 0
+    for intento in range(10):
+        if SIN_CUPO.is_set():
+            return {'_error': 'daily quota used up'}
+        _turno()
         try:
             req = urllib.request.Request(url, data=json.dumps(cuerpo).encode(), headers=cabeceras)
             t0 = time.time()
@@ -171,13 +204,28 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
             texto = r['choices'][0]['message'].get('content') or ''
             m = re.search(r'\{.*\}', texto, re.S)
             return json.loads(m.group(0)) if m else {}
-        except Exception as e:                      # reintento corto: el servidor puede estar ocupado
-            if isinstance(e, urllib.error.HTTPError) and e.code == 400 and 'response_format' in cuerpo:
+        except urllib.error.HTTPError as e:
+            detalle = e.read().decode('utf-8', 'replace')[:300].lower()
+            if e.code == 400 and 'response_format' in cuerpo and ('response_format' in detalle or 'schema' in detalle):
                 cuerpo.pop('response_format')       # API sin salida estructurada: el JSON se saca del texto
                 continue
-            if intento == 2:
+            if e.code in (400, 402, 403, 429) and any(p in detalle for p in ('credit', 'quota', 'spend', 'insufficient')):
+                SIN_CUPO.set()                      # no tiene sentido seguir: el cupo vuelve al día siguiente
+                return {'_error': 'daily quota used up'}
+            if e.code in (429, 502, 503):           # ritmo o saturación: esperar lo que pide el servidor
+                espera = float(e.headers.get('Retry-After') or 0) or min(60, 2 ** intento)
+                time.sleep(espera + random.uniform(0, 1.5))
+                continue
+            fallos += 1
+            if fallos >= 3:
+                return {'_error': f'HTTP {e.code}: {detalle[:150]}'}
+            time.sleep(3)
+        except Exception as e:                      # red o servidor ocupado: reintento corto
+            fallos += 1
+            if fallos >= 3:
                 return {'_error': str(e)[:200]}
             time.sleep(3)
+    return {'_error': 'too many retries'}
 
 
 def coherencia_curso(md, mi):

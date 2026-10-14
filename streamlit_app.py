@@ -1,7 +1,7 @@
 """Gilbreth: AI motion study from a workstation video.
 A phone video of a manual operation goes in; a draft bimanual (left-hand / right-hand) chart, method alerts and an
 improvement plan in seconds come out, for the methods engineer to review and approve.
-Vision model: Gemma 4 31B served with vLLM on AMD Instinct MI300X (ROCm). Hand tracking: MediaPipe."""
+Vision model: Gemma 4 31B served on AMD GPUs (AMD Token Factory, or vLLM on ROCm). Hand tracking: MediaPipe."""
 import json, os, sys, tempfile
 from collections import defaultdict
 from pathlib import Path
@@ -153,7 +153,7 @@ with st.sidebar:
 HUELLA = (EJ[nombre] / 'diagrama.json').stat().st_mtime  # la caché se renueva si el ejemplo cambia
 d, ev, cal, video, verdad = cargar(str(EJ[nombre]), HUELLA)
 with st.sidebar:
-    st.caption('Computed with ' + d['meta'].get('motor_en', 'Gemma 4 31B on AMD Instinct MI300X (vLLM + ROCm)')
+    st.caption('Computed with ' + d['meta'].get('motor_en', 'Gemma 4 31B on AMD GPUs (AMD Token Factory)')
                + ' and MediaPipe hand tracking.')
     if d['meta'].get('licencia_en'):
         st.caption(d['meta']['licencia_en'])
@@ -177,7 +177,7 @@ if vista == 'Overview':
     corrida = (B.get('runs') or {}).get(d['meta'].get('run', ''))
     a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
     if corrida:
-        c4.metric('Agent on AMD MI300X', f"{corrida['wall_s'] / 60:.1f} min",
+        c4.metric('Agent on AMD', f"{corrida['wall_s'] / 60:.1f} min",
                   f"vs ≈ {a_mano:.0f} min by hand", delta_color='off')
     elif d['meta'].get('minutos_a_mano'):
         c4.metric('Charting by hand (measured)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
@@ -202,7 +202,7 @@ if vista == 'Overview':
         '1. **Hands** — MediaPipe tracks both hands at 10 fps; handedness comes from a ±2 s majority vote.\n'
         '2. **Operation sheet** — the vision model looks at 6 frames and writes what is assembled, where the parts '
         'and tools are, and the typical cycle. Nothing about the product is hard-coded.\n'
-        '3. **Every second** — Gemma 4 31B on the AMD MI300X gets 4 marked frames, a crop of each hand and '
+        '3. **Every second** — Gemma 4 31B, served on AMD GPUs, gets 4 marked frames, a crop of each hand and '
         'hand-speed data, and returns the activity of each hand (ILO symbols: ○ operation, ⇨ transport, '
         'D delay, ▽ hold) as schema-checked JSON.\n'
         '4. **Human calibration** — the engineer corrects the first cycle (≥ 30 s). A small model learns from that '
@@ -309,7 +309,7 @@ if vista == 'Accuracy & AMD':
                'allowances).')
     st.subheader('Running on AMD')
     if B.get('runs'):
-        st.markdown(f"Model **{B.get('modelo', '')}** served with vLLM on **{B.get('gpu') or 'AMD Instinct MI300X'}**"
+        st.markdown(f"Model **{B.get('modelo', '')}** served on **{B.get('gpu') or 'AMD GPUs'}**"
                     + (f", {B['vram_used_gb']} of {B['vram_total_gb']} GB of GPU memory in use"
                        if B.get('vram_used_gb') else '') + '.')
         st.dataframe(pd.DataFrame([{'Video': k, 'Video length (s)': v['video_s'], 'Agent wall time (s)': v['wall_s'],
@@ -320,10 +320,12 @@ if vista == 'Accuracy & AMD':
                                     'Output tokens (mean)': v['completion_tokens_mean']}
                                    for k, v in B.get('pasos', {}).items()]), hide_index=True, width="stretch")
         st.caption('Steps: operation sheet (1 request per video), per-second coding (1 per second of video), '
-                   'row descriptions (1 per chart row). Wall time covers the GPU part; hand tracking ran on CPU.')
+                   'row descriptions (1 per chart row). Wall time covers the GPU part; hand tracking ran on CPU.'
+                   + (f" Endpoint: {B['endpoint']}; on that shared limit the wall time is set mostly by the request "
+                      f"rate, not by the GPU." if B.get('endpoint') else ''))
     else:
-        st.markdown('Gemma 4 31B (Google DeepMind) served with **vLLM on an AMD Instinct MI300X** (192 GB, ROCm). '
-                    'Speed and memory figures from the MI300X run will be shown here.')
+        st.markdown('Gemma 4 31B (Google DeepMind) served on **AMD GPUs** through AMD Token Factory, or self-hosted '
+                    'with vLLM on ROCm. Speed figures from the AMD run will be shown here.')
 
 def config(clave, defecto=''):
     """Variable de entorno o secreto de Streamlit (en Community Cloud la clave va en Settings → Secrets)."""
@@ -344,8 +346,9 @@ def correr_agente(vid, npz, run, base, modelo):
     """Corre agent/bimanual.py contra el endpoint configurado y muestra el avance; devuelve True si terminó bien."""
     import subprocess, time
     env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
-    if config('GILBRETH_API_KEY'):
-        env['GILBRETH_API_KEY'] = config('GILBRETH_API_KEY')
+    for clave in ('GILBRETH_API_KEY', 'GILBRETH_RPM', 'GILBRETH_JSON_MODE'):   # clave, ritmo y modo JSON del endpoint
+        if config(clave):
+            env[clave] = config(clave)
     cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
            '--modelo', modelo, '--idioma', 'en', '--hilos', config('GILBRETH_THREADS', '8'), '--puntos', str(npz)]
     run.mkdir(parents=True, exist_ok=True)
@@ -364,9 +367,14 @@ def correr_agente(vid, npz, run, base, modelo):
         if ok:
             (run / 'tiempo.json').write_text(json.dumps({'wall_s': round(time.time() - t0, 1)}))
             estado.update(label=f'Done in {time.time() - t0:.0f} s', state='complete', expanded=False)
+        elif p.returncode == 3:
+            estado.update(label='Today\'s free GPU quota for this demo is used up', state='error', expanded=False)
         else:
             estado.update(label='The agent stopped before finishing', state='error')
             st.code('\n'.join(cola))
+    if p.returncode == 3:
+        st.warning('The free AMD endpoint behind this demo has a daily quota, and it is used up for today. It resets at '
+                   '22:00 Colombia time (11:00 in Beijing). The examples in the sidebar were computed with the full agent.')
     return ok
 
 
@@ -404,7 +412,7 @@ def mostrar_resultado(run, motor):
 
 if vista == 'Try your own video':
     base, modelo = config('GILBRETH_VLLM_URL'), config('GILBRETH_MODEL', 'google/gemma-4-31B-it')
-    motor = config('GILBRETH_ENGINE', 'Gemma 4 31B on AMD Instinct MI300X (vLLM + ROCm)')
+    motor = config('GILBRETH_ENGINE', 'Gemma 4 31B on AMD GPUs (AMD Token Factory)')
     st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU'
                 + (f'; the full chart is computed by **{motor}**.' if base else
                    ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))
@@ -434,7 +442,11 @@ if vista == 'Try your own video':
             nf, nd = extraer_puntos.extraer(vid, npz, lambda x: barra.progress(x, 'Tracking hands…'))
             barra.progress(1.0, f'{nf} frames, {nd} hand detections')
         pi = pista(*cargar_npz(npz))
-        if pi and base and not (run / 'diagrama.json').exists():
+        limite = float(config('GILBRETH_MAX_LIVE_S', '120'))
+        if pi and base and not (run / 'diagrama.json').exists() and sub['dur'] > limite + 1:
+            st.info(f'On this public demo the full agent charts clips of up to {limite:.0f} s (the free AMD endpoint has '
+                    f'a daily quota). Trim the video to chart it; the hand tracking below works on the whole clip.')
+        elif pi and base and not (run / 'diagrama.json').exists():
             if (run / 'corriendo').exists():
                 st.info('The agent is still working on this video. Wait a moment and press the button below.')
                 st.button('Refresh')
@@ -468,6 +480,5 @@ if vista == 'Try your own video':
             if ev_vivo:
                 st.dataframe(alertas_agrupadas(ev_vivo), hide_index=True, width="stretch")
     if not base:
-        st.info('The full agent needs the vision model on a GPU server (AMD Instinct MI300X), switched on for live '
-                'demos only because it costs money per hour. The examples in the sidebar were computed with the full '
-                'agent.')
+        st.info('The full agent needs the vision model on an AMD GPU endpoint, which is not connected to this copy of '
+                'the app. The examples in the sidebar were computed with the full agent.')

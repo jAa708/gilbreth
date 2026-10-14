@@ -55,9 +55,15 @@ def main():
     if not a.ficha and not (sal / 'ficha.json').exists():
         print('3/5 Ficha de la operación (el modelo mira 6 fotos del video)…', flush=True)
         ag.cmd_ficha(ns)
+        if ag.SIN_CUPO.is_set():
+            print('STOP: the model endpoint says the daily quota is used up; try again after it resets.', flush=True)
+            sys.exit(3)
     # 4) cada segundo
     print('4/5 Codificando cada segundo por mano…', flush=True)
     ag.cmd_ventanas(ns)
+    if ag.SIN_CUPO.is_set():
+        print('STOP: the model endpoint says the daily quota is used up; try again after it resets.', flush=True)
+        sys.exit(3)
     pred = json.loads((sal / 'pred_v5_vent_agente.json').read_text(encoding='utf-8'))
     # 4b) v7 (ELECCION_PREVIA_V7.md): si el usuario ya revisó un tramo (minuto de oro), un clasificador por mano y
     # segundo aprende de ESE tramo (más el movimiento de 9 operarios de IMPACT) cuánto creerle a la visión y cuánto al
@@ -107,6 +113,9 @@ def main():
     ns.pred, ns.etiqueta = str(sal / 'pred_final.json'), 'agente'
     print('   descripciones por fila…', flush=True)
     ag.cmd_describir(ns)
+    if ag.SIN_CUPO.is_set():
+        print('STOP: the model endpoint says the daily quota is used up; try again after it resets.', flush=True)
+        sys.exit(3)
     desc = {(d['t0'], d['t1']): d for d in json.loads((sal / 'filas_desc_agente.json').read_text(encoding='utf-8'))}
     for f in filas:
         d = desc.get((f['t0'], f['t1']), {})
