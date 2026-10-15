@@ -28,7 +28,7 @@ image check, and says so on screen; the examples and the measurements are always
 
 One second of video costs about 1.45 requests (one per second plus one per chart row for the descriptions; 1,390
 requests for 957.7 s of video in the five examples), so a 5-minute video needs at least 24 minutes at 18 requests per
-minute, plus queueing on the shared endpoint (median 19.5 s per request on 14 Oct).
+minute, plus request latency and retries on the shared endpoint (median 19.5 s per coding request on 14 Oct).
 
 ## Option B — your own AMD Instinct MI300X (AMD Developer Cloud)
 

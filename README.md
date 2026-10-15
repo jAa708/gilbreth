@@ -17,7 +17,7 @@ right hand do, row by row (ILO symbols ○ operation, ⇨ transport, D delay, �
 slow: about **one hour of one person for a 4.7-minute video**, by our estimate from a course project. The gains it
 reveals are well known: fixtures that free the holding hand, balanced hands, parts within reach.
 
-**Who uses Gilbreth:** industrial/methods engineers and plant supervisors. **What it improves:** time per unit of a
+**Who uses Gilbreth:** industrial/methods engineers and plant supervisors. **What it targets:** time per unit of a
 manual operation (and the time it takes to analyse it).
 
 ## What it produces
@@ -46,8 +46,8 @@ observed cycle times with Gilbreth.
 
 ## How accurate (measured)
 Accuracy = share of (hand, second) pairs with the right activity code. Two tests, each pre-registered and looked at
-**once** with the system frozen, each on a person of the KIT Bimanual dataset never used before; the first two takes of
-each task reviewed (≈ 30 s), takes 2–9 measured.
+**once** with the system frozen, each on a person of the KIT Bimanual dataset never used before; the dataset's labels of the first two takes of each
+task (≈ 30–40 s) stand in for the engineer's review, takes 2–9 are measured.
 
 | KIT Bimanual, new person | Constant baseline | Gemma alone | **Gilbreth** |
 |---|---|---|---|
@@ -111,8 +111,8 @@ the 31B model.
 
 ## Limits
 - Observed times, not standard times: no performance rating or allowances yet; one cycle is not a standard.
-- Tasks where operating means moving the hand a lot (kitchen: stirring, wiping) score lower (KIT kitchen 74.9 %,
-  workshop 80.3 %): the learned motion confuses operation with transport, which is why the gate exists.
+- Tasks where operating means moving the hand a lot (kitchen: stirring, wiping) score lower (KIT kitchen vs workshop:
+  74.9 vs 80.3 % on subject 1, 63.9 vs 66.5 % on AMD with subject 3): the learned motion confuses operation with transport, which is why the gate exists.
 - The improvement plan is a scenario estimate with visible assumptions, not a measurement.
 
 ## Timeline

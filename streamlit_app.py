@@ -178,7 +178,7 @@ if vista == 'Overview':
     a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
     if corrida:
         c4.metric('Agent on AMD', f"{corrida['wall_s'] / 60:.1f} min",
-                  f"vs ≈ {a_mano:.0f} min by hand", delta_color='off')
+                  f"vs ≈ {a_mano:.0f} min by hand (estimate)", delta_color='off')
     elif d['meta'].get('minutos_a_mano'):
         c4.metric('Charting by hand (our estimate)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
                   f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off')
@@ -298,7 +298,8 @@ if vista == 'Method alerts':
 if vista == 'Accuracy & AMD':
     st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Two tests, each '
                 'pre-registered and looked at **once** with the system frozen, each on a person of the KIT Bimanual '
-                'dataset never used before; the first two takes of each task (≈ 30 s) were reviewed and takes 2–9 measured.')
+                'dataset never used before; the dataset’s labels of the first two takes of each task (≈ 30–40 s) stand in for '
+                'the engineer’s review, and takes 2–9 are measured.')
     st.dataframe(pd.DataFrame([
         ['Subject 3 on AMD Token Factory (shipped system), 2,258 hand-seconds', '41.7–41.8 %', '55.4 %', '65.1 % (±1 s: 80.1 %)'],
         ['   workshop 1,086 · kitchen 1,172', '41.8 · 41.7 %', '59.3 · 51.9 %', '66.5 · 63.9 %'],
@@ -329,8 +330,8 @@ if vista == 'Accuracy & AMD':
                                    for k, v in B.get('pasos', {}).items()]), hide_index=True, width="stretch")
         st.caption('Steps: operation sheet (1 request per video), per-second coding (1 per second of video), '
                    'row descriptions (1 per chart row). Wall time covers the GPU part; hand tracking ran on CPU.'
-                   + (f" Endpoint: {B['endpoint']}; on a shared endpoint the wall time is set by its queue and limits, "
-                      f"not by the agent's own compute." if B.get('endpoint') else ''))
+                   + (f" Endpoint: {B['endpoint']}; wall time includes pacing to its limits, request latency and "
+                      f"retries." if B.get('endpoint') else ''))
     else:
         st.markdown('Gemma 4 31B (Google DeepMind) served on **AMD GPUs** through AMD Token Factory, or self-hosted '
                     'with vLLM on ROCm. Speed figures from the AMD run will be shown here.')
@@ -486,7 +487,7 @@ if vista == 'Try your own video':
         sub = st.session_state['subida']
         tmp, vid = Path(sub['dir']), Path(sub['video'])
         npz, run = tmp / 'puntos.npz', tmp / 'run'
-        if sub['dur'] > 125:
+        if sub['dur'] > 121:
             st.error(f"This video is {sub['dur']:.0f} s long. Please upload 2 minutes or less.")
             st.stop()
         if not npz.exists():

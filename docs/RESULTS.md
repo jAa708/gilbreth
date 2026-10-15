@@ -85,7 +85,7 @@ is within 5 points of the lab Gemma. Qwen3.8-27B passed; the app uses it (`GILBR
 does not answer the image health check, and says so on screen. MiniCPM-V-4.7 was not measured: its endpoint failed
 with six images per request.
 
-## Changes after the final test (15 Oct, development data only)
+## Changes after the KIT subject 1 test, frozen before the subject 3 test on AMD (15 Oct, development data only)
 Both rules were written down before measuring; the shipped examples are unchanged by them (0 seconds in four
 examples, 2 hand-seconds in the cardboard one).
 - **"Not visible" against the hand tracker.** On KIT subject 2, 218 of Gemma's 971 errors were NV for a hand the
