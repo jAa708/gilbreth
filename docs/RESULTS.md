@@ -79,7 +79,7 @@ JSON-object mode on AMD Token Factory:
 | **Qwen3.8-Flash-Next on AMD Token Factory (reasoning off)** | **56.9 %** | 72.0 % | 60.3 % | 52.7 % | 0 % | 0.000522 |
 | Qwen3.8-27B on AMD Token Factory (reasoning off) | 51.9 % | 65.6 % | 50.0 % | 54.3 % | 0 % | 0.000134 |
 | DeepSeek-V4-Flash-Vision-Exp | 42.8 % | 57.4 % | 42.7 % | 43.0 % | 2.4 % | 0.000386 |
-| DeepSeek-V4.1-Flash | 46.7 % | 61.2 % | — | — | 0 % | 0.000880 |
+| DeepSeek-V4.1-Flash | 46.7 % | 61.2 % | 49.6 % | 43.0 % | 0 % | 0.000880 |
 | MiMo-V2.6-Flash | 36.8 % | 60.0 % | 44.0 % | 28.0 % | 0 % | 0.000475 |
 
 The rule written before the screening: the fallback is the best model with at most 2 % failed answers, used only if it
