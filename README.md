@@ -45,15 +45,18 @@ observed cycle times with Gilbreth.
    tracking and codes; the improvement planner (`agent/mejora.py`) turns the chart into seconds saved per lever.
 
 ## How accurate (measured)
-Accuracy = share of (hand, second) pairs with the right activity code. The final test was pre-registered and looked at
-**once**, with the system frozen: a person of the KIT Bimanual dataset never used before, with the first two takes of each
-task reviewed (≈ 30 s) and takes 2–9 measured.
+Accuracy = share of (hand, second) pairs with the right activity code. Two tests, each pre-registered and looked at
+**once** with the system frozen, each on a person of the KIT Bimanual dataset never used before; the first two takes of
+each task reviewed (≈ 30 s), takes 2–9 measured.
 
 | KIT Bimanual, new person | Constant baseline | Gemma alone | **Gilbreth** |
 |---|---|---|---|
-| Workshop (1,347 hand-seconds) | 48.4 % | 69.6 % | **80.3 %** |
-| Kitchen (1,958 hand-seconds) | 55.0 % | 66.0 % | **74.9 %** |
-| Total (3,305 hand-seconds) | — | 67.5 % | **77.1 %** (±1 s: 87.2 %) |
+| **Subject 3, on AMD Token Factory (the shipped system)**, 2,258 hand-seconds | 41.7–41.8 % | 55.4 % | **65.1 %** (±1 s: 80.1 %) |
+| · workshop (1,086) / kitchen (1,172) | 41.8 / 41.7 % | 59.3 / 51.9 % | **66.5 / 63.9 %** |
+| Subject 1, lab GPU (Gemma 4-bit), 3,305 hand-seconds | — | 67.5 % | **77.1 %** (±1 s: 87.2 %) |
+| · workshop (1,347) / kitchen (1,958) | 48.4 / 55.0 % | 69.6 / 66.0 % | **80.3 / 74.9 %** |
+
+The gain over Gemma alone held from one person to the other: +9.6 and +9.7 points.
 
 **The examples in the app, run on AMD Token Factory** (the shipped pipeline, gate on; second looks at data used
 during development):

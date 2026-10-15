@@ -5,7 +5,7 @@ frozen, and the decision rule was written before measuring (pre-registration). A
 the right code. Baseline = best constant code per hand over the whole set.
 
 The LEGO and IMPACT sets below were tests for v7 (11 Oct) and were then reused while choosing v9 (the gate), so for the
-shipped system only **KIT subject 1** is a clean test. On IMPACT, v9 scored 72.9 % in that development table
+shipped system the clean tests are **KIT subject 1** (lab GPU) and **KIT subject 3** (AMD, below). On IMPACT, v9 scored 72.9 % in that development table
 (Gemma 70.0 %, v7 73.6 %).
 
 ## Clean tests
@@ -18,6 +18,22 @@ shipped system only **KIT subject 1** is a clean test. On IMPACT, v9 scored 72.9
 | IMPACT, 4 new operators, 982 | 45.7 % | 70.0 % | **73.6 %** | — |
 
 Pre-registered criterion for the final test (v9 ≥ Gemma in workshop and kitchen, and > Gemma in total): **met**.
+
+## Clean test on AMD (15 Oct): KIT Bimanual subject 3, the shipped system
+Pre-registered at 00:30 before the subject was downloaded; looked at once. The system exactly as shipped (commit
+`5b3edd6`): Gemma-4-31B-IT on AMD Token Factory, the IMPACT motion prior, the gate; the first two takes of each task
+reviewed, takes 2-9 measured. 1,512 requests, US$0.15, no failed answers.
+
+| KIT subject 3 (new person), on AMD | Baseline | Gemma alone | **Gilbreth (v9)** | ±1 s |
+|---|---|---|---|---|
+| Workshop, 1,086 hand-seconds | 41.8 % | 59.3 % | **66.5 %** | 83.7 % |
+| Kitchen, 1,172 hand-seconds | 41.7 % | 51.9 % | **63.9 %** | 76.7 % |
+| Total, 2,258 hand-seconds | — | 55.4 % | **65.1 %** | 80.1 % |
+
+Pre-registered criterion (v9 ≥ Gemma in workshop and in kitchen, and > Gemma in total): **met**. The gain matches the lab
+test on subject 1 (+9.7 points here, +9.6 there). The gate kept Gemma in 3 of the 9 tasks; the calibrated model without
+the gate scored 71.3 % on this subject, so the gate's choice, made on 40–100 reviewed hand-seconds per task, cost 6.2
+points here (on subject 1 it cost nothing). That is the next thing to study, on development data.
 
 ## What did not work (measured, not shipped)
 - Higher image resolution per frame (560 tokens): worse (72 % vs 79 %).
