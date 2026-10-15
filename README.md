@@ -78,7 +78,8 @@ streamlit run streamlit_app.py
 python scripts/tokenfactory_batch.py lego gearbox      # prepared runs/, 20 requests per minute, writes docs/benchmark.json
 ```
 In the app, set `GILBRETH_VLLM_URL=https://developer.amd.com.cn/radeon/api/v1`, `GILBRETH_MODEL=Gemma-4-31B-IT`,
-`GILBRETH_JSON_MODE=object`, `GILBRETH_RPM=18` and `GILBRETH_API_KEY` (Streamlit secrets) to chart uploads live.
+`GILBRETH_JSON_MODE=object`, `GILBRETH_RPM=18` and `GILBRETH_API_KEY` (Streamlit secrets) to chart uploads live;
+`GILBRETH_FALLBACK_MODEL=Qwen3.8-Flash-Next` covers the times Gemma is not served (see `docs/AMD.md`).
 
 **Full agent** on your own GPU server with vLLM (see [`docs/AMD.md`](docs/AMD.md) for the MI300X setup):
 ```bash

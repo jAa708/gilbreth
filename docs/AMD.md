@@ -22,8 +22,8 @@ Instinct MI300X). The app therefore checks the endpoint with a tiny image before
 500/502/503/504 with backoff.
 
 On 14 Oct that lasted from 20:21 to 00:49 (Colombia time) while other vision models on the same service kept
-answering. If `GILBRETH_FALLBACK_MODEL` is set (we use `Qwen3.8-27B`, screened in `docs/RESULTS.md`: 51.9 % against
-55.3 % for Gemma on the same development seconds), the app runs the live demo on that model when Gemma fails the
+answering. If `GILBRETH_FALLBACK_MODEL` is set (we use `Qwen3.8-Flash-Next`, screened in `docs/RESULTS.md`: 56.9 %
+against 55.3 % for Gemma on the same development seconds), the app runs the live demo on that model when Gemma fails the
 image check, and says so on screen; the examples and the measurements are always Gemma's.
 
 On 15 Oct, around 10:39 (Colombia time), `Gemma-4-31B-IT` left the Token Factory catalog (`/models` no longer lists it and

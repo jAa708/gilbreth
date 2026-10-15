@@ -76,12 +76,16 @@ JSON-object mode on AMD Token Factory:
 |---|---|---|---|---|---|---|
 | Gemma 4 31B QAT on an A100 (the lab runs) | 53.3 % | 71.3 % | 56.0 % | 50.0 % | — | — |
 | **Gemma-4-31B-IT on AMD Token Factory (shipped)** | **55.3 %** | 72.7 % | 60.8 % | 48.4 % | 0 % | 0.000099 |
+| **Qwen3.8-Flash-Next on AMD Token Factory (reasoning off)** | **56.9 %** | 72.0 % | 60.3 % | 52.7 % | 0 % | 0.000522 |
 | Qwen3.8-27B on AMD Token Factory (reasoning off) | 51.9 % | 65.6 % | 50.0 % | 54.3 % | 0 % | 0.000134 |
 | DeepSeek-V4-Flash-Vision-Exp | 42.8 % | 57.4 % | 42.7 % | 43.0 % | 2.4 % | 0.000386 |
+| DeepSeek-V4.1-Flash | 46.7 % | 61.2 % | — | — | 0 % | 0.000880 |
 | MiMo-V2.6-Flash | 36.8 % | 60.0 % | 44.0 % | 28.0 % | 0 % | 0.000475 |
 
 The rule written before the screening: the fallback is the best model with at most 2 % failed answers, used only if it
-is within 5 points of the lab Gemma. Qwen3.8-27B passed; the app uses it (`GILBRETH_FALLBACK_MODEL`) only when Gemma
+is within 5 points of the lab Gemma. Qwen3.8-27B passed first; Qwen3.8-Flash-Next and DeepSeek-V4.1-Flash were
+screened the next day under the same rule, and Qwen3.8-Flash-Next became the fallback (+1.6 points over Gemma on these
+seconds, short of the +3 we set to call a model stronger). The app uses it (`GILBRETH_FALLBACK_MODEL`) only when Gemma
 does not answer the image health check, and says so on screen. MiniCPM-V-4.7 was not measured: its endpoint failed
 with six images per request.
 
