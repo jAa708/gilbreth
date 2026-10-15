@@ -34,7 +34,7 @@ for r in a.runs:
     seg = round(time.time() - t0)
     print(f'{r}: exit {p.returncode} in {seg} s', flush=True)
     if p.returncode == 3:
-        sys.exit('Daily quota used up: run the remaining videos after it resets (11:00 Beijing time).')
+        sys.exit('Daily quota used up: run the remaining videos after it resets (midnight Beijing time, 16:00 UTC).')
     if p.returncode != 0:
         sys.exit(f'{r} failed: see {d / "log.txt"}')
     with open(runs / 'tiempos.csv', 'a', encoding='utf-8') as f:

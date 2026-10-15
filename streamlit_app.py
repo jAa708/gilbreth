@@ -1,6 +1,6 @@
 """Gilbreth: AI motion study from a workstation video.
 A phone video of a manual operation goes in; a draft bimanual (left-hand / right-hand) chart, method alerts and an
-improvement plan in seconds come out, for the methods engineer to review and approve.
+improvement plan in seconds come out, for the methods engineer to review.
 Vision model: Gemma 4 31B served on AMD GPUs (AMD Token Factory, or vLLM on ROCm). Hand tracking: MediaPipe."""
 import json, os, sys, tempfile
 from collections import defaultdict
@@ -138,7 +138,7 @@ def alertas_agrupadas(ev):
 st.title('⏱️ Gilbreth')
 st.markdown('**AI motion study from a workstation video.** A phone video of a manual operation goes in; a draft '
             '**bimanual chart** (what each hand does, second by second), **method alerts** and an **improvement plan '
-            'in seconds** come out — for the methods engineer to review and approve.')
+            'in seconds** come out — for the methods engineer to review.')
 
 EJ = ejemplos(tuple(sorted((p.parent.name, p.stat().st_mtime) for p in (RAIZ / 'examples').glob('*/diagrama.json'))))
 with st.sidebar:
@@ -180,13 +180,13 @@ if vista == 'Overview':
         c4.metric('Agent on AMD', f"{corrida['wall_s'] / 60:.1f} min",
                   f"vs ≈ {a_mano:.0f} min by hand", delta_color='off')
     elif d['meta'].get('minutos_a_mano'):
-        c4.metric('Charting by hand (measured)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
+        c4.metric('Charting by hand (our estimate)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
                   f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off')
     else:
         c4.metric('Charting by hand (estimate)', f"≈ {pot['tiempo_s'] / 60 * RITMO_A_MANO:.0f} min",
                   f"at ≈ {RITMO_A_MANO:.0f} min per video-minute", delta_color='off')
-    st.caption(f'Charting by hand: in our course project one person took ≈ 60 min for a 4.7-min video (≈ '
-               f'{RITMO_A_MANO:.0f} min per minute of video). Published references for related manual analyses: '
+    st.caption(f'Charting by hand: for our course project we estimate ≈ 60 min of one person for a 4.7-min video (≈ '
+               f'{RITMO_A_MANO:.0f} min per minute of video; other videos are scaled from it). Published references for related manual analyses: '
                'MTM-UAS needs ≈ 40 analyst-minutes '
                'per minute of work and MTM-1 ≈ 350 (IMD-EWD); labelling hand motions frame by frame took 79.8 min per '
                'minute of video in StrokeRehab (NeurIPS 2022). Sources: docs/SOURCES.md.')
@@ -281,11 +281,11 @@ if vista == 'Improvement plan':
     st.caption(nota)
     eco = mejora.economia(pot, u, h, n, c)
     if eco:
-        st.markdown(f"Same units with **{eco['horas_ahorradas_anio']:,.0f} fewer labour hours a year** "
+        st.markdown(f"If the estimate holds: same units with **{eco['horas_ahorradas_anio']:,.0f} fewer labour hours a year** "
                     f"(≈ **{moneda} {eco['valor_anio']:,.0f}**), or the same shift producing "
                     f"**{eco['unidades_turno_despues']:,.0f}** instead of **{eco['unidades_turno_antes']:,.0f}** units.")
-    st.caption('An estimate to prioritise changes, not a measurement: re-film the operation after the change and run '
-               'Gilbreth again to measure the real saving.')
+    st.caption('An estimate to prioritise changes, not a measurement: film several cycles after the change and run '
+               'Gilbreth on them to compare the observed cycle times.')
 
 if vista == 'Method alerts':
     st.markdown('Signals for the engineer to look at, from hand tracking plus the chart codes. They are prompts to '
@@ -296,22 +296,23 @@ if vista == 'Method alerts':
         st.info('No method alerts for this operation.')
 
 if vista == 'Accuracy & AMD':
-    st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Every test set was looked at '
-                '**once**, with the system frozen beforehand.')
+    st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. The final test was '
+                'pre-registered and looked at **once**, with the system frozen: a person of the KIT Bimanual dataset '
+                'never used before; the first two takes of each task (≈ 30 s) were reviewed and takes 2–9 measured.')
     st.dataframe(pd.DataFrame([
-        ['KIT bimanual, new person (workshop + kitchen, 3,305 hand-seconds)', '48–55 %', '67.5 %', '77.1 %'],
-        ['LEGO assembly, blind human labels (92)', '—', '64.1 %', '71.7 %'],
-        ['IMPACT assembly, 4 new operators (982)', '45.7 %', '70.0 %', '73.6 %'],
-    ], columns=['Test set', 'Constant baseline', 'Vision model alone', 'With 30–70 s of human review']),
+        ['Workshop (1,347 hand-seconds)', '48.4 %', '69.6 %', '80.3 %'],
+        ['Kitchen (1,958 hand-seconds)', '55.0 %', '66.0 %', '74.9 %'],
+        ['Total (3,305 hand-seconds)', '—', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
+    ], columns=['KIT Bimanual, new person', 'Constant baseline', 'Vision model alone', 'Gilbreth']),
         hide_index=True, width="stretch")
-    st.caption('LEGO: lab run of v7 (11 Oct); with 92 hand-seconds, pipeline differences move that figure by about '
-               'ten points, so the KIT test is the one to rely on. Most remaining errors are about *when* an '
-               'activity starts or ends (±1 s), not *which* activity it is: with ±1 s tolerance the KIT result is 87 %. '
-               'Times are observed times, not standard times (no rating or allowances).')
-    st.markdown('**The examples in this app, run on AMD** (the shipped pipeline, gate on)')
+    st.caption('On development data, 63–80 % of the remaining errors sit in the second next to a change of activity. '
+               'Times are observed times, not standard times (no rating or allowances). Earlier lab runs and '
+               'everything we tried and dropped: docs/RESULTS.md.')
+    st.markdown('**The examples in this app, run on AMD** (the shipped pipeline, gate on; second looks at data used '
+                'during development)')
     st.dataframe(pd.DataFrame([
-        ['Gearbox, operator never seen, human labels from second 60 (307 hand-seconds)', '70.0 %', '73.9 %'],
-        ['LEGO, same blind human labels (92 hand-seconds, second look)', '58.7 %', '62.0 %'],
+        ['Gearbox, IMPACT operator not in the training data, first 60 s reviewed (307 hand-seconds)', '70.0 %', '73.9 %'],
+        ['LEGO, two batches of blind human labels (92 hand-seconds)', '58.7 %', '62.0 %'],
     ], columns=['Example', 'Vision model alone', 'Gilbreth']), hide_index=True, width="stretch")
     st.subheader('Running on AMD')
     if B.get('runs'):
@@ -327,8 +328,8 @@ if vista == 'Accuracy & AMD':
                                    for k, v in B.get('pasos', {}).items()]), hide_index=True, width="stretch")
         st.caption('Steps: operation sheet (1 request per video), per-second coding (1 per second of video), '
                    'row descriptions (1 per chart row). Wall time covers the GPU part; hand tracking ran on CPU.'
-                   + (f" Endpoint: {B['endpoint']}; on that shared limit the wall time is set mostly by the request "
-                      f"rate, not by the GPU." if B.get('endpoint') else ''))
+                   + (f" Endpoint: {B['endpoint']}; on a shared endpoint the wall time is set by its queue and limits, "
+                      f"not by the agent's own compute." if B.get('endpoint') else ''))
     else:
         st.markdown('Gemma 4 31B (Google DeepMind) served on **AMD GPUs** through AMD Token Factory, or self-hosted '
                     'with vLLM on ROCm. Speed figures from the AMD run will be shown here.')
@@ -411,7 +412,7 @@ def correr_agente(vid, npz, run, base, modelo):
             st.code('\n'.join(cola))
     if p.returncode == 3:
         st.warning('The free AMD endpoint behind this demo has a daily quota, and it is used up for today. It resets at '
-                   '22:00 Colombia time (11:00 in Beijing). The examples in the sidebar were computed with the full agent.')
+                   'midnight Beijing time (16:00 UTC, 11:00 in Colombia). The examples in the sidebar were computed with the full agent.')
     return ok
 
 

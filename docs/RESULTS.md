@@ -4,6 +4,10 @@ Protocol: every design choice was made on **development** data; each **test** se
 frozen, and the decision rule was written before measuring (pre-registration). Accuracy = (hand, second) pairs with
 the right code. Baseline = best constant code per hand over the whole set.
 
+The LEGO and IMPACT sets below were tests for v7 (11 Oct) and were then reused while choosing v9 (the gate), so for the
+shipped system only **KIT subject 1** is a clean test. On IMPACT, v9 scored 72.9 % in that development table
+(Gemma 70.0 %, v7 73.6 %).
+
 ## Clean tests
 | Test set | Baseline | Gemma alone (v5) | Calibrated (v7) | v7 + gate (v9) |
 |---|---|---|---|---|
@@ -40,7 +44,7 @@ Pre-registered criterion for the final test (v9 ≥ Gemma in workshop and kitche
 ## Second look on AMD (14 Oct): the examples as shipped
 The app's examples were recomputed end to end on AMD Token Factory (Gemma-4-31B-IT, shared endpoint, JSON object
 output with the schema in the prompt) with the shipped pipeline (gate on).
-- Gearbox (IMPACT `LE07UF17_Reassembly_A_004`, operator never seen, first 60 s reviewed with the dataset's human
+- Gearbox (IMPACT `LE07UF17_Reassembly_A_004`, operator not in the training data, first 60 s reviewed with the dataset's human
   labels), from second 60, 307 hand-seconds: Gemma alone **70.0 %**, Gilbreth **73.9 %** (A100 development run of
   the same example: 67.8 % and 76.2 %).
 - LEGO against the two blind batches labelled by a person (92 hand-seconds, already used as a test, so this is a second look):

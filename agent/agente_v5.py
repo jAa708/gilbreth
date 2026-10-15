@@ -264,6 +264,11 @@ def _cod(x):
     return x if x in CODIGOS else None
 
 
+def _fallida(j):
+    """Respuesta caída (error de red o del servidor) o sin códigos válidos."""
+    return not j or '_error' in j or _cod(j.get('code_right')) is None or _cod(j.get('code_left')) is None
+
+
 def codigos(j, a):
     if not j or '_error' in j:
         return 'D', 'D'
@@ -348,11 +353,25 @@ def cmd_ventanas(a):
         rec = [] if a.sin_recortes else [p for p in (pq / 'img' / f'{k:04d}_crop_R.jpg', pq / 'img' / f'{k:04d}_crop_L.jpg') if p.exists()]
         return armar_paso(a, ficha, paso, rec, v.get('sensores'), round(v['t1'] - v['t0'], 2), v['fotos'], True)
     crudos, seg = correr(a, vent, armar)
+    caidas = [i for i, j in enumerate(crudos) if _fallida(j)]
+    if caidas and not SIN_CUPO.is_set():           # 2.ª vuelta solo para las caídas (red, servidor saturado)
+        nuevos, _ = correr(a, [vent[i] for i in caidas], armar)
+        for i, j in zip(caidas, nuevos):
+            crudos[i] = j
     out = [{'k': v['k'], 't0': v['t0'], 't1': v['t1'], 'md': codigos(j, a)[0], 'mi': codigos(j, a)[1], 'crudo': j}
            for v, j in zip(vent, crudos)]
+    # Una ventana que sigue caída NO es «espera»: copia el segundo válido más cercano y queda marcada para revisar.
+    # Medido en KIT sujeto 2 (desarrollo, 1.992 manos-segundo): poner D acierta 23,5 %, copiar el vecino 36,6 %; y la D
+    # falsa inflaba el % improductivo del diagrama.
+    buenas = [i for i, j in enumerate(crudos) if not _fallida(j)]
+    for i in range(len(out)):
+        if _fallida(crudos[i]) and buenas:
+            v = min(buenas, key=lambda b: (abs(b - i), b))
+            out[i].update(md=out[v]['md'], mi=out[v]['mi'], relleno=True)
     nombre = f'v5_vent_{a.etiqueta}'
     (pq / f'pred_{nombre}.json').write_text(json.dumps(out, ensure_ascii=False), encoding='utf-8')
-    print(f'RESUMEN {nombre}: {len(out)} ventanas en {seg:.0f} s; vacías {sum(1 for o in out if not o["crudo"] or "_error" in o["crudo"])}')
+    print(f'RESUMEN {nombre}: {len(out)} ventanas en {seg:.0f} s; caídas {sum(1 for j in crudos if _fallida(j))} '
+          f'(copian el segundo vecino y quedan marcadas)')
     print('PRED', ' '.join(f"{o['t0']:g}:{o['md']}/{o['mi']}" for o in out))
 
 

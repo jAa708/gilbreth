@@ -6,16 +6,16 @@ seconds come out — for the methods engineer to review and approve.**
 Built for the **AMD Developer Hackathon: ACT III** (Track 1, *Intelligent Industry*) by team **ArkhanLabs**
 (Juan David Sabogal Orozco, industrial engineering student, Cali, Colombia).
 Vision model: **Gemma 4 31B** served on **AMD GPUs** through **AMD Token Factory** (the event's OpenAI-compatible
-endpoint), or self-hosted with **vLLM on ROCm** (AMD Instinct MI300X). Hand tracking: **MediaPipe**.
+endpoint); `docs/AMD.md` also documents a self-hosted setup with **vLLM on ROCm** (AMD Instinct MI300X). Hand
+tracking: **MediaPipe**.
 
 > Named after Frank and Lillian Gilbreth, who filmed workers a century ago to study and improve their motions.
 
 ## The problem
 Methods engineers improve manual work (assembly, packing, kitting) with the **bimanual chart**: what the left and
 right hand do, row by row (ILO symbols ○ operation, ⇨ transport, D delay, ▽ hold). Drawing it by hand from a video is
-slow: about **one hour of one person for a 4.7-minute video** in our own course project. Small and mid-size factories
-rarely do it at all, so they miss the classic gains: fixtures that free the holding hand, balanced hands, parts
-within reach.
+slow: about **one hour of one person for a 4.7-minute video**, by our estimate from a course project. The gains it
+finds are classic: fixtures that free the holding hand, balanced hands, parts within reach.
 
 **Who uses Gilbreth:** industrial/methods engineers and plant supervisors. **What it improves:** time per unit of a
 manual operation (and the time it takes to analyse it).
@@ -23,13 +23,13 @@ manual operation (and the time it takes to analyse it).
 ## What it produces
 | Output | Example (LEGO assembly, 284 s) |
 |---|---|
-| Bimanual chart, second by second, as rows | 104 rows, Excel in the course format + interactive review |
-| Improvement plan **in seconds per unit**, each lever with its evidence and assumption | 284 s → **≈ 227 s (−20 %)**, **+25 % output per shift**; top lever: a fixture that frees the left hand (≈ 38 s) |
+| Bimanual chart, second by second, as rows | 123 rows, Excel in the course format + interactive review |
+| Improvement plan **in seconds per unit**, each lever with its evidence and assumption | 284 s → **≈ 215 s (−24 %)**, **+32 % output per shift**; top lever: a fixture that frees the left hand (≈ 41 s) |
 | Method alerts (hands crossing, long reaches, both hands idle, hand used as a vise…) | with the fix for each |
 | What it is worth | labour hours and money per year from your units, shift and wage |
 
-The plan is an **estimate to prioritise changes**; the real saving is measured by filming again after the change and
-running Gilbreth on the new video.
+The plan is an **estimate to prioritise changes**; to check a change, film several cycles after it and compare the
+observed cycle times with Gilbreth.
 
 ## How it works
 1. **Hands** — MediaPipe tracks both hands at 10 fps; handedness from a ±2 s majority vote.
@@ -45,28 +45,27 @@ running Gilbreth on the new video.
    tracking and codes; the improvement planner (`agent/mejora.py`) turns the chart into seconds saved per lever.
 
 ## How accurate (measured)
-Accuracy = share of (hand, second) pairs with the right activity code. Each test set was looked at **once**, with the
-system frozen and the protocol written down beforehand.
+Accuracy = share of (hand, second) pairs with the right activity code. The final test was pre-registered and looked at
+**once**, with the system frozen: a person of the KIT Bimanual dataset never used before, with the first two takes of each
+task reviewed (≈ 30 s) and takes 2–9 measured.
 
-| Test set | Constant baseline | Gemma alone | **Gilbreth (30–70 s reviewed)** |
+| KIT Bimanual, new person | Constant baseline | Gemma alone | **Gilbreth** |
 |---|---|---|---|
-| KIT Bimanual, **new person**, workshop + kitchen (3,305 hand-seconds) | 48–55 % | 67.5 % | **77.1 %** (±1 s: 87.2 %) |
-| LEGO assembly, blind human labels (92) | — | 64.1 % | **71.7 %** ¹ |
-| IMPACT assembly, 4 new operators (982) | 45.7 % | 70.0 % | **73.6 %** |
+| Workshop (1,347 hand-seconds) | 48.4 % | 69.6 % | **80.3 %** |
+| Kitchen (1,958 hand-seconds) | 55.0 % | 66.0 % | **74.9 %** |
+| Total (3,305 hand-seconds) | — | 67.5 % | **77.1 %** (±1 s: 87.2 %) |
 
-¹ Lab run of v7 (11 Oct), which trains the calibrated model with a different routine than the shipped pipeline.
-With 92 hand-seconds that difference moves the LEGO figure by about ten points; the KIT test is the one to rely on.
+**The examples in the app, run on AMD Token Factory** (the shipped pipeline, gate on; second looks at data used
+during development):
+- gearbox, IMPACT operator not in the training data, first 60 s reviewed, human labels from second 60 (307
+  hand-seconds): Gemma alone 70.0 % → Gilbreth **73.9 %**;
+- LEGO against two batches of blind human labels (92 hand-seconds): 58.7 % → **62.0 %**.
 
-**The examples in the app, run on AMD Token Factory** (the shipped pipeline, gate on):
-- gearbox, operator never seen, human labels from second 60 (307 hand-seconds): Gemma alone 70.0 % → Gilbreth
-  **73.9 %**;
-- LEGO against the same blind human labels (92 hand-seconds, second look): 58.7 % → **62.0 %**.
-
-Most remaining errors are about *when* an activity starts or ends (±1 s), not *which* activity it is. Details and
-everything we tried and dropped: [`docs/RESULTS.md`](docs/RESULTS.md).
+On development data, 63–80 % of the remaining errors sit in the second next to a change of activity. Details, earlier
+lab runs and everything we tried and dropped: [`docs/RESULTS.md`](docs/RESULTS.md).
 
 ## Run it
-**Web app** (examples + hand tracking on your own video, CPU only):
+**Web app** (examples, hand tracking of your own video on CPU, and the full agent on it when an endpoint is set):
 ```bash
 pip install -r requirements.txt
 streamlit run streamlit_app.py
@@ -107,12 +106,12 @@ the 31B model.
 - Datasets used for measurement: IMPACT (Hugging Face `KratosWen/IMPACT`, CC BY-NC-SA 4.0) and KIT Bimanual Actions
   (Dreher, Wächter, Asfour; `bimanual-actions.humanoids.kit.edu`).
 
-## Honest limits
+## Limits
 - Observed times, not standard times: no performance rating or allowances yet; one cycle is not a standard.
-- Best on assembly and part handling from a top-down camera. In tasks where operating means moving the hand a lot
-  (kitchen: stirring, wiping) the learned motion confuses operation with transport — that is why the gate exists.
-- The improvement plan is an upper-bound estimate with visible assumptions, not a measurement.
+- Tasks where operating means moving the hand a lot (kitchen: stirring, wiping) score lower (KIT kitchen 74.9 %,
+  workshop 80.3 %): the learned motion confuses operation with transport, which is why the gate exists.
+- The improvement plan is a scenario estimate with visible assumptions, not a measurement.
 
 ## Timeline
 Preparation (data exploration, measurement protocol, first prototypes) started on 9 Oct 2026, before the kickoff.
-During the event: the run on AMD Developer Cloud, the improvement planner, this app and the submission material.
+During the event: the runs on AMD Token Factory, the improvement planner, this app and the submission material.

@@ -5,8 +5,9 @@ Token Factory is AMD's model API catalog for the event: OpenAI-compatible endpoi
 key per team. Gemma 4 31B is listed as `Gemma-4-31B-IT` (text and images).
 
 - Base URL `https://developer.amd.com.cn/radeon/api/v1`; key in `GILBRETH_API_KEY` (never in files or the repo).
-- Shared limits per team key: 20 requests per minute per account, 8 at a time, and a daily spend cap; 429 answers
-  carry `Retry-After`. The agent keeps under the limit itself (`GILBRETH_RPM=18`) and backs off on 429.
+- Shared limits per team key: 20 requests per minute per account, 8 at a time, and a daily spend cap of US$1 that
+  resets at midnight Beijing time (16:00 UTC; response headers `x-ratelimit-*-user-daily-usd`); 429 answers carry
+  `Retry-After`. The agent keeps under the limit itself (`GILBRETH_RPM=18`) and backs off on 429.
 - Only `json_object` structured output is accepted for this model, so the agent sends `GILBRETH_JSON_MODE=object` and
   puts the JSON schema in the prompt; when the daily cap is used up it stops cleanly (exit code 3).
 
@@ -20,8 +21,9 @@ requests while text still works (HTTP 500, "GPU 0 has a total capacity of 191.69
 Instinct MI300X). The app therefore checks the endpoint with a tiny image before a live run, and the agent retries
 500/502/503/504 with backoff.
 
-One second of video costs about 1.6 requests (one per second plus one per chart row for the descriptions), so a
-5-minute video takes about 26 minutes at 18 requests per minute.
+One second of video costs about 1.45 requests (one per second plus one per chart row for the descriptions; 1,390
+requests for 957.7 s of video in the five examples), so a 5-minute video needs at least 24 minutes at 18 requests per
+minute, plus queueing on the shared endpoint (median 19.5 s per request on 14 Oct).
 
 ## Option B — your own AMD Instinct MI300X (AMD Developer Cloud)
 
