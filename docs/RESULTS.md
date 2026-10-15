@@ -85,6 +85,22 @@ is within 5 points of the lab Gemma. Qwen3.8-27B passed; the app uses it (`GILBR
 does not answer the image health check, and says so on screen. MiniCPM-V-4.7 was not measured: its endpoint failed
 with six images per request.
 
+## Tried on 15 Oct on development data and not shipped (each rule written before measuring)
+KIT subject 2 with Gemma on AMD (takes 0-1 reviewed, takes 2-9 measured, 1,466 hand-seconds; the sawing takes 3-9 are
+missing because Gemma left the Token Factory catalog before they ran). Pass mark: +1.0 point on that total, no other
+set losing more than 0.5.
+- **The shipped model against the lab model, whole subject:** Gemma on AMD 52.9 % vs the 4-bit lab model 50.8 %
+  (1,892 hand-seconds; workshop +3.7, kitchen +0.4).
+- **A gate that keeps the calibrated model unless Gemma is clearly better on the reviewed seconds** (Gemma only if
+  c − b > √(b + c)): +0.95 (kitchen +1.9, workshop 0). Never below the current gate on any other set (KIT subject 2 with
+  the lab model +1.1, KIT subject 1 +0.7, IMPACT +0.4 / 0, LEGO 0, MIT-pure 0), but short of the mark → not shipped.
+  The idea came from the subject-3 test, which was therefore left out of this decision.
+- **Gemma's own per-hand observations** (motion, grip, works on the piece, only holds) as extra features of the calibrated
+  model: +0.9 (kitchen +1.8, workshop +0.1) → not shipped. A fixed rule from those observations instead of Gemma's code:
+  −1.2 → not shipped.
+- **"Not visible" rule, second look with Gemma on AMD:** +0.7 on the whole subject (workshop +0.4, kitchen +1.0), same
+  sign as on the lab model.
+
 ## Changes after the KIT subject 1 test, frozen before the subject 3 test on AMD (15 Oct, development data only)
 Both rules were written down before measuring; the shipped examples are unchanged by them (0 seconds in four
 examples, 2 hand-seconds in the cardboard one).
