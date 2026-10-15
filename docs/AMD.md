@@ -26,6 +26,10 @@ answering. If `GILBRETH_FALLBACK_MODEL` is set (we use `Qwen3.8-27B`, screened i
 55.3 % for Gemma on the same development seconds), the app runs the live demo on that model when Gemma fails the
 image check, and says so on screen; the examples and the measurements are always Gemma's.
 
+On 15 Oct, around 10:39 (Colombia time), `Gemma-4-31B-IT` left the Token Factory catalog (`/models` no longer lists it and
+requests answer "Requested model Gemma-4-31B-IT not supported"). Every example, benchmark and test in this repository was
+computed before that. While Gemma is not listed, the live demo runs on the fallback and says so before the upload.
+
 One second of video costs about 1.45 requests (one per second plus one per chart row for the descriptions; 1,390
 requests for 957.7 s of video in the five examples), so a 5-minute video needs at least 24 minutes at 18 requests per
 minute, plus request latency and retries on the shared endpoint (median 19.5 s per coding request on 14 Oct).

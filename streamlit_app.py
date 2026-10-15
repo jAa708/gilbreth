@@ -374,21 +374,25 @@ def endpoint_vivo(base, modelo):
         return False
 
 
-def correr_agente(vid, npz, run, base, modelo, motor):
-    """Corre agent/bimanual.py contra el endpoint configurado y muestra el avance; devuelve True si terminó bien.
-    Si Gemma no responde con imagen y hay un modelo de respaldo configurado en el mismo servicio de AMD
-    (GILBRETH_FALLBACK_MODEL), corre con él y lo dice: medido en desarrollo, rinde menos que Gemma."""
+@st.cache_data(ttl=300, show_spinner=False)
+def elegir_motor(base, modelo, motor, respaldo, motor_respaldo):
+    """Qué modelo corre la demo en vivo: Gemma si responde con imagen; si no, el respaldo configurado en el mismo
+    servicio de AMD (GILBRETH_FALLBACK_MODEL). Se vuelve a mirar cada 5 min. Devuelve (modelo, motor, estado) con
+    estado 'principal', 'respaldo' o 'ninguno'."""
+    if endpoint_vivo(base, modelo):
+        return modelo, motor, 'principal'
+    if respaldo and endpoint_vivo(base, respaldo):
+        return respaldo, motor_respaldo, 'respaldo'
+    return modelo, motor, 'ninguno'
+
+
+def correr_agente(vid, npz, run, base, modelo, motor, respaldo=False):
+    """Corre agent/bimanual.py contra el endpoint configurado y muestra el avance; devuelve True si terminó bien."""
     import subprocess, time
     with st.spinner('Checking that the AMD endpoint is answering…'):
         vivo = endpoint_vivo(base, modelo)
-    extra = []
-    respaldo = config('GILBRETH_FALLBACK_MODEL')
-    if not vivo and respaldo and endpoint_vivo(base, respaldo):
-        modelo, motor = respaldo, config('GILBRETH_FALLBACK_ENGINE', f'{respaldo} on AMD GPUs (AMD Token Factory)')
-        extra = ['--ollama'] if config('GILBRETH_FALLBACK_NO_REASONING', '1') == '1' else []   # reasoning_effort: none
-        st.info(f'Gemma 4 is not answering on the shared AMD endpoint right now, so this run uses **{motor}**, '
-                f'another vision model on the same AMD service. {config("GILBRETH_FALLBACK_NOTE", "")}')
-        vivo = True
+    # el respaldo (Qwen) razona: se le apaga el razonamiento, como en el cribado
+    extra = ['--ollama'] if respaldo and config('GILBRETH_FALLBACK_NO_REASONING', '1') == '1' else []
     if not vivo:
         st.warning('The shared AMD endpoint that serves Gemma 4 is not answering right now (it is an experimental '
                    'service). Please try again in a while; the examples in the sidebar were computed with it.')
@@ -466,6 +470,15 @@ def mostrar_resultado(run, motor):
 if vista == 'Try your own video':
     base, modelo = config('GILBRETH_VLLM_URL'), config('GILBRETH_MODEL', 'google/gemma-4-31B-it')
     motor = config('GILBRETH_ENGINE', 'Gemma 4 31B on AMD GPUs (AMD Token Factory)')
+    estado = 'principal'
+    if base:
+        respaldo = config('GILBRETH_FALLBACK_MODEL')
+        modelo, motor, estado = elegir_motor(base, modelo, motor, respaldo,
+                                             config('GILBRETH_FALLBACK_ENGINE', f'{respaldo} on AMD GPUs (AMD Token Factory)'))
+        if estado == 'respaldo':
+            st.info(f'Gemma 4 is not available on the shared AMD endpoint right now, so live runs use **{motor}**, '
+                    f'another vision model on the same AMD service. {config("GILBRETH_FALLBACK_NOTE", "")} The examples '
+                    'in the sidebar and the measurements were computed with Gemma 4 on AMD.')
     st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU'
                 + (f'; the full chart is computed by **{motor}**.' if base else
                    ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))
@@ -510,7 +523,7 @@ if vista == 'Try your own video':
                     st.caption(f'One request per second of video on a shared endpoint: about {pide / ritmo:.0f} min '
                                f'for this {sub["dur"]:.0f}-second clip.')
                 if st.button(f'Chart it with the full agent · {motor}', type='primary'):
-                    correr_agente(vid, npz, run, base, modelo, motor)
+                    correr_agente(vid, npz, run, base, modelo, motor, estado == 'respaldo')
         if (run / 'diagrama.json').exists():
             mostrar_resultado(run, motor)
         elif not pi:
