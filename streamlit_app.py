@@ -29,7 +29,7 @@ COSTOS = {
         'USD', 39.25, 'BLS Employer Costs for Employee Compensation, June 2026: total compensation per hour worked, '
                       'manufacturing, production occupations.'),
     'Colombia — minimum-wage operator': (
-        'COP', 15540, 'Own calculation from the 2026 minimum wage (COP 1,750,905, Decree 159 of 2026, transitional) '
+        'COP', 15540, 'Own calculation from the 2026 minimum wage (COP 1,750,905, Decree 1469 of 2025) '
                       'plus transport allowance, benefits and employer contributions, over 182 h/month (42-h week); '
                       'range COP 14,921–16,839 depending on risk class and tax exemption.'),
     'Custom': ('USD', 10.0, 'Type your own cost per hour.')}
