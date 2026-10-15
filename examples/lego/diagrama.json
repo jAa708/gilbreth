@@ -4,7 +4,7 @@
   "operacion": "The left hand typically holds the workpiece in the center while the right hand fetches small parts from the bottom and fits them onto the assembly.",
   "lugar": "Supply areas: bottom center and bottom right. Work point: center. Instructions: top center.",
   "video": "video.mp4",
-  "fecha": "2026-10-14",
+  "fecha": "2026-10-15",
   "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
   "camara": "Operator is at the top. Right hand (magenta) appears on the left side of the image; left hand (cyan) appears on the right side.",
   "run": "lego",
@@ -1910,15 +1910,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "R: Delay · L: Delay"
+    "R: Holds and stabilizes the assembly · L: Holds and adjusts the assembly"
    ],
    "ks": [
     250
    ],
    "n": 109,
    "dur": 1.0,
-   "desc_md": "Delay",
-   "desc_mi": "Delay"
+   "desc_md": "Holds and stabilizes the assembly",
+   "desc_mi": "Holds and adjusts the assembly"
   },
   {
    "t0": 251.0,
@@ -1926,15 +1926,15 @@
    "md": "S",
    "mi": "OP",
    "obs": [
-    "R: Hold · L: Operation"
+    "R: Holds the assembly · L: Fits and presses the part"
    ],
    "ks": [
     251
    ],
    "n": 110,
    "dur": 1.0,
-   "desc_md": "Hold",
-   "desc_mi": "Operation"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses the part"
   },
   {
    "t0": 252.0,
@@ -1942,15 +1942,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "R: Delay · L: Delay"
+    "R: Holds the assembly · L: Holds small part"
    ],
    "ks": [
     252
    ],
    "n": 111,
    "dur": 1.0,
-   "desc_md": "Delay",
-   "desc_mi": "Delay"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Holds small part"
   },
   {
    "t0": 253.0,
@@ -1958,7 +1958,7 @@
    "md": "S",
    "mi": "OP",
    "obs": [
-    "R: Hold · L: Operation"
+    "R: Holds the assembly · L: Fits and presses the part"
    ],
    "ks": [
     253,
@@ -1966,8 +1966,8 @@
    ],
    "n": 112,
    "dur": 2.0,
-   "desc_md": "Hold",
-   "desc_mi": "Operation"
+   "desc_md": "Holds the assembly",
+   "desc_mi": "Fits and presses the part"
   },
   {
    "t0": 255.0,
@@ -1975,7 +1975,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "R: Operation · L: Hold"
+    "R: Fits and presses black part onto assembly · L: Holds the assembly"
    ],
    "ks": [
     255,
@@ -1988,8 +1988,8 @@
    ],
    "n": 113,
    "dur": 7.0,
-   "desc_md": "Operation",
-   "desc_mi": "Hold"
+   "desc_md": "Fits and presses black part onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 262.0,
@@ -1997,15 +1997,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "R: Delay · L: Delay"
+    "R: Grasps small black part from supply area · L: Holds the assembly"
    ],
    "ks": [
     262
    ],
    "n": 114,
    "dur": 1.0,
-   "desc_md": "Delay",
-   "desc_mi": "Delay"
+   "desc_md": "Grasps small black part from supply area",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 263.0,
@@ -2013,7 +2013,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "R: Operation · L: Hold"
+    "R: Fits and presses wheel onto assembly · L: Holds the assembly"
    ],
    "ks": [
     263,
@@ -2024,8 +2024,8 @@
    ],
    "n": 115,
    "dur": 5.0,
-   "desc_md": "Operation",
-   "desc_mi": "Hold"
+   "desc_md": "Fits and presses wheel onto assembly",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 268.0,
@@ -2033,15 +2033,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "R: Delay · L: Delay"
+    "R: Grasps small black part from table · L: Holds the assembly"
    ],
    "ks": [
     268
    ],
    "n": 116,
    "dur": 1.0,
-   "desc_md": "Delay",
-   "desc_mi": "Delay"
+   "desc_md": "Grasps small black part from table",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 269.0,

@@ -4,7 +4,7 @@
   "operacion": "The operator uses both hands to manipulate and fold the cardboard workpiece on the center table, alternating between holding and shaping the material.",
   "lugar": "Supply areas: white bins (left) and green table (right). Work point: white surface in the center. No visible instructions.",
   "video": "video.mp4",
-  "fecha": "2026-10-14",
+  "fecha": "2026-10-15",
   "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
   "camara": "Operator is at the bottom center. The left hand (L) appears on the left/center and the right hand (R) appears on the right/center of the image.",
   "run": "cardboard",
@@ -520,7 +520,7 @@
    "md": "OP",
    "mi": "NV",
    "obs": [
-    "R: Operation · L: Not visible"
+    "R: Folds and presses cardboard crease · L: Waits"
    ],
    "ks": [
     102,
@@ -530,8 +530,8 @@
    ],
    "n": 26,
    "dur": 4.0,
-   "desc_md": "Operation",
-   "desc_mi": "Not visible"
+   "desc_md": "Folds and presses cardboard crease",
+   "desc_mi": "Waits"
   },
   {
    "t0": 106.0,
@@ -539,7 +539,7 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "R: Operation · L: Hold"
+    "R: Folds and presses cardboard flap · L: Holds cardboard workpiece"
    ],
    "ks": [
     106,
@@ -548,8 +548,8 @@
    ],
    "n": 27,
    "dur": 3.0,
-   "desc_md": "Operation",
-   "desc_mi": "Hold"
+   "desc_md": "Folds and presses cardboard flap",
+   "desc_mi": "Holds cardboard workpiece"
   },
   {
    "t0": 109.0,
@@ -557,15 +557,15 @@
    "md": "OP",
    "mi": "OP",
    "obs": [
-    "R: Operation · L: Operation"
+    "R: Folds and presses cardboard edge · L: Holds and shapes cardboard workpiece"
    ],
    "ks": [
     109
    ],
    "n": 28,
    "dur": 1.0,
-   "desc_md": "Operation",
-   "desc_mi": "Operation"
+   "desc_md": "Folds and presses cardboard edge",
+   "desc_mi": "Holds and shapes cardboard workpiece"
   },
   {
    "t0": 110.0,
@@ -573,15 +573,15 @@
    "md": "OP",
    "mi": "TR",
    "obs": [
-    "R: Operation · L: Transport"
+    "R: Folds and shapes cardboard workpiece · L: Moves hand away from workpiece"
    ],
    "ks": [
     110
    ],
    "n": 29,
    "dur": 1.0,
-   "desc_md": "Operation",
-   "desc_mi": "Transport"
+   "desc_md": "Folds and shapes cardboard workpiece",
+   "desc_mi": "Moves hand away from workpiece"
   },
   {
    "t0": 111.0,
@@ -589,15 +589,15 @@
    "md": "TR",
    "mi": "D",
    "obs": [
-    "R: Transport · L: Delay"
+    "R: Reaches for and grasps cardboard workpiece · L: Waits"
    ],
    "ks": [
     111
    ],
    "n": 30,
    "dur": 1.0,
-   "desc_md": "Transport",
-   "desc_mi": "Delay"
+   "desc_md": "Reaches for and grasps cardboard workpiece",
+   "desc_mi": "Waits"
   },
   {
    "t0": 112.0,
@@ -605,15 +605,15 @@
    "md": "OP",
    "mi": "TR",
    "obs": [
-    "R: Operation · L: Transport"
+    "R: Presses and shapes cardboard workpiece · L: Reaches for part in supply bin"
    ],
    "ks": [
     112
    ],
    "n": 31,
    "dur": 1.0,
-   "desc_md": "Operation",
-   "desc_mi": "Transport"
+   "desc_md": "Presses and shapes cardboard workpiece",
+   "desc_mi": "Reaches for part in supply bin"
   },
   {
    "t0": 113.0,
@@ -621,15 +621,15 @@
    "md": "NV",
    "mi": "NV",
    "obs": [
-    "R: Not visible · L: Not visible"
+    "R: Waits · L: Waits"
    ],
    "ks": [
     113
    ],
    "n": 32,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Not visible"
+   "desc_md": "Waits",
+   "desc_mi": "Waits"
   },
   {
    "t0": 114.0,
@@ -653,7 +653,7 @@
    "md": "OP",
    "mi": "NV",
    "obs": [
-    "R: Operation · L: Not visible"
+    "R: Folds and presses cardboard workpiece · L: Waits"
    ],
    "ks": [
     115,
@@ -661,8 +661,8 @@
    ],
    "n": 34,
    "dur": 2.0,
-   "desc_md": "Operation",
-   "desc_mi": "Not visible"
+   "desc_md": "Folds and presses cardboard workpiece",
+   "desc_mi": "Waits"
   },
   {
    "t0": 117.0,
@@ -805,15 +805,15 @@
    "md": "NV",
    "mi": "TR",
    "obs": [
-    "R: Not visible · L: Transport"
+    "R: Waits · L: Grasps and moves cardboard workpiece"
    ],
    "ks": [
     132
    ],
    "n": 43,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Transport"
+   "desc_md": "Waits",
+   "desc_mi": "Grasps and moves cardboard workpiece"
   },
   {
    "t0": 133.0,
@@ -821,15 +821,15 @@
    "md": "NV",
    "mi": "OP",
    "obs": [
-    "R: Not visible · L: Operation"
+    "R: Waits · L: Folds and shapes cardboard workpiece"
    ],
    "ks": [
     133
    ],
    "n": 44,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Operation"
+   "desc_md": "Waits",
+   "desc_mi": "Folds and shapes cardboard workpiece"
   },
   {
    "t0": 134.0,
@@ -837,15 +837,15 @@
    "md": "NV",
    "mi": "TR",
    "obs": [
-    "R: Not visible · L: Transport"
+    "R: Waits · L: Reaches for cardboard waste"
    ],
    "ks": [
     134
    ],
    "n": 45,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Transport"
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for cardboard waste"
   },
   {
    "t0": 135.0,
@@ -853,15 +853,15 @@
    "md": "NV",
    "mi": "OP",
    "obs": [
-    "R: Not visible · L: Operation"
+    "R: Waits · L: Folds and presses cardboard workpiece"
    ],
    "ks": [
     135
    ],
    "n": 46,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Operation"
+   "desc_md": "Waits",
+   "desc_mi": "Folds and presses cardboard workpiece"
   },
   {
    "t0": 136.0,
@@ -869,15 +869,15 @@
    "md": "OP",
    "mi": "OP",
    "obs": [
-    "R: Operation · L: Operation"
+    "R: Folds and presses cardboard edge · L: Holds and shapes cardboard base"
    ],
    "ks": [
     136
    ],
    "n": 47,
    "dur": 1.0,
-   "desc_md": "Operation",
-   "desc_mi": "Operation"
+   "desc_md": "Folds and presses cardboard edge",
+   "desc_mi": "Holds and shapes cardboard base"
   },
   {
    "t0": 137.0,
@@ -885,15 +885,15 @@
    "md": "TR",
    "mi": "NV",
    "obs": [
-    "R: Transport · L: Not visible"
+    "R: Reaches for and grasps cardboard from bin · L: Waits"
    ],
    "ks": [
     137
    ],
    "n": 48,
    "dur": 1.0,
-   "desc_md": "Transport",
-   "desc_mi": "Not visible"
+   "desc_md": "Reaches for and grasps cardboard from bin",
+   "desc_mi": "Waits"
   },
   {
    "t0": 138.0,
@@ -901,15 +901,15 @@
    "md": "OP",
    "mi": "NV",
    "obs": [
-    "R: Operation · L: Not visible"
+    "R: Folds and presses cardboard workpiece · L: Waits"
    ],
    "ks": [
     138
    ],
    "n": 49,
    "dur": 1.0,
-   "desc_md": "Operation",
-   "desc_mi": "Not visible"
+   "desc_md": "Folds and presses cardboard workpiece",
+   "desc_mi": "Waits"
   },
   {
    "t0": 139.0,
@@ -917,7 +917,7 @@
    "md": "NV",
    "mi": "TR",
    "obs": [
-    "R: Not visible · L: Transport"
+    "R: Waits · L: Reaches for and grasps part from bin"
    ],
    "ks": [
     139,
@@ -925,8 +925,8 @@
    ],
    "n": 50,
    "dur": 2.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Transport"
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for and grasps part from bin"
   },
   {
    "t0": 141.0,
@@ -934,15 +934,15 @@
    "md": "NV",
    "mi": "OP",
    "obs": [
-    "R: Not visible · L: Operation"
+    "R: Waits · L: Folds and shapes cardboard workpiece"
    ],
    "ks": [
     141
    ],
    "n": 51,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Operation"
+   "desc_md": "Waits",
+   "desc_mi": "Folds and shapes cardboard workpiece"
   },
   {
    "t0": 142.0,
@@ -950,7 +950,7 @@
    "md": "OP",
    "mi": "OP",
    "obs": [
-    "R: Operation · L: Operation"
+    "R: Uses tool to press cardboard fold · L: Holds and shapes cardboard workpiece"
    ],
    "ks": [
     142,
@@ -958,8 +958,8 @@
    ],
    "n": 52,
    "dur": 2.0,
-   "desc_md": "Operation",
-   "desc_mi": "Operation"
+   "desc_md": "Uses tool to press cardboard fold",
+   "desc_mi": "Holds and shapes cardboard workpiece"
   },
   {
    "t0": 144.0,
@@ -967,15 +967,15 @@
    "md": "S",
    "mi": "OP",
    "obs": [
-    "R: Hold · L: Operation"
+    "R: Holds the cardboard workpiece · L: Presses and folds the cardboard"
    ],
    "ks": [
     144
    ],
    "n": 53,
    "dur": 1.0,
-   "desc_md": "Hold",
-   "desc_mi": "Operation"
+   "desc_md": "Holds the cardboard workpiece",
+   "desc_mi": "Presses and folds the cardboard"
   },
   {
    "t0": 145.0,
@@ -983,15 +983,15 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "R: Operation · L: Hold"
+    "R: Presses and folds cardboard workpiece · L: Holds cardboard workpiece in place"
    ],
    "ks": [
     145
    ],
    "n": 54,
    "dur": 1.0,
-   "desc_md": "Operation",
-   "desc_mi": "Hold"
+   "desc_md": "Presses and folds cardboard workpiece",
+   "desc_mi": "Holds cardboard workpiece in place"
   },
   {
    "t0": 146.0,
@@ -999,15 +999,15 @@
    "md": "NV",
    "mi": "NV",
    "obs": [
-    "R: Not visible · L: Not visible"
+    "R: Waits · L: Waits"
    ],
    "ks": [
     146
    ],
    "n": 55,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Not visible"
+   "desc_md": "Waits",
+   "desc_mi": "Waits"
   },
   {
    "t0": 147.0,
@@ -1015,15 +1015,15 @@
    "md": "NV",
    "mi": "TR",
    "obs": [
-    "R: Not visible · L: Transport"
+    "R: Waits · L: Transports cardboard workpiece"
    ],
    "ks": [
     147
    ],
    "n": 56,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Transport"
+   "desc_md": "Waits",
+   "desc_mi": "Transports cardboard workpiece"
   },
   {
    "t0": 148.0,
@@ -1031,15 +1031,15 @@
    "md": "NV",
    "mi": "TR+OP",
    "obs": [
-    "R: Not visible · L: Transport + operation"
+    "R: Waits · L: Transports and fits cardboard piece"
    ],
    "ks": [
     148
    ],
    "n": 57,
    "dur": 1.0,
-   "desc_md": "Not visible",
-   "desc_mi": "Transport + operation"
+   "desc_md": "Waits",
+   "desc_mi": "Transports and fits cardboard piece"
   },
   {
    "t0": 149.0,
@@ -1047,15 +1047,15 @@
    "md": "NV",
    "mi": "TR",
    "obs": [
-    "R: Not visible · L: Transport"
+    "R: Waits · L: Reaches for and grasps part from bin"
    ],
    "ks": [
     149
    ],
    "n": 58,
    "dur": 0.98,
-   "desc_md": "Not visible",
-   "desc_mi": "Transport"
+   "desc_md": "Waits",
+   "desc_mi": "Reaches for and grasps part from bin"
   }
  ]
 }

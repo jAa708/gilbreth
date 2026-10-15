@@ -15,7 +15,7 @@ tracking: **MediaPipe**.
 Methods engineers improve manual work (assembly, packing, kitting) with the **bimanual chart**: what the left and
 right hand do, row by row (ILO symbols ○ operation, ⇨ transport, D delay, ▽ hold). Drawing it by hand from a video is
 slow: about **one hour of one person for a 4.7-minute video**, by our estimate from a course project. The gains it
-finds are classic: fixtures that free the holding hand, balanced hands, parts within reach.
+reveals are well known: fixtures that free the holding hand, balanced hands, parts within reach.
 
 **Who uses Gilbreth:** industrial/methods engineers and plant supervisors. **What it improves:** time per unit of a
 manual operation (and the time it takes to analyse it).
