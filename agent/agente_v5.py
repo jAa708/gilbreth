@@ -264,6 +264,19 @@ def _cod(x):
     return x if x in CODIGOS else None
 
 
+def nv_visible(md, mi, sens, umbral=50):
+    """«No visible» dicho de una mano que el seguidor ve en ≥ umbral % de las muestras del segundo → D. Medido en
+    desarrollo (15-oct, regla escrita antes): KIT sujeto 2 51,3 → 53,0 %, IMPACT y LEGO sin cambio. Pasar de NV a D no
+    cambia si esa mano opera, así que la convención de la otra mano no se toca."""
+    if not sens:
+        return md, mi
+    c = [md, mi]
+    for k, m in enumerate(('mano_derecha', 'mano_izquierda')):
+        if c[k] == 'NV' and ((sens.get(m) or {}).get('visible_pct') or 0) >= umbral:
+            c[k] = 'D'
+    return c[0], c[1]
+
+
 def _fallida(j):
     """Respuesta caída (error de red o del servidor) o sin códigos válidos."""
     return not j or '_error' in j or _cod(j.get('code_right')) is None or _cod(j.get('code_left')) is None
@@ -358,8 +371,8 @@ def cmd_ventanas(a):
         nuevos, _ = correr(a, [vent[i] for i in caidas], armar)
         for i, j in zip(caidas, nuevos):
             crudos[i] = j
-    out = [{'k': v['k'], 't0': v['t0'], 't1': v['t1'], 'md': codigos(j, a)[0], 'mi': codigos(j, a)[1], 'crudo': j}
-           for v, j in zip(vent, crudos)]
+    out = [{'k': v['k'], 't0': v['t0'], 't1': v['t1'], 'md': cod[0], 'mi': cod[1], 'crudo': j}
+           for v, j in zip(vent, crudos) for cod in [nv_visible(*codigos(j, a), v.get('sensores'))]]
     # Una ventana que sigue caída NO es «espera»: copia el segundo válido más cercano y queda marcada para revisar.
     # Medido en KIT sujeto 2 (desarrollo, 1.992 manos-segundo): poner D acierta 23,5 %, copiar el vecino 36,6 %; y la D
     # falsa inflaba el % improductivo del diagrama.

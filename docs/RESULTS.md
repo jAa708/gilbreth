@@ -52,6 +52,17 @@ output with the schema in the prompt) with the shipped pipeline (gate on).
   run of v7 on 11 Oct, which trains the calibrated model with a different routine than the shipped pipeline;
   with 92 hand-seconds that difference moves the figure by about ten points, so it is not a robust number. The KIT test (3,305 hand-seconds) is.
 
+## Changes after the final test (15 Oct, development data only)
+Both rules were written down before measuring; the shipped examples are unchanged by them (0 seconds in four
+examples, 2 hand-seconds in the cardboard one).
+- **"Not visible" against the hand tracker.** On KIT subject 2, 218 of Gemma's 971 errors were NV for a hand the
+  labels do code. When the tracker sees that hand in at least half of the second, NV becomes D (delay). KIT subject 2:
+  51.3 → 53.0 % (workshop +1.5, kitchen +1.9); IMPACT development 2 and LEGO 0-70 s: no change. Most of the other NV
+  errors are hands outside the frame, which KIT labels as idle and the bimanual chart writes as NV.
+- **A request that fails is not a delay.** A window whose request still fails after a second pass copies the nearest
+  valid second and is flagged for review. Simulated on KIT subject 2: D/D was right for 23.5 % of such hand-seconds,
+  the neighbour for 36.6 %, and a false D inflated the idle share of the chart.
+
 ## MIT-pure mode (no IMPACT-derived motion prior)
 Decision set KIT subject 2 (total): v9 with prior 62.4 % · v9 without prior **49.8 %** (= Gemma; the gate rejects the
 calibrated model in 9/9 tasks because, trained on half of the reviewed seconds, it is too weak). Second look on KIT
