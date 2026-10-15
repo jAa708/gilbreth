@@ -348,9 +348,32 @@ PASOS_EN = {'1/5': 'Tracking both hands (MediaPipe, CPU)', '2/5': 'Frames, hand 
             '4/5': 'Coding every second, hand by hand', '5/5': 'Chart rows, row descriptions and method alerts'}
 
 
+def endpoint_vivo(base, modelo):
+    """Una petición mínima antes de lanzar el agente: el endpoint compartido puede estar caído (modelo experimental)."""
+    import urllib.error, urllib.request
+    url = base.rstrip('/') + ('/chat/completions' if base.rstrip('/').endswith('/v1') else '/v1/chat/completions')
+    cab = {'Content-Type': 'application/json'}
+    if config('GILBRETH_API_KEY'):
+        cab['Authorization'] = 'Bearer ' + config('GILBRETH_API_KEY')
+    cuerpo = json.dumps({'model': modelo, 'max_tokens': 2, 'messages': [{'role': 'user', 'content': 'ok'}]}).encode()
+    try:
+        urllib.request.urlopen(urllib.request.Request(url, data=cuerpo, headers=cab), timeout=45).read()
+        return True
+    except urllib.error.HTTPError as e:
+        return e.code == 429                       # ocupado pero vivo: el agente sabe esperar
+    except Exception:
+        return False
+
+
 def correr_agente(vid, npz, run, base, modelo):
     """Corre agent/bimanual.py contra el endpoint configurado y muestra el avance; devuelve True si terminó bien."""
     import subprocess, time
+    with st.spinner('Checking that the AMD endpoint is answering…'):
+        vivo = endpoint_vivo(base, modelo)
+    if not vivo:
+        st.warning('The shared AMD endpoint that serves Gemma 4 is not answering right now (it is an experimental '
+                   'service). Please try again in a while; the examples in the sidebar were computed with it.')
+        return False
     env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
     for clave in ('GILBRETH_API_KEY', 'GILBRETH_RPM', 'GILBRETH_JSON_MODE'):   # clave, ritmo y modo JSON del endpoint
         if config(clave):
