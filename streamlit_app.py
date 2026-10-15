@@ -239,8 +239,9 @@ if vista == 'Bimanual chart':
         if img.exists():
             st.image(str(img), caption='Frame at the middle of the row')
         if cal:
-            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed by an engineer; the rest was coded "
-                    f"by the agent (gate chose **{cal.get('compuerta')}**).")
+            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed with human labels; the rest was coded by "
+                    f"the agent. Gate: **{'the calibrated model recoded it' if cal.get('compuerta') == 'v7' else 'the vision model was kept'}**"
+                    f" (it scored higher on the reviewed seconds, tested without seeing itself).")
     a, b = st.columns(2)
     a.download_button('Download the chart (Excel, course format)', excel_bytes(str(EJ[nombre]), HUELLA), 'bimanual_chart.xlsx',
                       width="stretch")
@@ -527,9 +528,9 @@ if vista == 'Try your own video':
         modelo, motor, estado = elegir_motor(base, modelo, motor, respaldo,
                                              config('GILBRETH_FALLBACK_ENGINE', f'{respaldo} on AMD GPUs (AMD Token Factory)'))
         if estado == 'respaldo':
-            st.info(f'Gemma 4 is not available on the shared AMD endpoint right now, so live runs use **{motor}**, '
-                    f'another vision model on the same AMD service. {config("GILBRETH_FALLBACK_NOTE", "")} The examples '
-                    'in the sidebar and the measurements were computed with Gemma 4 on AMD.')
+            st.info(f'Live runs use **{motor}**, the best of the vision models we screened on AMD after Gemma 4 left the '
+                    f'shared Token Factory catalogue on 15 Oct. {config("GILBRETH_FALLBACK_NOTE", "")} Every example and '
+                    'measurement in this app was computed with Gemma 4 31B on AMD.')
     st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU'
                 + (f'; the full chart is computed by **{motor}**.' if base else
                    ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))

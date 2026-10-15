@@ -5,9 +5,12 @@ seconds come out — for the methods engineer to review and approve.**
 
 Built for the **AMD Developer Hackathon: ACT III** (Track 1, *Intelligent Industry*) by team **ArkhanLabs**
 (Juan David Sabogal Orozco, industrial engineering student, Cali, Colombia).
-Vision model: **Gemma 4 31B** served on **AMD GPUs** through **AMD Token Factory** (the event's OpenAI-compatible
-endpoint); `docs/AMD.md` also documents a self-hosted setup with **vLLM on ROCm** (AMD Instinct MI300X). Hand
-tracking: **MediaPipe**.
+Vision model: **Gemma 4 31B** on **AMD GPUs** through **AMD Token Factory** (the event's OpenAI-compatible endpoint)
+for every example and test here. Hand tracking: **MediaPipe**.
+
+> **Status, 15 Oct:** AMD removed `Gemma-4-31B-IT` from Token Factory that morning. The agent does not depend on one
+> model: we screened six vision models on AMD on the same development seconds, with the rule written beforehand, and
+> the live demo now runs the best one, `Qwen3.8-Flash-Next` (56.9 % against 55.3 % for Gemma), and names it on screen.
 
 > Named after Frank and Lillian Gilbreth, who filmed workers a century ago to study and improve their motions.
 
