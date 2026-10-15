@@ -21,6 +21,11 @@ requests while text still works (HTTP 500, "GPU 0 has a total capacity of 191.69
 Instinct MI300X). The app therefore checks the endpoint with a tiny image before a live run, and the agent retries
 500/502/503/504 with backoff.
 
+On 14 Oct that lasted from 20:21 to 00:49 (Colombia time) while other vision models on the same service kept
+answering. If `GILBRETH_FALLBACK_MODEL` is set (we use `Qwen3.8-27B`, screened in `docs/RESULTS.md`: 51.9 % against
+55.3 % for Gemma on the same development seconds), the app runs the live demo on that model when Gemma fails the
+image check, and says so on screen; the examples and the measurements are always Gemma's.
+
 One second of video costs about 1.45 requests (one per second plus one per chart row for the descriptions; 1,390
 requests for 957.7 s of video in the five examples), so a 5-minute video needs at least 24 minutes at 18 requests per
 minute, plus queueing on the shared endpoint (median 19.5 s per request on 14 Oct).
