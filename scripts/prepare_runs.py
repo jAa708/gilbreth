@@ -2,7 +2,7 @@
 packages. The GPU part (operation sheet, per-second coding, descriptions) then runs on the vLLM server with
 agent/bimanual.py pointing at the same result folders, which skips the steps already done.
 Usage: python scripts/prepare_runs.py runs NAME=VIDEO.mp4 [NAME=VIDEO.mp4 ...]"""
-import subprocess, sys
+import shutil, subprocess, sys
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -14,6 +14,8 @@ trabajos = [a.split('=', 1) for a in sys.argv[2:]]
 def preparar(nombre, video):
     sal = base / nombre
     sal.mkdir(parents=True, exist_ok=True)
+    if not (sal / 'video.mp4').exists():                    # el lote de Token Factory lee runs/NAME/video.mp4
+        shutil.copyfile(video, sal / 'video.mp4')
     npz = sal / 'puntos.npz'
     if not npz.exists():
         subprocess.run([sys.executable, str(AG / 'extraer_puntos.py'), video, str(npz)], check=True,

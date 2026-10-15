@@ -1,0 +1,9 @@
+.git
+runs/
+runs_colab/
+models/*.npz
+models/*.task
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
+.env

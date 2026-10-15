@@ -16,6 +16,7 @@ ap.add_argument('--rpm', default='18')
 ap.add_argument('--hilos', default='4')
 ap.add_argument('--carpeta', default=str(RAIZ / 'runs'), help='folder with the prepared runs')
 ap.add_argument('--gpu', default='AMD GPUs (AMD Token Factory, shared Gemma 4 endpoint)')
+ap.add_argument('--sin-razonar', action='store_true', help='reasoning_effort: none (Qwen and other reasoning models)')
 a = ap.parse_args()
 if not os.environ.get('GILBRETH_API_KEY'):
     sys.exit('Set GILBRETH_API_KEY first (the Token Factory key of your team).')
@@ -28,6 +29,8 @@ for r in a.runs:
            '--modelo', a.modelo, '--idioma', 'en', '--hilos', a.hilos, '--puntos', str(d / 'puntos.npz')]
     if (d / 'revisado.json').exists():
         cmd += ['--calibrar', str(d / 'revisado.json')]
+    if a.sin_razonar:
+        cmd.append('--ollama')                     # in agent/bimanual.py this flag sends reasoning_effort: none
     t0 = time.time()
     with open(d / 'log.txt', 'w', encoding='utf-8') as log:
         p = subprocess.run(cmd, env=env, stdout=log, stderr=subprocess.STDOUT)

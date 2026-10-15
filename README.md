@@ -76,9 +76,11 @@ lab runs and everything we tried and dropped: [`docs/RESULTS.md`](docs/RESULTS.m
 pip install -r requirements.txt
 streamlit run streamlit_app.py
 ```
-**Full agent** on AMD Token Factory (shared Gemma 4 31B endpoint; your team's key in `GILBRETH_API_KEY`):
+**Full agent** on AMD Token Factory (shared endpoint; your team's key in `GILBRETH_API_KEY`):
 ```bash
-python scripts/tokenfactory_batch.py lego gearbox      # prepared runs/, 20 requests per minute, writes docs/benchmark.json
+python scripts/prepare_runs.py runs lego=examples/lego/lego_480p.mp4 gearbox=examples/impact_gearbox/gearbox_480p.mp4   # CPU part
+python scripts/tokenfactory_batch.py lego gearbox      # 20 requests per minute, writes docs/benchmark.json
+# while Gemma-4-31B-IT is not listed: add --modelo Qwen3.8-Flash-Next --sin-razonar
 ```
 In the app, set `GILBRETH_VLLM_URL=https://developer.amd.com.cn/radeon/api/v1`, `GILBRETH_MODEL=Gemma-4-31B-IT`,
 `GILBRETH_JSON_MODE=object`, `GILBRETH_RPM=18` and `GILBRETH_API_KEY` (Streamlit secrets) to chart uploads live;
