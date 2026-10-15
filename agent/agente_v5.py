@@ -212,7 +212,7 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
             if e.code in (400, 402, 403, 429) and any(p in detalle for p in ('credit', 'quota', 'spend', 'insufficient')):
                 SIN_CUPO.set()                      # no tiene sentido seguir: el cupo vuelve al día siguiente
                 return {'_error': 'daily quota used up'}
-            if e.code in (429, 502, 503):           # ritmo o saturación: esperar lo que pide el servidor
+            if e.code in (429, 500, 502, 503, 504):  # ritmo o saturación: esperar lo que pide el servidor
                 espera = float(e.headers.get('Retry-After') or 0) or min(60, 2 ** intento)
                 time.sleep(espera + random.uniform(0, 1.5))
                 continue
@@ -220,11 +220,11 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
             if fallos >= 3:
                 return {'_error': f'HTTP {e.code}: {detalle[:150]}'}
             time.sleep(3)
-        except Exception as e:                      # red o servidor ocupado: reintento corto
+        except Exception as e:                      # red, tiempo agotado o servidor ocupado: reintento con espera
             fallos += 1
-            if fallos >= 3:
+            if fallos >= 5:
                 return {'_error': str(e)[:200]}
-            time.sleep(3)
+            time.sleep(min(60, 5 * 2 ** fallos) + random.uniform(0, 2))
     return {'_error': 'too many retries'}
 
 
@@ -468,12 +468,22 @@ def cmd_describir(a):
                                    **IDIOMA_DESC[getattr(a, 'idioma', 'es')])
         return [{'type': 'text', 'text': texto}] + [{'type': 'image_url', 'image_url': {'url': b64(p)}} for p in rutas]
     t = time.time()
+    nombre = f'filas_desc_{a.etiqueta}'
+    previas = {}                                     # filas ya descritas en una corrida anterior: no se repiten
+    if (pq / f'{nombre}.json').exists():
+        for d in json.loads((pq / f'{nombre}.json').read_text(encoding='utf-8')):
+            if d.get('desc_md') and d.get('desc_mi'):
+                previas[(float(d['t0']), float(d['t1']), d['md'], d['mi'])] = {
+                    'desc_right': d['desc_md'], 'desc_left': d['desc_mi'], 'events': d.get('events', {}),
+                    'observation': d.get('obs', '')}
+    clave = lambda f: (float(f['t0']), float(f['t1']), f['md'], f['mi'])
     with ThreadPoolExecutor(a.hilos) as ex:
-        resp = list(ex.map(lambda f: llamar(a, armar(f), ESQUEMA_DESC, 'desc', 600), filas))
+        resp = list(ex.map(lambda f: previas.get(clave(f)) or llamar(a, armar(f), ESQUEMA_DESC, 'desc', 600), filas))
     out = [{'t0': f['t0'], 't1': f['t1'], 'md': f['md'], 'mi': f['mi'], 'desc_md': r.get('desc_right', ''),
             'desc_mi': r.get('desc_left', ''), 'events': r.get('events', {}), 'obs': r.get('observation', '')}
            for f, r in zip(filas, resp)]
-    nombre = f'filas_desc_{a.etiqueta}'
+    if previas:
+        print(f'   {sum(1 for f in filas if clave(f) in previas)} filas reutilizadas de la corrida anterior', flush=True)
     (pq / f'{nombre}.json').write_text(json.dumps(out, ensure_ascii=False), encoding='utf-8')
     print(f'RESUMEN {nombre}: {len(out)} filas descritas en {time.time() - t:.0f} s')
 

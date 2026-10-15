@@ -33,6 +33,7 @@ def main():
     ap.add_argument('--idioma', default='es', choices=['es', 'en'], help='idioma de las descripciones por fila')
     ap.add_argument('--sin-previo', action='store_true', help='no usar el previo de movimiento de IMPACT (CC BY-NC-SA): modo MIT puro')
     ap.add_argument('--sin-descripciones', action='store_true', help='sin la 2.ª pasada de descripciones (más rápido)')
+    ap.add_argument('--reusar-ventanas', action='store_true', help='usa pred_v5_vent_agente.json si ya existe (no repite la codificación)')
     a = ap.parse_args()
     sal = Path(a.salida)
     sal.mkdir(parents=True, exist_ok=True)
@@ -61,7 +62,8 @@ def main():
             sys.exit(3)
     # 4) cada segundo
     print('4/5 Codificando cada segundo por mano…', flush=True)
-    ag.cmd_ventanas(ns)
+    if not (a.reusar_ventanas and (sal / 'pred_v5_vent_agente.json').exists()):
+        ag.cmd_ventanas(ns)
     if ag.SIN_CUPO.is_set():
         print('STOP: the model endpoint says the daily quota is used up; try again after it resets.', flush=True)
         sys.exit(3)

@@ -1,38 +1,39 @@
 {
  "meta": {
-  "producto": "Small orange plastic components are being sorted and organized into linear rows.",
-  "operacion": "The right hand stabilizes or gathers parts from the central pile, while the left hand picks and places them into a structured row on the left.",
-  "lugar": "Supply area: large pile of orange parts in the center. Work point: center-left of the table where parts are aligned into rows. Other parts are located on the far left and right.",
-  "video": "plastic.mp4",
-  "fecha": "2026-10-13",
+  "producto": "Small orange decorative items are being sorted and arranged into linear rows.",
+  "operacion": "The right hand picks individual orange parts from the central pile while the left hand organizes and pushes them into a structured linear row.",
+  "lugar": "Supply area: large pile of orange parts in the center. Work point: center-left where parts are aligned into rows. Other parts/bins are located at the top-left, top-right, and bottom-right.",
+  "video": "video.mp4",
+  "fecha": "2026-10-14",
   "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
-  "camara": "Operator is at the bottom of the image. The left hand (Cyan) appears on the left/center, and the right hand (Magenta) appears in the center.",
+  "camara": "Operator is at the bottom. The left hand (Cyan) appears on the left/center and the right hand (Magenta) appears in the center/right of the image.",
   "run": "plastic",
   "title_en": "Plastic parts assembly at a factory station (factory video, CC BY 4.0)",
-  "motor_en": "Gemma 4 31B (4-bit QAT) on a cloud NVIDIA A100 with vLLM; vision model only, no human review (development run)",
+  "motor_en": "Gemma 4 31B on AMD GPUs (AMD Token Factory, shared endpoint)",
   "licencia_en": "Video: Factory Manipulation Videos by Procedural Robotics Inc. (huggingface.co/datasets/procedural-robotics/factory-manipulation-videos), CC BY 4.0. Excerpt 60-210 s of plastic_assembly_station05_worker032.mp4, re-encoded; chart computed by Gilbreth."
  },
  "indicadores": {
   "duracion_s": 150.0,
-  "filas": 128,
+  "filas": 124,
   "MD": {
-   "D": 42.7,
-   "S": 26.0,
-   "TR": 23.3,
-   "OP": 8.0
-  },
-  "MD_productivo_pct": 8.0,
-  "MD_improductivo_pct": 68.7,
-  "MI": {
-   "TR": 35.3,
+   "TR": 46.7,
    "OP": 34.7,
-   "D": 14.0,
-   "TR+OP": 9.3,
-   "NV": 4.0,
-   "S": 2.7
+   "D": 12.7,
+   "TR+OP": 4.7,
+   "S": 1.3
   },
-  "MI_productivo_pct": 44.0,
-  "MI_improductivo_pct": 20.7
+  "MD_productivo_pct": 39.3,
+  "MD_improductivo_pct": 14.0,
+  "MI": {
+   "OP": 42.7,
+   "S": 21.3,
+   "D": 18.0,
+   "TR": 11.3,
+   "NV": 4.0,
+   "TR+OP": 2.7
+  },
+  "MI_productivo_pct": 45.3,
+  "MI_improductivo_pct": 43.3
  },
  "filas": [
   {
@@ -41,243 +42,288 @@
    "md": "TR",
    "mi": "NV",
    "obs": [
-    "MD: Gathers orange parts from central pile · MI: Waits"
+    "R: Reaches for and grasps orange part from pile · L: Waits"
    ],
    "ks": [
     0
    ],
    "n": 1,
    "dur": 1.0,
-   "desc_md": "Gathers orange parts from central pile",
+   "desc_md": "Reaches for and grasps orange part from pile",
    "desc_mi": "Waits"
   },
   {
    "t0": 1.0,
    "t1": 2.0,
    "md": "TR",
-   "mi": "OP",
+   "mi": "D",
    "obs": [
-    "MD: Gathers and stabilizes orange parts in pile · MI: Positions and aligns purple component"
+    "R: Grasps orange part from central pile · L: Holds assembled row of parts"
    ],
    "ks": [
     1
    ],
    "n": 2,
    "dur": 1.0,
-   "desc_md": "Gathers and stabilizes orange parts in pile",
-   "desc_mi": "Positions and aligns purple component"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds assembled row of parts"
   },
   {
    "t0": 2.0,
    "t1": 3.0,
    "md": "OP",
-   "mi": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Stabilizes purple part in central pile · MI: Grasps and aligns purple part"
+    "R: Picks orange part from central pile · L: Holds the linear row of parts"
    ],
    "ks": [
     2
    ],
    "n": 3,
    "dur": 1.0,
-   "desc_md": "Stabilizes purple part in central pile",
-   "desc_mi": "Grasps and aligns purple part"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
    "t0": 3.0,
    "t1": 4.0,
-   "md": "D",
-   "mi": "TR",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Waits in supply area · MI: Transports orange part to work point"
+    "R: Reaches for and grasps orange part from pile · L: Holds the row of parts"
    ],
    "ks": [
     3
    ],
    "n": 4,
    "dur": 1.0,
-   "desc_md": "Waits in supply area",
-   "desc_mi": "Transports orange part to work point"
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Holds the row of parts"
   },
   {
    "t0": 4.0,
    "t1": 5.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "TR+OP",
+   "mi": "S",
    "obs": [
-    "MD: Gathers orange part from central pile · MI: Holds purple base for assembly"
+    "R: Picks part and fits it into row · L: Holds the row of parts"
    ],
    "ks": [
     4
    ],
    "n": 5,
    "dur": 1.0,
-   "desc_md": "Gathers orange part from central pile",
-   "desc_mi": "Holds purple base for assembly"
+   "desc_md": "Picks part and fits it into row",
+   "desc_mi": "Holds the row of parts"
   },
   {
    "t0": 5.0,
    "t1": 6.0,
-   "md": "S",
-   "mi": "TR+OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes parts in central pile · MI: Picks orange part and fits into row"
+    "R: Picks orange part from central pile · L: Holds orange part in place"
    ],
    "ks": [
     5
    ],
    "n": 6,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes parts in central pile",
-   "desc_mi": "Picks orange part and fits into row"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds orange part in place"
   },
   {
    "t0": 6.0,
    "t1": 7.0,
    "md": "TR",
-   "mi": "TR+OP",
+   "mi": "OP",
    "obs": [
-    "MD: Grasps and stabilizes orange part from pile · MI: Picks orange part and fits into row"
+    "R: Grasps orange part from central pile · L: Aligns and pushes parts into linear row"
    ],
    "ks": [
     6
    ],
    "n": 7,
    "dur": 1.0,
-   "desc_md": "Grasps and stabilizes orange part from pile",
-   "desc_mi": "Picks orange part and fits into row"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes parts into linear row"
   },
   {
    "t0": 7.0,
    "t1": 8.0,
-   "md": "D",
-   "mi": "TR",
+   "md": "OP",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
+    "R: Grasps orange part from pile · L: Positions and guides orange part"
    ],
    "ks": [
     7
    ],
    "n": 8,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
+   "desc_md": "Grasps orange part from pile",
+   "desc_mi": "Positions and guides orange part"
   },
   {
    "t0": 8.0,
-   "t1": 9.0,
-   "md": "TR",
-   "mi": "TR",
-   "obs": [
-    "MD: Reaches for and gathers orange parts · MI: Grasps orange part from pile"
-   ],
-   "ks": [
-    8
-   ],
-   "n": 9,
-   "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts",
-   "desc_mi": "Grasps orange part from pile"
-  },
-  {
-   "t0": 9.0,
    "t1": 10.0,
    "md": "TR",
    "mi": "OP",
    "obs": [
-    "MD: Stabilizes and gathers orange parts from pile · MI: Picks orange part from supply pile"
+    "R: Grasps orange part from central pile · L: Aligns and pushes orange parts into row"
    ],
    "ks": [
+    8,
     9
    ],
-   "n": 10,
-   "dur": 1.0,
-   "desc_md": "Stabilizes and gathers orange parts from pile",
-   "desc_mi": "Picks orange part from supply pile"
+   "n": 9,
+   "dur": 2.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes orange parts into row"
   },
   {
    "t0": 10.0,
-   "t1": 12.0,
-   "md": "D",
-   "mi": "TR",
+   "t1": 11.0,
+   "md": "OP",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
+    "R: Picks orange part from central pile · L: Aligns orange part into linear row"
    ],
    "ks": [
-    10,
+    10
+   ],
+   "n": 10,
+   "dur": 1.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Aligns orange part into linear row"
+  },
+  {
+   "t0": 11.0,
+   "t1": 12.0,
+   "md": "TR",
+   "mi": "OP",
+   "obs": [
+    "R: Grasps orange part from central pile · L: Aligns and pushes orange parts into row"
+   ],
+   "ks": [
     11
    ],
    "n": 11,
-   "dur": 2.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
+   "dur": 1.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes orange parts into row"
   },
   {
    "t0": 12.0,
    "t1": 13.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part from central pile"
+    "R: Picks orange part from central pile · L: Holds workpiece in place"
    ],
    "ks": [
     12
    ],
    "n": 12,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part from central pile"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds workpiece in place"
   },
   {
    "t0": 13.0,
-   "t1": 15.0,
-   "md": "D",
-   "mi": "TR",
+   "t1": 14.0,
+   "md": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
+    "R: Grasps orange part from central pile · L: Aligns and pushes orange parts into row"
    ],
    "ks": [
-    13,
-    14
+    13
    ],
    "n": 13,
-   "dur": 2.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
+   "dur": 1.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes orange parts into row"
+  },
+  {
+   "t0": 14.0,
+   "t1": 15.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Picks orange part from central pile · L: Holds and stabilizes the linear row"
+   ],
+   "ks": [
+    14
+   ],
+   "n": 14,
+   "dur": 1.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds and stabilizes the linear row"
   },
   {
    "t0": 15.0,
-   "t1": 18.0,
-   "md": "S",
+   "t1": 16.0,
+   "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Picks orange part from central pile"
+    "R: Grasps and adjusts orange part · L: Holds and stabilizes orange part"
    ],
    "ks": [
-    15,
-    16,
+    15
+   ],
+   "n": 15,
+   "dur": 1.0,
+   "desc_md": "Grasps and adjusts orange part",
+   "desc_mi": "Holds and stabilizes orange part"
+  },
+  {
+   "t0": 16.0,
+   "t1": 17.0,
+   "md": "OP",
+   "mi": "D",
+   "obs": [
+    "R: Grasps orange part from central pile · L: Waits"
+   ],
+   "ks": [
+    16
+   ],
+   "n": 16,
+   "dur": 1.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 17.0,
+   "t1": 18.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Picks orange part from pile and transfers · L: Holds and stabilizes the part"
+   ],
+   "ks": [
     17
    ],
-   "n": 14,
-   "dur": 3.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Picks orange part from central pile"
+   "n": 17,
+   "dur": 1.0,
+   "desc_md": "Picks orange part from pile and transfers",
+   "desc_mi": "Holds and stabilizes the part"
   },
   {
    "t0": 18.0,
    "t1": 19.0,
-   "md": "D",
+   "md": "OP",
    "mi": "TR",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Reaches for and grasps orange part"
+    "R: Grasps orange part from central pile · L: Reaches toward central pile of parts"
    ],
    "ks": [
     18
    ],
-   "n": 15,
+   "n": 18,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Reaches for and grasps orange part"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Reaches toward central pile of parts"
   },
   {
    "t0": 19.0,
@@ -285,12 +331,12 @@
    "md": "TR",
    "mi": "NV",
    "obs": [
-    "MD: Grasps orange part from central pile · MI: Waits"
+    "R: Grasps orange part from central pile · L: Waits"
    ],
    "ks": [
     19
    ],
-   "n": 16,
+   "n": 19,
    "dur": 1.0,
    "desc_md": "Grasps orange part from central pile",
    "desc_mi": "Waits"
@@ -301,370 +347,355 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Waits · MI: Reaches for and grasps orange part"
+    "R: Reaches for and grasps orange part from pile · L: Reaches toward central pile of parts"
    ],
    "ks": [
     20
    ],
-   "n": 17,
+   "n": 20,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps orange part"
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Reaches toward central pile of parts"
   },
   {
    "t0": 21.0,
    "t1": 22.0,
-   "md": "OP",
-   "mi": "S",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Gathers orange parts from central pile · MI: Holds purple component steady"
+    "R: Grasps orange part from central pile · L: Holds the assembly"
    ],
    "ks": [
     21
    ],
-   "n": 18,
+   "n": 21,
    "dur": 1.0,
-   "desc_md": "Gathers orange parts from central pile",
-   "desc_mi": "Holds purple component steady"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds the assembly"
   },
   {
    "t0": 22.0,
    "t1": 23.0,
-   "md": "S",
+   "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: Holds purple component steady · MI: Picks orange part from pile"
+    "R: Grasps and holds orange part from pile · L: Adjusts and fits orange part"
    ],
    "ks": [
     22
    ],
-   "n": 19,
+   "n": 22,
    "dur": 1.0,
-   "desc_md": "Holds purple component steady",
-   "desc_mi": "Picks orange part from pile"
+   "desc_md": "Grasps and holds orange part from pile",
+   "desc_mi": "Adjusts and fits orange part"
   },
   {
    "t0": 23.0,
-   "t1": 24.0,
-   "md": "TR",
-   "mi": "D",
+   "t1": 25.0,
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Reaches for and gathers orange parts · MI: Holds purple component"
+    "R: Picks part and fits it into row · L: Holds the linear row of parts"
    ],
    "ks": [
-    23
+    23,
+    24
    ],
-   "n": 20,
-   "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts",
-   "desc_mi": "Holds purple component"
+   "n": 23,
+   "dur": 2.0,
+   "desc_md": "Picks part and fits it into row",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
-   "t0": 24.0,
+   "t0": 25.0,
    "t1": 26.0,
-   "md": "S",
+   "md": "TR+OP",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Picks orange part from supply pile"
+    "R: Picks orange part and fits into row · L: Organizes and holds the linear row"
    ],
    "ks": [
-    24,
     25
    ],
-   "n": 21,
-   "dur": 2.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Picks orange part from supply pile"
+   "n": 24,
+   "dur": 1.0,
+   "desc_md": "Picks orange part and fits into row",
+   "desc_mi": "Organizes and holds the linear row"
   },
   {
    "t0": 26.0,
    "t1": 27.0,
    "md": "TR",
-   "mi": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Reaches for and stabilizes orange parts pile · MI: Grasps and lifts purple part from pile"
+    "R: Grasps orange part from central pile · L: Holds and aligns the assembly"
    ],
    "ks": [
     26
    ],
-   "n": 22,
+   "n": 25,
    "dur": 1.0,
-   "desc_md": "Reaches for and stabilizes orange parts pile",
-   "desc_mi": "Grasps and lifts purple part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds and aligns the assembly"
   },
   {
    "t0": 27.0,
    "t1": 28.0,
-   "md": "D",
-   "mi": "D",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Waits · MI: Waits"
+    "R: Picks orange part from central pile · L: Holds the linear row of parts"
    ],
    "ks": [
     27
    ],
-   "n": 23,
+   "n": 26,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Waits"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
    "t0": 28.0,
    "t1": 29.0,
    "md": "TR",
-   "mi": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Reaches for and gathers orange parts · MI: Picks orange part from pile"
+    "R: Reaches for and grasps orange part from pile · L: Waits"
    ],
    "ks": [
     28
    ],
-   "n": 24,
+   "n": 27,
    "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts",
-   "desc_mi": "Picks orange part from pile"
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 29.0,
-   "t1": 30.0,
-   "md": "S",
+   "t1": 31.0,
+   "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Picks orange part from supply pile"
+    "R: Presses and aligns part into row · L: Holds and stabilizes the row"
    ],
    "ks": [
-    29
-   ],
-   "n": 25,
-   "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Picks orange part from supply pile"
-  },
-  {
-   "t0": 30.0,
-   "t1": 31.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: Waits · MI: Waits"
-   ],
-   "ks": [
+    29,
     30
    ],
-   "n": 26,
-   "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Waits"
+   "n": 28,
+   "dur": 2.0,
+   "desc_md": "Presses and aligns part into row",
+   "desc_mi": "Holds and stabilizes the row"
   },
   {
    "t0": 31.0,
    "t1": 32.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part from central pile"
+    "R: Picks orange part from central pile · L: Holds workpiece in place"
    ],
    "ks": [
     31
    ],
-   "n": 27,
+   "n": 29,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part from central pile"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds workpiece in place"
   },
   {
    "t0": 32.0,
    "t1": 33.0,
    "md": "TR",
-   "mi": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Grasps orange part from pile"
+    "R: Grasps orange part from central pile · L: Waits"
    ],
    "ks": [
     32
    ],
-   "n": 28,
+   "n": 30,
    "dur": 1.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Grasps orange part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 33.0,
    "t1": 34.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks and extracts orange part from pile"
+    "R: Picks orange part from central pile · L: Holds orange part"
    ],
    "ks": [
     33
    ],
-   "n": 29,
+   "n": 31,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks and extracts orange part from pile"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds orange part"
   },
   {
    "t0": 34.0,
    "t1": 35.0,
-   "md": "D",
-   "mi": "TR",
+   "md": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Reaches for and grasps orange part"
+    "R: Grasps orange part from central pile · L: Aligns and pushes parts into row"
    ],
    "ks": [
     34
    ],
-   "n": 30,
+   "n": 32,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps orange part"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes parts into row"
   },
   {
    "t0": 35.0,
-   "t1": 38.0,
-   "md": "S",
-   "mi": "OP",
+   "t1": 37.0,
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part from central pile"
+    "R: Picks orange part from central pile · L: Holds and receives part for alignment"
    ],
    "ks": [
     35,
-    36,
+    36
+   ],
+   "n": 33,
+   "dur": 2.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds and receives part for alignment"
+  },
+  {
+   "t0": 37.0,
+   "t1": 38.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "R: Grasps orange part from central pile · L: Organizes orange parts in the pile"
+   ],
+   "ks": [
     37
    ],
-   "n": 31,
-   "dur": 3.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part from central pile"
+   "n": 34,
+   "dur": 1.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Organizes orange parts in the pile"
   },
   {
    "t0": 38.0,
    "t1": 39.0,
-   "md": "D",
+   "md": "TR",
    "mi": "TR+OP",
    "obs": [
-    "MD: Waits · MI: Picks part and fits into row"
+    "R: Grasps orange part from central pile · L: Fits and pushes part into linear row"
    ],
    "ks": [
     38
    ],
-   "n": 32,
+   "n": 35,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Picks part and fits into row"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Fits and pushes part into linear row"
   },
   {
    "t0": 39.0,
-   "t1": 40.0,
-   "md": "D",
-   "mi": "TR",
-   "obs": [
-    "MD: Waits in supply pile · MI: Reaches toward organized row"
-   ],
-   "ks": [
-    39
-   ],
-   "n": 33,
-   "dur": 1.0,
-   "desc_md": "Waits in supply pile",
-   "desc_mi": "Reaches toward organized row"
-  },
-  {
-   "t0": 40.0,
    "t1": 41.0,
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Gathers and stabilizes orange parts in pile · MI: Reaches for orange part from pile"
+    "R: Grasps orange part from central pile · L: Reaches toward central pile of parts"
    ],
    "ks": [
+    39,
     40
    ],
-   "n": 34,
-   "dur": 1.0,
-   "desc_md": "Gathers and stabilizes orange parts in pile",
-   "desc_mi": "Reaches for orange part from pile"
+   "n": 36,
+   "dur": 2.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Reaches toward central pile of parts"
   },
   {
    "t0": 41.0,
    "t1": 42.0,
-   "md": "D",
+   "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Waits over supply pile · MI: Holds purple component"
+    "R: Grasps orange part from central pile · L: Holds row of parts"
    ],
    "ks": [
     41
    ],
-   "n": 35,
+   "n": 37,
    "dur": 1.0,
-   "desc_md": "Waits over supply pile",
-   "desc_mi": "Holds purple component"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds row of parts"
   },
   {
    "t0": 42.0,
    "t1": 43.0,
-   "md": "D",
-   "mi": "TR",
+   "md": "OP",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Grasps purple part from supply pile"
+    "R: Grasps and manipulates orange part from pile · L: Holds and guides orange part"
    ],
    "ks": [
     42
    ],
-   "n": 36,
+   "n": 38,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps purple part from supply pile"
+   "desc_md": "Grasps and manipulates orange part from pile",
+   "desc_mi": "Holds and guides orange part"
   },
   {
    "t0": 43.0,
    "t1": 44.0,
    "md": "TR",
-   "mi": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Reaches for and stabilizes orange part pile · MI: Transports purple part toward work area"
+    "R: Grasps orange part from central pile · L: Pushes part into linear row"
    ],
    "ks": [
     43
    ],
-   "n": 37,
+   "n": 39,
    "dur": 1.0,
-   "desc_md": "Reaches for and stabilizes orange part pile",
-   "desc_mi": "Transports purple part toward work area"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Pushes part into linear row"
   },
   {
    "t0": 44.0,
    "t1": 45.0,
-   "md": "S",
-   "mi": "TR+OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes the part pile · MI: Picks part and fits into row"
+    "R: Picks orange part from central pile · L: Holds linear row of parts"
    ],
    "ks": [
     44
    ],
-   "n": 38,
+   "n": 40,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes the part pile",
-   "desc_mi": "Picks part and fits into row"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds linear row of parts"
   },
   {
    "t0": 45.0,
    "t1": 46.0,
-   "md": "D",
-   "mi": "D",
+   "md": "TR+OP",
+   "mi": "S",
    "obs": [
-    "MD: Waits · MI: Waits"
+    "R: Picks orange part and fits into row · L: Holds the linear row of parts"
    ],
    "ks": [
     45
    ],
-   "n": 39,
+   "n": 41,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Waits"
+   "desc_md": "Picks orange part and fits into row",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
    "t0": 46.0,
@@ -672,144 +703,144 @@
    "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: Stabilizes and guides orange part from pile · MI: Grasps and aligns orange part"
+    "R: Picks orange part from central pile · L: Adjusts and aligns orange part"
    ],
    "ks": [
     46
    ],
-   "n": 40,
+   "n": 42,
    "dur": 1.0,
-   "desc_md": "Stabilizes and guides orange part from pile",
-   "desc_mi": "Grasps and aligns orange part"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Adjusts and aligns orange part"
   },
   {
    "t0": 47.0,
    "t1": 48.0,
-   "md": "S",
+   "md": "TR",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes orange part pile · MI: Picks and aligns purple component"
+    "R: Grasps orange part from central pile · L: Aligns and pushes part into linear row"
    ],
    "ks": [
     47
    ],
-   "n": 41,
+   "n": 43,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange part pile",
-   "desc_mi": "Picks and aligns purple component"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes part into linear row"
   },
   {
    "t0": 48.0,
    "t1": 49.0,
-   "md": "D",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Waits · MI: Positions purple component into row"
+    "R: Picks orange part from central pile · L: Holds row of assembled parts"
    ],
    "ks": [
     48
    ],
-   "n": 42,
+   "n": 44,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Positions purple component into row"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds row of assembled parts"
   },
   {
    "t0": 49.0,
    "t1": 50.0,
    "md": "TR",
-   "mi": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Reaches for orange part in pile · MI: Transports purple part toward work area"
+    "R: Grasps orange part from central pile · L: Holds part in place"
    ],
    "ks": [
     49
    ],
-   "n": 43,
+   "n": 45,
    "dur": 1.0,
-   "desc_md": "Reaches for orange part in pile",
-   "desc_mi": "Transports purple part toward work area"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds part in place"
   },
   {
    "t0": 50.0,
-   "t1": 52.0,
-   "md": "D",
-   "mi": "TR",
+   "t1": 51.0,
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from central pile"
+    "R: Picks orange part from central pile · L: Holds orange part"
    ],
    "ks": [
-    50,
-    51
+    50
    ],
-   "n": 44,
-   "dur": 2.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from central pile"
+   "n": 46,
+   "dur": 1.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds orange part"
   },
   {
-   "t0": 52.0,
+   "t0": 51.0,
    "t1": 53.0,
    "md": "TR",
-   "mi": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Reaches for and stabilizes orange parts pile · MI: Grasps orange part from supply pile"
+    "R: Grasps orange part from central pile · L: Pushes and aligns part into linear row"
    ],
    "ks": [
+    51,
     52
    ],
-   "n": 45,
-   "dur": 1.0,
-   "desc_md": "Reaches for and stabilizes orange parts pile",
-   "desc_mi": "Grasps orange part from supply pile"
+   "n": 47,
+   "dur": 2.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Pushes and aligns part into linear row"
   },
   {
    "t0": 53.0,
    "t1": 54.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "TR+OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part from the pile"
+    "R: Picks part and fits it into row · L: Holds the row of parts"
    ],
    "ks": [
     53
    ],
-   "n": 46,
+   "n": 48,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part from the pile"
+   "desc_md": "Picks part and fits it into row",
+   "desc_mi": "Holds the row of parts"
   },
   {
    "t0": 54.0,
    "t1": 55.0,
    "md": "S",
-   "mi": "TR+OP",
+   "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes the workpiece · MI: Picks part and fits into row"
+    "R: Holds the orange part · L: Aligns and pushes part into row"
    ],
    "ks": [
     54
    ],
-   "n": 47,
+   "n": 49,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes the workpiece",
-   "desc_mi": "Picks part and fits into row"
+   "desc_md": "Holds the orange part",
+   "desc_mi": "Aligns and pushes part into row"
   },
   {
    "t0": 55.0,
    "t1": 56.0,
-   "md": "D",
-   "mi": "TR",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
+    "R: Grasps orange part from central pile · L: Waits"
    ],
    "ks": [
     55
    ],
-   "n": 48,
+   "n": 50,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 56.0,
@@ -817,111 +848,81 @@
    "md": "OP",
    "mi": "NV",
    "obs": [
-    "MD: Gathers and stabilizes orange parts in pile · MI: Not visible"
+    "R: Grasps orange part from pile · L: Waits"
    ],
    "ks": [
     56
    ],
-   "n": 49,
+   "n": 51,
    "dur": 1.0,
-   "desc_md": "Gathers and stabilizes orange parts in pile",
-   "desc_mi": "Not visible"
+   "desc_md": "Grasps orange part from pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 57.0,
    "t1": 58.0,
    "md": "TR",
-   "mi": "TR+OP",
+   "mi": "OP",
    "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Picks and moves orange part from pile"
+    "R: Grasps orange part from central pile · L: Aligns and pushes part into row"
    ],
    "ks": [
     57
    ],
-   "n": 50,
+   "n": 52,
    "dur": 1.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Picks and moves orange part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes part into row"
   },
   {
    "t0": 58.0,
-   "t1": 59.0,
-   "md": "D",
+   "t1": 60.0,
+   "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Picks orange part from central pile"
+    "R: Grasps orange part from central pile · L: Adjusts and aligns orange part"
    ],
    "ks": [
-    58
-   ],
-   "n": 51,
-   "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Picks orange part from central pile"
-  },
-  {
-   "t0": 59.0,
-   "t1": 60.0,
-   "md": "D",
-   "mi": "TR",
-   "obs": [
-    "MD: Waits · MI: Reaches for and grasps orange part"
-   ],
-   "ks": [
+    58,
     59
    ],
-   "n": 52,
-   "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps orange part"
+   "n": 53,
+   "dur": 2.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Adjusts and aligns orange part"
   },
   {
    "t0": 60.0,
    "t1": 61.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part from central pile"
+    "R: Grasps orange part from central pile · L: Waits"
    ],
    "ks": [
     60
    ],
-   "n": 53,
+   "n": 54,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part from central pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 61.0,
-   "t1": 62.0,
-   "md": "D",
-   "mi": "TR",
-   "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
-   ],
-   "ks": [
-    61
-   ],
-   "n": 54,
-   "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
-  },
-  {
-   "t0": 62.0,
    "t1": 63.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part from supply pile"
+    "R: Picks orange part from central pile · L: Holds parts in place"
    ],
    "ks": [
+    61,
     62
    ],
    "n": 55,
-   "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part from supply pile"
+   "dur": 2.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds parts in place"
   },
   {
    "t0": 63.0,
@@ -929,7 +930,7 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Grasps orange part from central pile · MI: Transports row of parts to the left"
+    "R: Grasps orange part from central pile · L: Moves row of parts to the left"
    ],
    "ks": [
     63
@@ -937,23 +938,23 @@
    "n": 56,
    "dur": 1.0,
    "desc_md": "Grasps orange part from central pile",
-   "desc_mi": "Transports row of parts to the left"
+   "desc_mi": "Moves row of parts to the left"
   },
   {
    "t0": 64.0,
    "t1": 65.0,
    "md": "D",
-   "mi": "TR+OP",
+   "mi": "OP",
    "obs": [
-    "MD: Holds purple component · MI: Places orange part into row"
+    "R: Waits · L: Aligns and pushes parts into linear row"
    ],
    "ks": [
     64
    ],
    "n": 57,
    "dur": 1.0,
-   "desc_md": "Holds purple component",
-   "desc_mi": "Places orange part into row"
+   "desc_md": "Waits",
+   "desc_mi": "Aligns and pushes parts into linear row"
   },
   {
    "t0": 65.0,
@@ -961,144 +962,129 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Grasps and passes purple part to left hand · MI: Reaches for and receives purple part"
+    "R: Transfers part to left hand · L: Reaches for and grasps part from right hand"
    ],
    "ks": [
     65
    ],
    "n": 58,
    "dur": 1.0,
-   "desc_md": "Grasps and passes purple part to left hand",
-   "desc_mi": "Reaches for and receives purple part"
+   "desc_md": "Transfers part to left hand",
+   "desc_mi": "Reaches for and grasps part from right hand"
   },
   {
    "t0": 66.0,
    "t1": 67.0,
-   "md": "TR",
-   "mi": "D",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Reaches for and gathers orange parts · MI: Holds purple component"
+    "R: Picks orange part from central pile · L: Holds the linear row of parts"
    ],
    "ks": [
     66
    ],
    "n": 59,
    "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts",
-   "desc_mi": "Holds purple component"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
    "t0": 67.0,
-   "t1": 68.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: Waits · MI: Waits"
-   ],
-   "ks": [
-    67
-   ],
-   "n": 60,
-   "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Waits"
-  },
-  {
-   "t0": 68.0,
-   "t1": 69.0,
-   "md": "TR",
-   "mi": "D",
-   "obs": [
-    "MD: Reaches for and gathers orange parts from pile · MI: Holds purple component"
-   ],
-   "ks": [
-    68
-   ],
-   "n": 61,
-   "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts from pile",
-   "desc_mi": "Holds purple component"
-  },
-  {
-   "t0": 69.0,
    "t1": 70.0,
    "md": "TR",
-   "mi": "OP",
+   "mi": "D",
    "obs": [
-    "MD: Gathers orange parts from central pile · MI: Positions purple component for assembly"
+    "R: Reaches for and grasps orange part from pile · L: Holds the assembled row"
    ],
    "ks": [
+    67,
+    68,
     69
    ],
-   "n": 62,
-   "dur": 1.0,
-   "desc_md": "Gathers orange parts from central pile",
-   "desc_mi": "Positions purple component for assembly"
+   "n": 60,
+   "dur": 3.0,
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Holds the assembled row"
   },
   {
    "t0": 70.0,
    "t1": 71.0,
    "md": "OP",
-   "mi": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Gathers and stabilizes orange parts from pile · MI: Fits orange part onto purple component"
+    "R: Picks orange part and fits into row · L: Holds the linear row of parts"
    ],
    "ks": [
     70
    ],
-   "n": 63,
+   "n": 61,
    "dur": 1.0,
-   "desc_md": "Gathers and stabilizes orange parts from pile",
-   "desc_mi": "Fits orange part onto purple component"
+   "desc_md": "Picks orange part and fits into row",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
    "t0": 71.0,
-   "t1": 73.0,
-   "md": "S",
-   "mi": "OP",
+   "t1": 72.0,
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Holds and stabilizes the part pile · MI: Picks and extracts purple component from pile"
+    "R: Grasps orange part from central pile · L: Holds assembled row"
    ],
    "ks": [
-    71,
+    71
+   ],
+   "n": 62,
+   "dur": 1.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds assembled row"
+  },
+  {
+   "t0": 72.0,
+   "t1": 73.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "R: Grasps and guides orange part · L: Holds and aligns orange part"
+   ],
+   "ks": [
     72
    ],
-   "n": 64,
-   "dur": 2.0,
-   "desc_md": "Holds and stabilizes the part pile",
-   "desc_mi": "Picks and extracts purple component from pile"
+   "n": 63,
+   "dur": 1.0,
+   "desc_md": "Grasps and guides orange part",
+   "desc_mi": "Holds and aligns orange part"
   },
   {
    "t0": 73.0,
    "t1": 74.0,
    "md": "TR",
-   "mi": "TR+OP",
+   "mi": "TR",
    "obs": [
-    "MD: Grasps and stabilizes orange part from pile · MI: Picks and moves part to row"
+    "R: Grasps orange part from pile · L: Reaches toward orange part pile"
    ],
    "ks": [
     73
    ],
-   "n": 65,
+   "n": 64,
    "dur": 1.0,
-   "desc_md": "Grasps and stabilizes orange part from pile",
-   "desc_mi": "Picks and moves part to row"
+   "desc_md": "Grasps orange part from pile",
+   "desc_mi": "Reaches toward orange part pile"
   },
   {
    "t0": 74.0,
    "t1": 75.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part from central pile"
+    "R: Reaches for and grasps orange part from pile · L: Waits"
    ],
    "ks": [
     74
    ],
-   "n": 66,
+   "n": 65,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part from central pile"
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 75.0,
@@ -1106,15 +1092,15 @@
    "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Picks and aligns purple component"
+    "R: Grasps and manipulates orange part from pile · L: Positions and aligns orange part in pile"
    ],
    "ks": [
     75
    ],
-   "n": 67,
+   "n": 66,
    "dur": 1.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Picks and aligns purple component"
+   "desc_md": "Grasps and manipulates orange part from pile",
+   "desc_mi": "Positions and aligns orange part in pile"
   },
   {
    "t0": 76.0,
@@ -1122,113 +1108,143 @@
    "md": "OP",
    "mi": "S",
    "obs": [
-    "MD: Gathers and selects orange part from pile · MI: Holds and stabilizes the workpiece"
+    "R: Picks orange part and fits into row · L: Holds the linear row of parts"
    ],
    "ks": [
     76
    ],
-   "n": 68,
+   "n": 67,
    "dur": 1.0,
-   "desc_md": "Gathers and selects orange part from pile",
-   "desc_mi": "Holds and stabilizes the workpiece"
+   "desc_md": "Picks orange part and fits into row",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
    "t0": 77.0,
-   "t1": 79.0,
-   "md": "D",
-   "mi": "TR",
+   "t1": 78.0,
+   "md": "OP",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
+    "R: Picks orange part from central pile · L: Organizes and pushes parts into row"
    ],
    "ks": [
-    77,
+    77
+   ],
+   "n": 68,
+   "dur": 1.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Organizes and pushes parts into row"
+  },
+  {
+   "t0": 78.0,
+   "t1": 79.0,
+   "md": "TR",
+   "mi": "OP",
+   "obs": [
+    "R: Grasps orange part from central pile · L: Aligns and pushes part into linear row"
+   ],
+   "ks": [
     78
    ],
    "n": 69,
-   "dur": 2.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
+   "dur": 1.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes part into linear row"
   },
   {
    "t0": 79.0,
    "t1": 80.0,
-   "md": "OP",
+   "md": "TR+OP",
    "mi": "S",
    "obs": [
-    "MD: Stabilizes and guides orange part from pile · MI: Holds orange part in place"
+    "R: Transports and fits orange part into row · L: Holds the assembly in place"
    ],
    "ks": [
     79
    ],
    "n": 70,
    "dur": 1.0,
-   "desc_md": "Stabilizes and guides orange part from pile",
-   "desc_mi": "Holds orange part in place"
+   "desc_md": "Transports and fits orange part into row",
+   "desc_mi": "Holds the assembly in place"
   },
   {
    "t0": 80.0,
    "t1": 81.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds purple component to stabilize it · MI: Aligns orange part into the row"
+    "R: Picks orange part from central pile · L: Holds the linear row of parts"
    ],
    "ks": [
     80
    ],
    "n": 71,
    "dur": 1.0,
-   "desc_md": "Holds purple component to stabilize it",
-   "desc_mi": "Aligns orange part into the row"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
    "t0": 81.0,
    "t1": 82.0,
    "md": "TR",
-   "mi": "TR+OP",
+   "mi": "OP",
    "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Picks orange part from pile"
+    "R: Grasps orange part from central pile · L: Aligns and pushes orange parts into row"
    ],
    "ks": [
     81
    ],
    "n": 72,
    "dur": 1.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Picks orange part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes orange parts into row"
   },
   {
    "t0": 82.0,
    "t1": 83.0,
-   "md": "D",
-   "mi": "OP",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Waits · MI: Picks and aligns orange component"
+    "R: Grasps orange part from central pile · L: Holds assembled row of parts"
    ],
    "ks": [
     82
    ],
    "n": 73,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Picks and aligns orange component"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds assembled row of parts"
   },
   {
    "t0": 83.0,
-   "t1": 85.0,
-   "md": "D",
+   "t1": 84.0,
+   "md": "TR",
    "mi": "NV",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Not visible"
+    "R: Reaches for and grasps orange part from pile · L: Waits"
    ],
    "ks": [
-    83,
-    84
+    83
    ],
    "n": 74,
-   "dur": 2.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Not visible"
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Waits"
+  },
+  {
+   "t0": 84.0,
+   "t1": 85.0,
+   "md": "OP",
+   "mi": "NV",
+   "obs": [
+    "R: Grasps and manipulates orange part from pile · L: Waits"
+   ],
+   "ks": [
+    84
+   ],
+   "n": 75,
+   "dur": 1.0,
+   "desc_md": "Grasps and manipulates orange part from pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 85.0,
@@ -1236,159 +1252,114 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Waits · MI: Reaches for and grasps orange part"
+    "R: Holds orange part · L: Reaches for and grasps orange part"
    ],
    "ks": [
     85
    ],
-   "n": 75,
+   "n": 76,
    "dur": 1.0,
-   "desc_md": "Waits",
+   "desc_md": "Holds orange part",
    "desc_mi": "Reaches for and grasps orange part"
   },
   {
    "t0": 86.0,
    "t1": 87.0,
-   "md": "D",
+   "md": "TR",
    "mi": "TR+OP",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Transfers and fits part into row"
+    "R: Grasps orange part from central pile · L: Fits orange part into linear row"
    ],
    "ks": [
     86
    ],
-   "n": 76,
+   "n": 77,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Transfers and fits part into row"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Fits orange part into linear row"
   },
   {
    "t0": 87.0,
-   "t1": 88.0,
-   "md": "D",
-   "mi": "TR",
-   "obs": [
-    "MD: Holds and stabilizes parts in pile · MI: Moves hand away from organized row"
-   ],
-   "ks": [
-    87
-   ],
-   "n": 77,
-   "dur": 1.0,
-   "desc_md": "Holds and stabilizes parts in pile",
-   "desc_mi": "Moves hand away from organized row"
-  },
-  {
-   "t0": 88.0,
    "t1": 89.0,
    "md": "TR",
-   "mi": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Reaches for and stabilizes orange parts pile · MI: Reaches for and grasps orange part"
+    "R: Grasps orange part from central pile · L: Aligns and pushes parts into linear row"
    ],
    "ks": [
+    87,
     88
    ],
    "n": 78,
-   "dur": 1.0,
-   "desc_md": "Reaches for and stabilizes orange parts pile",
-   "desc_mi": "Reaches for and grasps orange part"
+   "dur": 2.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes parts into linear row"
   },
   {
    "t0": 89.0,
    "t1": 90.0,
-   "md": "TR",
-   "mi": "D",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Reaches for and gathers orange parts from pile · MI: Holds purple component"
+    "R: Picks part and fits it into row · L: Holds the linear row of parts"
    ],
    "ks": [
     89
    ],
    "n": 79,
    "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts from pile",
-   "desc_mi": "Holds purple component"
+   "desc_md": "Picks part and fits it into row",
+   "desc_mi": "Holds the linear row of parts"
   },
   {
    "t0": 90.0,
    "t1": 91.0,
-   "md": "S",
+   "md": "TR+OP",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks and extracts orange part from pile"
+    "R: Transports and fits orange part into row · L: Holds and aligns the linear row"
    ],
    "ks": [
     90
    ],
    "n": 80,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks and extracts orange part from pile"
+   "desc_md": "Transports and fits orange part into row",
+   "desc_mi": "Holds and aligns the linear row"
   },
   {
    "t0": 91.0,
-   "t1": 92.0,
-   "md": "TR",
-   "mi": "TR+OP",
-   "obs": [
-    "MD: Grasps and stabilizes orange part from pile · MI: Picks and fits part into linear row"
-   ],
-   "ks": [
-    91
-   ],
-   "n": 81,
-   "dur": 1.0,
-   "desc_md": "Grasps and stabilizes orange part from pile",
-   "desc_mi": "Picks and fits part into linear row"
-  },
-  {
-   "t0": 92.0,
    "t1": 93.0,
-   "md": "D",
-   "mi": "TR+OP",
+   "md": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Picks and fits orange part into row"
+    "R: Grasps orange part from central pile · L: Aligns and pushes parts into linear row"
    ],
    "ks": [
+    91,
     92
    ],
-   "n": 82,
-   "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Picks and fits orange part into row"
+   "n": 81,
+   "dur": 2.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes parts into linear row"
   },
   {
    "t0": 93.0,
-   "t1": 94.0,
-   "md": "OP",
-   "mi": "OP",
-   "obs": [
-    "MD: Picks and positions orange part · MI: Holds and stabilizes purple base strip"
-   ],
-   "ks": [
-    93
-   ],
-   "n": 83,
-   "dur": 1.0,
-   "desc_md": "Picks and positions orange part",
-   "desc_mi": "Holds and stabilizes purple base strip"
-  },
-  {
-   "t0": 94.0,
    "t1": 95.0,
-   "md": "S",
-   "mi": "TR+OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part and fits into row"
+    "R: Fits orange part into linear row · L: Holds the row of parts"
    ],
    "ks": [
+    93,
     94
    ],
-   "n": 84,
-   "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part and fits into row"
+   "n": 82,
+   "dur": 2.0,
+   "desc_md": "Fits orange part into linear row",
+   "desc_mi": "Holds the row of parts"
   },
   {
    "t0": 95.0,
@@ -1396,15 +1367,15 @@
    "md": "TR",
    "mi": "OP",
    "obs": [
-    "MD: Gathers orange parts from central pile · MI: Places orange part into linear row"
+    "R: Grasps orange part from central pile · L: Aligns and holds orange parts in row"
    ],
    "ks": [
     95
    ],
-   "n": 85,
+   "n": 83,
    "dur": 1.0,
-   "desc_md": "Gathers orange parts from central pile",
-   "desc_mi": "Places orange part into linear row"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and holds orange parts in row"
   },
   {
    "t0": 96.0,
@@ -1412,128 +1383,143 @@
    "md": "S",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes the row of parts · MI: Places orange part into the row"
+    "R: Holds the orange part · L: Adjusts and aligns the part"
    ],
    "ks": [
     96
    ],
-   "n": 86,
+   "n": 84,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes the row of parts",
-   "desc_mi": "Places orange part into the row"
+   "desc_md": "Holds the orange part",
+   "desc_mi": "Adjusts and aligns the part"
   },
   {
    "t0": 97.0,
    "t1": 98.0,
-   "md": "D",
-   "mi": "TR",
+   "md": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
+    "R: Grasps orange part from central pile · L: Aligns and pushes part into linear row"
    ],
    "ks": [
     97
    ],
-   "n": 87,
+   "n": 85,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes part into linear row"
   },
   {
    "t0": 98.0,
    "t1": 99.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Holds orange parts from the pile · MI: Picks and organizes orange part"
+    "R: Grasps orange part from central pile · L: Waits"
    ],
    "ks": [
     98
    ],
-   "n": 88,
+   "n": 86,
    "dur": 1.0,
-   "desc_md": "Holds orange parts from the pile",
-   "desc_mi": "Picks and organizes orange part"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 99.0,
    "t1": 100.0,
-   "md": "D",
-   "mi": "TR",
+   "md": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
+    "R: Grasps orange part from central pile · L: Aligns and pushes parts into linear row"
    ],
    "ks": [
     99
    ],
-   "n": 89,
+   "n": 87,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes parts into linear row"
   },
   {
    "t0": 100.0,
-   "t1": 102.0,
-   "md": "S",
-   "mi": "OP",
+   "t1": 101.0,
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Picks orange part from pile"
+    "R: Picks orange part from central pile · L: Holds orange parts in place"
    ],
    "ks": [
-    100,
+    100
+   ],
+   "n": 88,
+   "dur": 1.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds orange parts in place"
+  },
+  {
+   "t0": 101.0,
+   "t1": 102.0,
+   "md": "TR",
+   "mi": "OP",
+   "obs": [
+    "R: Grasps orange part from central pile · L: Aligns and pushes part into linear row"
+   ],
+   "ks": [
     101
    ],
-   "n": 90,
-   "dur": 2.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Picks orange part from pile"
+   "n": 89,
+   "dur": 1.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes part into linear row"
   },
   {
    "t0": 102.0,
    "t1": 103.0,
-   "md": "D",
+   "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Waits · MI: Grasps orange part from pile"
+    "R: Grasps orange part from central pile · L: Grasps orange part from central pile"
    ],
    "ks": [
     102
    ],
-   "n": 91,
+   "n": 90,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Grasps orange part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Grasps orange part from central pile"
   },
   {
    "t0": 103.0,
    "t1": 104.0,
-   "md": "OP",
-   "mi": "NV",
+   "md": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Gathers and organizes orange parts in pile · MI: Waits"
+    "R: Grasps orange part from central pile · L: Aligns and pushes parts into linear row"
    ],
    "ks": [
     103
    ],
-   "n": 92,
+   "n": 91,
    "dur": 1.0,
-   "desc_md": "Gathers and organizes orange parts in pile",
-   "desc_mi": "Waits"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes parts into linear row"
   },
   {
    "t0": 104.0,
    "t1": 105.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts in pile · MI: Picks orange part from central pile"
+    "R: Picks orange part from central pile · L: Holds parts in place"
    ],
    "ks": [
     104
    ],
-   "n": 93,
+   "n": 92,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts in pile",
-   "desc_mi": "Picks orange part from central pile"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds parts in place"
   },
   {
    "t0": 105.0,
@@ -1541,31 +1527,31 @@
    "md": "OP",
    "mi": "OP",
    "obs": [
-    "MD: Gathers and stabilizes orange parts from pile · MI: Picks and pulls orange parts from pile"
+    "R: Grasps and lifts orange part from pile · L: Adjusts and aligns the orange part"
    ],
    "ks": [
     105
    ],
-   "n": 94,
+   "n": 93,
    "dur": 1.0,
-   "desc_md": "Gathers and stabilizes orange parts from pile",
-   "desc_mi": "Picks and pulls orange parts from pile"
+   "desc_md": "Grasps and lifts orange part from pile",
+   "desc_mi": "Adjusts and aligns the orange part"
   },
   {
    "t0": 106.0,
    "t1": 107.0,
-   "md": "D",
-   "mi": "D",
+   "md": "TR",
+   "mi": "NV",
    "obs": [
-    "MD: Holds part in central pile · MI: Holds part in row"
+    "R: Grasps orange part from central pile · L: Holds assembled row"
    ],
    "ks": [
     106
    ],
-   "n": 95,
+   "n": 94,
    "dur": 1.0,
-   "desc_md": "Holds part in central pile",
-   "desc_mi": "Holds part in row"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds assembled row"
   },
   {
    "t0": 107.0,
@@ -1573,147 +1559,147 @@
    "md": "TR",
    "mi": "TR",
    "obs": [
-    "MD: Reaches for and gathers orange parts · MI: Reaches for and grasps orange part"
+    "R: Grasps orange part from central pile · L: Reaches toward central pile of parts"
    ],
    "ks": [
     107
    ],
-   "n": 96,
+   "n": 95,
    "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts",
-   "desc_mi": "Reaches for and grasps orange part"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Reaches toward central pile of parts"
   },
   {
    "t0": 108.0,
-   "t1": 109.0,
+   "t1": 110.0,
    "md": "TR",
    "mi": "D",
    "obs": [
-    "MD: Reaches for and gathers orange parts from pile · MI: Waits"
+    "R: Reaches for and grasps orange part from pile · L: Waits"
    ],
    "ks": [
-    108
+    108,
+    109
    ],
-   "n": 97,
-   "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts from pile",
+   "n": 96,
+   "dur": 2.0,
+   "desc_md": "Reaches for and grasps orange part from pile",
    "desc_mi": "Waits"
   },
   {
-   "t0": 109.0,
+   "t0": 110.0,
    "t1": 111.0,
-   "md": "D",
-   "mi": "D",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Waits over supply pile · MI: Waits over supply pile"
+    "R: Picks orange part from central pile · L: Holds and stabilizes the part pile"
    ],
    "ks": [
-    109,
     110
    ],
-   "n": 98,
-   "dur": 2.0,
-   "desc_md": "Waits over supply pile",
-   "desc_mi": "Waits over supply pile"
+   "n": 97,
+   "dur": 1.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Holds and stabilizes the part pile"
   },
   {
    "t0": 111.0,
-   "t1": 113.0,
-   "md": "D",
-   "mi": "TR",
+   "t1": 115.0,
+   "md": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes orange part pile · MI: Reaches for and grasps orange part"
+    "R: Grasps orange part from central pile · L: Pushes and aligns parts into linear row"
    ],
    "ks": [
     111,
-    112
-   ],
-   "n": 99,
-   "dur": 2.0,
-   "desc_md": "Holds and stabilizes orange part pile",
-   "desc_mi": "Reaches for and grasps orange part"
-  },
-  {
-   "t0": 113.0,
-   "t1": 114.0,
-   "md": "TR",
-   "mi": "TR",
-   "obs": [
-    "MD: Reaches for and gathers orange parts · MI: Reaches for and grasps orange part"
-   ],
-   "ks": [
-    113
-   ],
-   "n": 100,
-   "dur": 1.0,
-   "desc_md": "Reaches for and gathers orange parts",
-   "desc_mi": "Reaches for and grasps orange part"
-  },
-  {
-   "t0": 114.0,
-   "t1": 115.0,
-   "md": "D",
-   "mi": "TR",
-   "obs": [
-    "MD: Holds and stabilizes the pile of parts · MI: Reaches for and grasps orange part"
-   ],
-   "ks": [
+    112,
+    113,
     114
    ],
-   "n": 101,
-   "dur": 1.0,
-   "desc_md": "Holds and stabilizes the pile of parts",
-   "desc_mi": "Reaches for and grasps orange part"
+   "n": 98,
+   "dur": 4.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Pushes and aligns parts into linear row"
   },
   {
    "t0": 115.0,
    "t1": 116.0,
-   "md": "OP",
-   "mi": "S",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Gathers and organizes orange parts in pile · MI: Holds and stabilizes the pile of parts"
+    "R: Reaches for and grasps orange part from pile · L: Waits"
    ],
    "ks": [
     115
    ],
-   "n": 102,
+   "n": 99,
    "dur": 1.0,
-   "desc_md": "Gathers and organizes orange parts in pile",
-   "desc_mi": "Holds and stabilizes the pile of parts"
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 116.0,
-   "t1": 119.0,
+   "t1": 117.0,
+   "md": "D",
+   "mi": "OP",
+   "obs": [
+    "R: Waits over supply pile · L: Pushes and aligns orange parts into row"
+   ],
+   "ks": [
+    116
+   ],
+   "n": 100,
+   "dur": 1.0,
+   "desc_md": "Waits over supply pile",
+   "desc_mi": "Pushes and aligns orange parts into row"
+  },
+  {
+   "t0": 117.0,
+   "t1": 118.0,
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds and stabilizes orange part pile · MI: Reaches for and grasps orange part"
+    "R: Waits on orange part pile · L: Transports orange part toward work point"
    ],
    "ks": [
-    116,
-    117,
+    117
+   ],
+   "n": 101,
+   "dur": 1.0,
+   "desc_md": "Waits on orange part pile",
+   "desc_mi": "Transports orange part toward work point"
+  },
+  {
+   "t0": 118.0,
+   "t1": 119.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Waits · L: Waits"
+   ],
+   "ks": [
     118
    ],
-   "n": 103,
-   "dur": 3.0,
-   "desc_md": "Holds and stabilizes orange part pile",
-   "desc_mi": "Reaches for and grasps orange part"
+   "n": 102,
+   "dur": 1.0,
+   "desc_md": "Waits",
+   "desc_mi": "Waits"
   },
   {
    "t0": 119.0,
    "t1": 120.0,
-   "md": "S",
+   "md": "D",
    "mi": "OP",
    "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Places orange part into linear row"
+    "R: Waits on supply pile · L: Aligns orange parts into linear row"
    ],
    "ks": [
     119
    ],
-   "n": 104,
+   "n": 103,
    "dur": 1.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Places orange part into linear row"
+   "desc_md": "Waits on supply pile",
+   "desc_mi": "Aligns orange parts into linear row"
   },
   {
    "t0": 120.0,
@@ -1721,163 +1707,178 @@
    "md": "D",
    "mi": "TR",
    "obs": [
-    "MD: Holds and stabilizes the pile of parts · MI: Reaches for and grasps orange part"
+    "R: Waits on supply pile · L: Reaches for orange part from pile"
    ],
    "ks": [
     120
    ],
-   "n": 105,
+   "n": 104,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes the pile of parts",
-   "desc_mi": "Reaches for and grasps orange part"
+   "desc_md": "Waits on supply pile",
+   "desc_mi": "Reaches for orange part from pile"
   },
   {
    "t0": 121.0,
    "t1": 122.0,
    "md": "TR",
-   "mi": "D",
+   "mi": "OP",
    "obs": [
-    "MD: Gathers and organizes orange parts in pile · MI: Waits while holding pile"
+    "R: Grasps orange part from central pile · L: Organizes and pushes parts into row"
    ],
    "ks": [
     121
    ],
-   "n": 106,
+   "n": 105,
    "dur": 1.0,
-   "desc_md": "Gathers and organizes orange parts in pile",
-   "desc_mi": "Waits while holding pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Organizes and pushes parts into row"
   },
   {
    "t0": 122.0,
-   "t1": 125.0,
-   "md": "D",
-   "mi": "TR",
+   "t1": 124.0,
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Waits · MI: Reaches for and grasps orange part"
+    "R: Grasps orange part from central pile · L: Waits"
    ],
    "ks": [
     122,
-    123,
-    124
+    123
    ],
-   "n": 107,
-   "dur": 3.0,
-   "desc_md": "Waits",
-   "desc_mi": "Reaches for and grasps orange part"
+   "n": 106,
+   "dur": 2.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Waits"
   },
   {
-   "t0": 125.0,
+   "t0": 124.0,
+   "t1": 126.0,
+   "md": "TR",
+   "mi": "TR",
+   "obs": [
+    "R: Reaches for and grasps orange part from pile · L: Reaches for and grasps orange part from pile"
+   ],
+   "ks": [
+    124,
+    125
+   ],
+   "n": 107,
+   "dur": 2.0,
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Reaches for and grasps orange part from pile"
+  },
+  {
+   "t0": 126.0,
    "t1": 127.0,
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: Waits · MI: Waits"
+    "R: Waits · L: Waits"
    ],
    "ks": [
-    125,
     126
    ],
    "n": 108,
-   "dur": 2.0,
+   "dur": 1.0,
    "desc_md": "Waits",
    "desc_mi": "Waits"
   },
   {
    "t0": 127.0,
    "t1": 128.0,
-   "md": "TR",
-   "mi": "TR",
+   "md": "OP",
+   "mi": "OP",
    "obs": [
-    "MD: Reaches for and grasps orange part · MI: Reaches for and grasps orange part"
+    "R: Picks orange part from central pile · L: Stabilizes and organizes orange parts in pile"
    ],
    "ks": [
     127
    ],
    "n": 109,
    "dur": 1.0,
-   "desc_md": "Reaches for and grasps orange part",
-   "desc_mi": "Reaches for and grasps orange part"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Stabilizes and organizes orange parts in pile"
   },
   {
    "t0": 128.0,
    "t1": 129.0,
-   "md": "D",
-   "mi": "D",
+   "md": "TR",
+   "mi": "TR",
    "obs": [
-    "MD: Waits · MI: Waits"
+    "R: Grasps orange part from central pile · L: Reaches toward central pile of parts"
    ],
    "ks": [
     128
    ],
    "n": 110,
    "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Waits"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Reaches toward central pile of parts"
   },
   {
    "t0": 129.0,
-   "t1": 130.0,
-   "md": "TR",
-   "mi": "TR",
+   "t1": 131.0,
+   "md": "OP",
+   "mi": "OP",
    "obs": [
-    "MD: Stabilizes and gathers orange parts from pile · MI: Reaches for and grasps orange part"
+    "R: Picks orange part from central pile · L: Grasps and stabilizes orange part"
    ],
    "ks": [
-    129
+    129,
+    130
    ],
    "n": 111,
-   "dur": 1.0,
-   "desc_md": "Stabilizes and gathers orange parts from pile",
-   "desc_mi": "Reaches for and grasps orange part"
+   "dur": 2.0,
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Grasps and stabilizes orange part"
   },
   {
-   "t0": 130.0,
+   "t0": 131.0,
    "t1": 132.0,
-   "md": "D",
-   "mi": "TR",
+   "md": "TR",
+   "mi": "D",
    "obs": [
-    "MD: Holds and stabilizes orange part pile · MI: Reaches for and grasps orange part"
+    "R: Reaches for and grasps orange part from pile · L: Waits"
    ],
    "ks": [
-    130,
     131
    ],
    "n": 112,
-   "dur": 2.0,
-   "desc_md": "Holds and stabilizes orange part pile",
-   "desc_mi": "Reaches for and grasps orange part"
+   "dur": 1.0,
+   "desc_md": "Reaches for and grasps orange part from pile",
+   "desc_mi": "Waits"
   },
   {
    "t0": 132.0,
    "t1": 133.0,
-   "md": "D",
-   "mi": "D",
+   "md": "TR",
+   "mi": "TR",
    "obs": [
-    "MD: Waits over supply pile · MI: Waits over supply pile"
+    "R: Grasps orange part from pile · L: Reaches toward orange part pile"
    ],
    "ks": [
     132
    ],
    "n": 113,
    "dur": 1.0,
-   "desc_md": "Waits over supply pile",
-   "desc_mi": "Waits over supply pile"
+   "desc_md": "Grasps orange part from pile",
+   "desc_mi": "Reaches toward orange part pile"
   },
   {
    "t0": 133.0,
    "t1": 134.0,
-   "md": "TR",
+   "md": "OP",
    "mi": "TR",
    "obs": [
-    "MD: Gathers orange parts from central pile · MI: Reaches for and grasps orange part"
+    "R: Grasps orange part from central pile · L: Reaches toward central pile of parts"
    ],
    "ks": [
     133
    ],
    "n": 114,
    "dur": 1.0,
-   "desc_md": "Gathers orange parts from central pile",
-   "desc_mi": "Reaches for and grasps orange part"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Reaches toward central pile of parts"
   },
   {
    "t0": 134.0,
@@ -1885,209 +1886,149 @@
    "md": "D",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes the pile of parts · MI: Picks orange part from the pile"
+    "R: Waits · L: Organizes orange part in pile"
    ],
    "ks": [
     134
    ],
    "n": 115,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes the pile of parts",
-   "desc_mi": "Picks orange part from the pile"
+   "desc_md": "Waits",
+   "desc_mi": "Organizes orange part in pile"
   },
   {
    "t0": 135.0,
    "t1": 136.0,
-   "md": "S",
-   "mi": "OP",
+   "md": "OP",
+   "mi": "S",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Picks orange part from pile"
+    "R: Grasps orange part from central pile · L: Holds position over supply area"
    ],
    "ks": [
     135
    ],
    "n": 116,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Picks orange part from pile"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Holds position over supply area"
   },
   {
    "t0": 136.0,
    "t1": 137.0,
-   "md": "D",
+   "md": "OP",
    "mi": "TR+OP",
    "obs": [
-    "MD: Waits in supply area · MI: Transfers and fits orange part into row"
+    "R: Picks orange part from central pile · L: Moves and aligns part into linear row"
    ],
    "ks": [
     136
    ],
    "n": 117,
    "dur": 1.0,
-   "desc_md": "Waits in supply area",
-   "desc_mi": "Transfers and fits orange part into row"
+   "desc_md": "Picks orange part from central pile",
+   "desc_mi": "Moves and aligns part into linear row"
   },
   {
    "t0": 137.0,
-   "t1": 138.0,
-   "md": "D",
-   "mi": "OP",
-   "obs": [
-    "MD: Waits in supply pile · MI: Aligns orange part into row"
-   ],
-   "ks": [
-    137
-   ],
-   "n": 118,
-   "dur": 1.0,
-   "desc_md": "Waits in supply pile",
-   "desc_mi": "Aligns orange part into row"
-  },
-  {
-   "t0": 138.0,
-   "t1": 139.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Aligns orange parts into linear row"
-   ],
-   "ks": [
-    138
-   ],
-   "n": 119,
-   "dur": 1.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Aligns orange parts into linear row"
-  },
-  {
-   "t0": 139.0,
-   "t1": 140.0,
-   "md": "D",
-   "mi": "D",
-   "obs": [
-    "MD: Waits · MI: Waits"
-   ],
-   "ks": [
-    139
-   ],
-   "n": 120,
-   "dur": 1.0,
-   "desc_md": "Waits",
-   "desc_mi": "Waits"
-  },
-  {
-   "t0": 140.0,
    "t1": 141.0,
-   "md": "S",
+   "md": "D",
    "mi": "OP",
    "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Aligns orange parts into linear row"
+    "R: Waits in supply pile · L: Aligns and pushes parts into linear row"
    ],
    "ks": [
+    137,
+    138,
+    139,
     140
    ],
-   "n": 121,
-   "dur": 1.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Aligns orange parts into linear row"
+   "n": 118,
+   "dur": 4.0,
+   "desc_md": "Waits in supply pile",
+   "desc_mi": "Aligns and pushes parts into linear row"
   },
   {
    "t0": 141.0,
-   "t1": 143.0,
-   "md": "D",
-   "mi": "TR",
+   "t1": 142.0,
+   "md": "TR",
+   "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes parts in central pile · MI: Places orange part into structured row"
+    "R: Grasps orange part from central pile · L: Aligns and pushes orange parts into row"
    ],
    "ks": [
-    141,
+    141
+   ],
+   "n": 119,
+   "dur": 1.0,
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes orange parts into row"
+  },
+  {
+   "t0": 142.0,
+   "t1": 143.0,
+   "md": "D",
+   "mi": "TR+OP",
+   "obs": [
+    "R: Waits in supply pile · L: Moves and fits part into row"
+   ],
+   "ks": [
     142
    ],
-   "n": 122,
-   "dur": 2.0,
-   "desc_md": "Holds and stabilizes parts in central pile",
-   "desc_mi": "Places orange part into structured row"
+   "n": 120,
+   "dur": 1.0,
+   "desc_md": "Waits in supply pile",
+   "desc_mi": "Moves and fits part into row"
   },
   {
    "t0": 143.0,
    "t1": 144.0,
-   "md": "S",
+   "md": "TR",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Places orange part into linear row"
+    "R: Grasps orange part from central pile · L: Aligns and pushes parts into linear row"
    ],
    "ks": [
     143
    ],
-   "n": 123,
+   "n": 121,
    "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Places orange part into linear row"
+   "desc_md": "Grasps orange part from central pile",
+   "desc_mi": "Aligns and pushes parts into linear row"
   },
   {
    "t0": 144.0,
    "t1": 145.0,
-   "md": "TR",
+   "md": "TR+OP",
    "mi": "D",
    "obs": [
-    "MD: Reaches for and adjusts orange parts in row · MI: Waits in supply pile"
+    "R: Picks and fits orange part into row · L: Waits in supply area"
    ],
    "ks": [
     144
    ],
-   "n": 124,
+   "n": 122,
    "dur": 1.0,
-   "desc_md": "Reaches for and adjusts orange parts in row",
-   "desc_mi": "Waits in supply pile"
+   "desc_md": "Picks and fits orange part into row",
+   "desc_mi": "Waits in supply area"
   },
   {
    "t0": 145.0,
-   "t1": 146.0,
-   "md": "D",
-   "mi": "OP",
-   "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Places orange part into linear row"
-   ],
-   "ks": [
-    145
-   ],
-   "n": 125,
-   "dur": 1.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Places orange part into linear row"
-  },
-  {
-   "t0": 146.0,
-   "t1": 148.0,
-   "md": "S",
-   "mi": "OP",
-   "obs": [
-    "MD: Stabilizes orange parts in central pile · MI: Places orange part into linear row"
-   ],
-   "ks": [
-    146,
-    147
-   ],
-   "n": 126,
-   "dur": 2.0,
-   "desc_md": "Stabilizes orange parts in central pile",
-   "desc_mi": "Places orange part into linear row"
-  },
-  {
-   "t0": 148.0,
    "t1": 149.0,
    "md": "D",
    "mi": "OP",
    "obs": [
-    "MD: Holds and stabilizes orange parts pile · MI: Places orange part into linear row"
+    "R: Waits in supply pile · L: Aligns and pushes orange parts into row"
    ],
    "ks": [
+    145,
+    146,
+    147,
     148
    ],
-   "n": 127,
-   "dur": 1.0,
-   "desc_md": "Holds and stabilizes orange parts pile",
-   "desc_mi": "Places orange part into linear row"
+   "n": 123,
+   "dur": 4.0,
+   "desc_md": "Waits in supply pile",
+   "desc_mi": "Aligns and pushes orange parts into row"
   },
   {
    "t0": 149.0,
@@ -2095,15 +2036,15 @@
    "md": "D",
    "mi": "D",
    "obs": [
-    "MD: Holds orange parts in supply pile · MI: Holds organized row of parts"
+    "R: Waits with hand on supply pile · L: Holds the assembled linear row"
    ],
    "ks": [
     149
    ],
-   "n": 128,
+   "n": 124,
    "dur": 0.98,
-   "desc_md": "Holds orange parts in supply pile",
-   "desc_mi": "Holds organized row of parts"
+   "desc_md": "Waits with hand on supply pile",
+   "desc_mi": "Holds the assembled linear row"
   }
  ]
 }

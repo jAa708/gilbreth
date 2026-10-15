@@ -1,0 +1,60 @@
+{
+ "modelo": "Gemma-4-31B-IT",
+ "gpu": "AMD GPUs (AMD Token Factory, shared Gemma 4 endpoint)",
+ "runs": {
+  "lego": {
+   "video_s": 284.0,
+   "wall_s": 2048,
+   "video_s_per_min": 8.3
+  },
+  "gearbox": {
+   "video_s": 223.7,
+   "wall_s": 1205,
+   "video_s_per_min": 11.1
+  },
+  "screw": {
+   "video_s": 150.0,
+   "wall_s": 941,
+   "video_s_per_min": 9.6
+  },
+  "plastic": {
+   "video_s": 150.0,
+   "wall_s": 1223,
+   "video_s_per_min": 7.4
+  },
+  "cardboard": {
+   "video_s": 150.0,
+   "wall_s": 1665,
+   "video_s_per_min": 5.4
+  }
+ },
+ "pasos": {
+  "ficha": {
+   "requests": 5,
+   "p50_s": 13.91,
+   "p95_s": 31.2,
+   "prompt_tokens_mean": 2021,
+   "completion_tokens_mean": 143
+  },
+  "paso": {
+   "requests": 954,
+   "p50_s": 19.53,
+   "p95_s": 69.92,
+   "prompt_tokens_mean": 3064,
+   "completion_tokens_mean": 144
+  },
+  "desc": {
+   "requests": 431,
+   "p50_s": 20.81,
+   "p95_s": 73.26,
+   "prompt_tokens_mean": 2228,
+   "completion_tokens_mean": 127
+  }
+ },
+ "total": {
+  "video_s": 957.7,
+  "wall_s": 7082,
+  "video_s_per_min": 8.1
+ },
+ "endpoint": "AMD Token Factory (developer.amd.com.cn/radeon/api), shared, 20 requests per minute per team"
+}

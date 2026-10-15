@@ -7,45 +7,17 @@
   "detalle": "la mano no se ve"
  },
  {
-  "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 0,
-  "t1": 1,
-  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
+  "tipo": "espera_sosteniendo",
+  "mano": "L",
+  "t0": 1,
+  "t1": 2,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
+  "mano": "L",
   "t0": 3,
   "t1": 4,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 7,
-  "t1": 8,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 10,
-  "t1": 12,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 13,
-  "t1": 15,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 18,
-  "t1": 19,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -54,13 +26,6 @@
   "t0": 18.719,
   "t1": 20.12,
   "detalle": "la mano no se ve"
- },
- {
-  "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 19,
-  "t1": 20,
-  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
  },
  {
   "tipo": "alcance_lejano",
@@ -72,36 +37,22 @@
  {
   "tipo": "espera_sosteniendo",
   "mano": "L",
-  "t0": 23,
-  "t1": 24,
+  "t0": 21,
+  "t1": 22,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
-  "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 23,
-  "t1": 24,
-  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
- },
- {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 27,
-  "t1": 28,
-  "detalle": "las dos manos en espera (o con el folleto)"
- },
- {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 30,
-  "t1": 31,
-  "detalle": "las dos manos en espera (o con el folleto)"
+  "tipo": "espera_sosteniendo",
+  "mano": "L",
+  "t0": 28,
+  "t1": 29,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 34,
-  "t1": 35,
+  "mano": "L",
+  "t0": 32,
+  "t1": 33,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -110,13 +61,6 @@
   "t0": 38.538,
   "t1": 39.539,
   "detalle": "la mano no se ve"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 39,
-  "t1": 40,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "alcance_lejano",
@@ -133,36 +77,22 @@
   "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
  },
  {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
+  "tipo": "espera_sosteniendo",
+  "mano": "L",
   "t0": 41,
   "t1": 42,
-  "detalle": "las dos manos en espera (o con el folleto)"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 42,
-  "t1": 43,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 45,
-  "t1": 46,
-  "detalle": "las dos manos en espera (o con el folleto)"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 50,
-  "t1": 52,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
+  "mano": "L",
+  "t0": 49,
+  "t1": 50,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
+ },
+ {
+  "tipo": "espera_sosteniendo",
+  "mano": "L",
   "t0": 55,
   "t1": 56,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
@@ -176,16 +106,9 @@
  },
  {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 59,
-  "t1": 60,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 61,
-  "t1": 62,
+  "mano": "L",
+  "t0": 60,
+  "t1": 61,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -205,43 +128,29 @@
  {
   "tipo": "espera_sosteniendo",
   "mano": "L",
-  "t0": 66,
-  "t1": 67,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 66,
-  "t1": 67,
-  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
- },
- {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
   "t0": 67,
-  "t1": 68,
-  "detalle": "las dos manos en espera (o con el folleto)"
+  "t1": 70,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "espera_sosteniendo",
   "mano": "L",
-  "t0": 68,
-  "t1": 69,
+  "t0": 71,
+  "t1": 72,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
-  "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 68,
-  "t1": 69,
-  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
+  "tipo": "espera_sosteniendo",
+  "mano": "L",
+  "t0": 74,
+  "t1": 75,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 77,
-  "t1": 79,
+  "mano": "L",
+  "t0": 82,
+  "t1": 83,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -259,6 +168,13 @@
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 85,
+  "t1": 86,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
+ },
+ {
   "tipo": "alcance_lejano",
   "mano": "L",
   "t0": 86.587,
@@ -267,44 +183,9 @@
  },
  {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 87,
-  "t1": 88,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
   "mano": "L",
-  "t0": 89,
-  "t1": 90,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 89,
-  "t1": 90,
-  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 97,
-  "t1": 98,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 99,
-  "t1": 100,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 102,
-  "t1": 103,
+  "t0": 98,
+  "t1": 99,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -322,38 +203,10 @@
   "detalle": "la mano no se ve"
  },
  {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 106,
-  "t1": 107,
-  "detalle": "las dos manos en espera (o con el folleto)"
- },
- {
   "tipo": "espera_sosteniendo",
   "mano": "L",
   "t0": 108,
-  "t1": 109,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 108,
-  "t1": 109,
-  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
- },
- {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 109,
-  "t1": 111,
-  "detalle": "las dos manos en espera (o con el folleto)"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 111,
-  "t1": 113,
+  "t1": 110,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
@@ -365,24 +218,38 @@
  },
  {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 114,
-  "t1": 115,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 116,
-  "t1": 119,
+  "mano": "L",
+  "t0": 115,
+  "t1": 116,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "alcance_lejano",
   "mano": "L",
   "t0": 116.116,
-  "t1": 116.717,
+  "t1": 117.11699999999999,
   "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "espera_sosteniendo",
+  "mano": "R",
+  "t0": 117,
+  "t1": 118,
+  "detalle": "sostiene y espera mientras la otra va por la pieza"
+ },
+ {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 117,
+  "t1": 118,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
+ },
+ {
+  "tipo": "ambas_ociosas",
+  "mano": "RL",
+  "t0": 118,
+  "t1": 119,
+  "detalle": "las dos manos en espera (o con el folleto)"
  },
  {
   "tipo": "alcance_lejano",
@@ -399,53 +266,32 @@
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
-  "tipo": "espera_sosteniendo",
-  "mano": "L",
-  "t0": 121,
-  "t1": 122,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
   "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 121,
-  "t1": 122,
+  "mano": "L",
+  "t0": 120,
+  "t1": 121,
   "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
  },
  {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
+  "mano": "L",
   "t0": 122,
-  "t1": 125,
+  "t1": 124,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
  },
  {
   "tipo": "ambas_ociosas",
   "mano": "RL",
-  "t0": 125,
+  "t0": 126,
   "t1": 127,
   "detalle": "las dos manos en espera (o con el folleto)"
  },
  {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 128,
-  "t1": 129,
-  "detalle": "las dos manos en espera (o con el folleto)"
- },
- {
   "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 130,
+  "mano": "L",
+  "t0": 131,
   "t1": 132,
   "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 132,
-  "t1": 133,
-  "detalle": "las dos manos en espera (o con el folleto)"
  },
  {
   "tipo": "alcance_lejano",
@@ -455,25 +301,18 @@
   "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
  },
  {
-  "tipo": "ambas_ociosas",
-  "mano": "RL",
-  "t0": 139,
-  "t1": 140,
-  "detalle": "las dos manos en espera (o con el folleto)"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "R",
-  "t0": 141,
-  "t1": 143,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
   "tipo": "alcance_lejano",
   "mano": "L",
   "t0": 141.942,
   "t1": 143.844,
   "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
+ },
+ {
+  "tipo": "sostiene_y_viaja",
+  "mano": "L",
+  "t0": 142,
+  "t1": 143,
+  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
  },
  {
   "tipo": "cruce",
@@ -488,20 +327,6 @@
   "t0": 143.844,
   "t1": 145.045,
   "detalle": "a más de 4 palmas (~40 cm) del punto de trabajo"
- },
- {
-  "tipo": "espera_sosteniendo",
-  "mano": "L",
-  "t0": 144,
-  "t1": 145,
-  "detalle": "sostiene y espera mientras la otra va por la pieza"
- },
- {
-  "tipo": "sostiene_y_viaja",
-  "mano": "R",
-  "t0": 144,
-  "t1": 145,
-  "detalle": "la mano que suele sostener el conjunto se va a buscar (el conjunto viaja)"
  },
  {
   "tipo": "alcance_lejano",
