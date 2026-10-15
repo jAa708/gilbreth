@@ -15,6 +15,11 @@ export GILBRETH_API_KEY=...          # your team's key, in your own shell
 python scripts/tokenfactory_batch.py lego gearbox plastic cardboard screw
 ```
 
+Observed on 14 Oct: Gemma is marked experimental and its backend sometimes runs out of GPU memory for image
+requests while text still works (HTTP 500, "GPU 0 has a total capacity of 191.69 GiB": the memory size of an AMD
+Instinct MI300X). The app therefore checks the endpoint with a tiny image before a live run, and the agent retries
+500/502/503/504 with backoff.
+
 One second of video costs about 1.6 requests (one per second plus one per chart row for the descriptions), so a
 5-minute video takes about 26 minutes at 18 requests per minute.
 

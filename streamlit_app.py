@@ -355,7 +355,13 @@ def endpoint_vivo(base, modelo):
     cab = {'Content-Type': 'application/json'}
     if config('GILBRETH_API_KEY'):
         cab['Authorization'] = 'Bearer ' + config('GILBRETH_API_KEY')
-    cuerpo = json.dumps({'model': modelo, 'max_tokens': 2, 'messages': [{'role': 'user', 'content': 'ok'}]}).encode()
+    import base64, io
+    from PIL import Image
+    buf = io.BytesIO()
+    Image.new('RGB', (64, 64), (120, 120, 120)).save(buf, 'JPEG')      # con imagen: el texto puede pasar y la visión no
+    img = 'data:image/jpeg;base64,' + base64.b64encode(buf.getvalue()).decode()
+    cuerpo = json.dumps({'model': modelo, 'max_tokens': 2, 'messages': [{'role': 'user', 'content': [
+        {'type': 'text', 'text': 'ok'}, {'type': 'image_url', 'image_url': {'url': img}}]}]}).encode()
     try:
         urllib.request.urlopen(urllib.request.Request(url, data=cuerpo, headers=cab), timeout=45).read()
         return True
