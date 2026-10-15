@@ -448,7 +448,15 @@ def mostrar_resultado(run, motor):
     if wall:
         c4.metric('Agent wall time', f'{wall:.0f} s', f'≈ {pot2["tiempo_s"] / 60 * RITMO_A_MANO:.0f} min by hand',
                   delta_color='off')
-    st.caption(f'Computed just now by {motor}. First draft from the vision model, not yet reviewed by an engineer.')
+    cal2 = json.loads((run / 'calibracion.json').read_text(encoding='utf-8')) if (run / 'calibracion.json').exists() else None
+    if cal2:
+        est = cal2.get('estimacion') or {}
+        st.caption(f"Computed by {motor}, then recoded after you reviewed the first {cal2.get('revisado_hasta_s', 0)} s. "
+                   f"Gate: **{'calibrated model' if cal2.get('compuerta') == 'v7' else 'vision model kept'}** (on your reviewed "
+                   f"seconds, held out: vision model {est.get('gemma', 0)}/{est.get('n', 0)}, calibrated {est.get('v7', 0)}/"
+                   f"{est.get('n', 0)}; motion prior: {cal2.get('previo', '?')}).")
+    else:
+        st.caption(f'Computed just now by {motor}. First draft from the vision model, not yet reviewed by an engineer.')
     st.altair_chart(linea_tiempo(filas2), width="stretch")
     st.dataframe(tabla_filas(filas2)[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
                  width="stretch", height=380)
@@ -465,6 +473,49 @@ def mostrar_resultado(run, motor):
                           'bimanual_chart.xlsx', width="stretch")
     b.download_button('Download the raw result (JSON)', json.dumps(d2, ensure_ascii=False, indent=1), 'diagrama.json',
                       width="stretch")
+
+
+CODIGO_DE = {v: k for k, v in ACT.items()}
+
+
+def revisar(run, vid, npz, base, modelo, respaldo, dur):
+    """El lazo humano + IA en la demo en vivo: el ingeniero corrige los primeros segundos del borrador y el agente recodifica
+    el resto con el modelo calibrado, solo si la compuerta ve que acierta más que el modelo de visión en lo revisado.
+    Reutiliza las ventanas ya codificadas: no hace ninguna petición nueva al modelo."""
+    import subprocess
+    vent = run / 'pred_v5_vent_agente.json'
+    if not vent.exists():
+        return
+    borrador = {int(round(o['t0'])): (o['md'], o['mi']) for o in json.loads(vent.read_text(encoding='utf-8'))}
+    st.subheader('Review the first seconds, then let the agent recode the rest')
+    st.caption('Correct what each hand does in the first seconds (the first cycle, if it fits). The agent learns from your '
+               'corrections how far to trust the vision model and how far the hand motion; a gate keeps the vision '
+               'model unless the calibrated one scores higher on your reviewed seconds, tested without seeing itself.')
+    tope = max(5, min(60, int(dur)))
+    n = st.slider('Seconds to review', 5, tope, min(30, max(5, int(0.4 * dur))), key='rev_n')   # deja algo que recodificar
+    df = pd.DataFrame([{'Second': f'{s}–{s + 1} s', 'Left hand': ACT.get(borrador[s][1], borrador[s][1]),
+                        'Right hand': ACT.get(borrador[s][0], borrador[s][0])} for s in sorted(borrador) if s < n])
+    opciones = list(ACT.values())
+    ed = st.data_editor(df, hide_index=True, width="stretch", disabled=['Second'], key=f'rev_tabla_{n}',
+                        column_config={'Left hand': st.column_config.SelectboxColumn(options=opciones, required=True),
+                                       'Right hand': st.column_config.SelectboxColumn(options=opciones, required=True)})
+    cambios = sum((ed['Left hand'] != df['Left hand']) | (ed['Right hand'] != df['Right hand']))
+    if st.button(f'Apply my review ({cambios} rows changed) and recode the rest', type='primary'):
+        filas_rev = [{'t0': float(s), 't1': float(s + 1), 'md': CODIGO_DE[r['Right hand']], 'mi': CODIGO_DE[r['Left hand']]}
+                     for s, (_, r) in zip(sorted(x for x in borrador if x < n), ed.iterrows())]
+        (run / 'revisado.json').write_text(json.dumps({'filas': filas_rev}, ensure_ascii=False), encoding='utf-8')
+        env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
+        cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
+               '--modelo', modelo, '--idioma', 'en', '--puntos', str(npz), '--reusar-ventanas', '--sin-descripciones',
+               '--calibrar', str(run / 'revisado.json')] + (['--ollama'] if respaldo else [])
+        with st.spinner('Calibrating on your review and recoding the rest (CPU, no new model requests)…'):
+            p = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', errors='replace', env=env,
+                               cwd=str(RAIZ))
+        if p.returncode != 0:
+            st.error('The recode stopped before finishing.')
+            st.code(p.stdout[-2000:] + p.stderr[-1000:])
+        else:
+            st.rerun()
 
 
 if vista == 'Try your own video':
@@ -526,6 +577,8 @@ if vista == 'Try your own video':
                     correr_agente(vid, npz, run, base, modelo, motor, estado == 'respaldo')
         if (run / 'diagrama.json').exists():
             mostrar_resultado(run, motor)
+            if base:
+                revisar(run, vid, npz, base, modelo, estado == 'respaldo', sub['dur'])
         elif not pi:
             st.warning('No hands found. Film from above, with both hands and the work area in view.')
         else:
