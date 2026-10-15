@@ -372,11 +372,21 @@ def endpoint_vivo(base, modelo):
         return False
 
 
-def correr_agente(vid, npz, run, base, modelo):
-    """Corre agent/bimanual.py contra el endpoint configurado y muestra el avance; devuelve True si terminó bien."""
+def correr_agente(vid, npz, run, base, modelo, motor):
+    """Corre agent/bimanual.py contra el endpoint configurado y muestra el avance; devuelve True si terminó bien.
+    Si Gemma no responde con imagen y hay un modelo de respaldo configurado en el mismo servicio de AMD
+    (GILBRETH_FALLBACK_MODEL), corre con él y lo dice: medido en desarrollo, rinde menos que Gemma."""
     import subprocess, time
     with st.spinner('Checking that the AMD endpoint is answering…'):
         vivo = endpoint_vivo(base, modelo)
+    extra = []
+    respaldo = config('GILBRETH_FALLBACK_MODEL')
+    if not vivo and respaldo and endpoint_vivo(base, respaldo):
+        modelo, motor = respaldo, config('GILBRETH_FALLBACK_ENGINE', f'{respaldo} on AMD GPUs (AMD Token Factory)')
+        extra = ['--ollama'] if config('GILBRETH_FALLBACK_NO_REASONING', '1') == '1' else []   # reasoning_effort: none
+        st.info(f'Gemma 4 is not answering on the shared AMD endpoint right now, so this run uses **{motor}**, '
+                f'another vision model on the same AMD service. {config("GILBRETH_FALLBACK_NOTE", "")}')
+        vivo = True
     if not vivo:
         st.warning('The shared AMD endpoint that serves Gemma 4 is not answering right now (it is an experimental '
                    'service). Please try again in a while; the examples in the sidebar were computed with it.')
@@ -386,10 +396,11 @@ def correr_agente(vid, npz, run, base, modelo):
         if config(clave):
             env[clave] = config(clave)
     cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
-           '--modelo', modelo, '--idioma', 'en', '--hilos', config('GILBRETH_THREADS', '8'), '--puntos', str(npz)]
+           '--modelo', modelo, '--idioma', 'en', '--hilos', config('GILBRETH_THREADS', '8'), '--puntos', str(npz)] + extra
     if config('GILBRETH_LIVE_DESC', '1') == '0':      # endpoint compartido y lento: sin la 2.ª pasada de descripciones
         cmd.append('--sin-descripciones')
     run.mkdir(parents=True, exist_ok=True)
+    (run / 'motor.txt').write_text(motor, encoding='utf-8')
     (run / 'corriendo').write_text('1')
     cola, t0 = [], time.time()
     with st.status('The agent is charting your video…', expanded=True) as estado:
@@ -417,6 +428,8 @@ def correr_agente(vid, npz, run, base, modelo):
 
 
 def mostrar_resultado(run, motor):
+    if (run / 'motor.txt').exists():
+        motor = (run / 'motor.txt').read_text(encoding='utf-8')
     d2 = json.loads((run / 'diagrama.json').read_text(encoding='utf-8'))
     ev2 = json.loads((run / 'errores.json').read_text(encoding='utf-8')) if (run / 'errores.json').exists() else []
     filas2 = d2['filas']
@@ -495,7 +508,7 @@ if vista == 'Try your own video':
                     st.caption(f'One request per second of video on a shared endpoint: about {pide / ritmo:.0f} min '
                                f'for this {sub["dur"]:.0f}-second clip.')
                 if st.button(f'Chart it with the full agent · {motor}', type='primary'):
-                    correr_agente(vid, npz, run, base, modelo)
+                    correr_agente(vid, npz, run, base, modelo, motor)
         if (run / 'diagrama.json').exists():
             mostrar_resultado(run, motor)
         elif not pi:
