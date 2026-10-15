@@ -52,6 +52,23 @@ output with the schema in the prompt) with the shipped pipeline (gate on).
   run of v7 on 11 Oct, which trains the calibrated model with a different routine than the shipped pipeline;
   with 92 hand-seconds that difference moves the figure by about ten points, so it is not a robust number. The KIT test (3,305 hand-seconds) is.
 
+## The shipped model against the lab model, and a fallback for the live demo (15 Oct, development data)
+KIT subject 2, takes 1 and 2 of the nine tasks (418 hand-seconds, the same seconds for every row), shipped agent,
+JSON-object mode on AMD Token Factory:
+
+| Vision model | Exact | ±1 s | Workshop | Kitchen | Failed answers | US$ per request |
+|---|---|---|---|---|---|---|
+| Gemma 4 31B QAT on an A100 (the lab runs) | 53.3 % | 71.3 % | 56.0 % | 50.0 % | — | — |
+| **Gemma-4-31B-IT on AMD Token Factory (shipped)** | **55.3 %** | 72.7 % | 60.8 % | 48.4 % | 0 % | 0.000099 |
+| Qwen3.8-27B on AMD Token Factory (reasoning off) | 51.9 % | 65.6 % | 50.0 % | 54.3 % | 0 % | 0.000134 |
+| DeepSeek-V4-Flash-Vision-Exp | 42.8 % | 57.4 % | 42.7 % | 43.0 % | 2.4 % | 0.000386 |
+| MiMo-V2.6-Flash | 36.8 % | 60.0 % | 44.0 % | 28.0 % | 0 % | 0.000475 |
+
+The rule written before the screening: the fallback is the best model with at most 2 % failed answers, used only if it
+is within 5 points of the lab Gemma. Qwen3.8-27B passed; the app uses it (`GILBRETH_FALLBACK_MODEL`) only when Gemma
+does not answer the image health check, and says so on screen. MiniCPM-V-4.7 was not measured: its endpoint failed
+with six images per request.
+
 ## Changes after the final test (15 Oct, development data only)
 Both rules were written down before measuring; the shipped examples are unchanged by them (0 seconds in four
 examples, 2 hand-seconds in the cardboard one).
