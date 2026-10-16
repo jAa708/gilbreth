@@ -9,6 +9,8 @@ Uso:
   python agente_v5.py ventanas  --base URL --modelo M --paquete carpeta --ficha ficha.json [--desde 0 --hasta 70]
 Opciones: --convencion curso|oit (sostener mientras la otra mano transporta: D o S), --hilos 8, --sin-sensores,
           --sin-recortes, --etiqueta x
+Entorno: GILBRETH_SCHEMA=codigos pide en cada paso solo {code_right, code_left} (mismo texto e imágenes; por defecto
+         'completo', el esquema de siempre).
 """
 import argparse, base64, json, os, random, re, threading, time, urllib.error, urllib.request
 from collections import Counter, deque
@@ -104,6 +106,11 @@ ESQUEMA_PASO = {'type': 'object', 'additionalProperties': False,
                                'documents_in_use': {'type': 'boolean'},
                                'code_right': {'type': 'string', 'enum': CODIGOS},
                                'code_left': {'type': 'string', 'enum': CODIGOS}}}
+#  Respuesta corta (pre-registro MI300X del 16-oct, sistemas B-corto y C): el mismo texto y las mismas imágenes, pero el
+#  esquema estricto pide SOLO los dos códigos. Se elige con GILBRETH_SCHEMA=codigos (ver esquema_paso).
+ESQUEMA_CODIGOS = {'type': 'object', 'additionalProperties': False, 'required': ['code_right', 'code_left'],
+                   'properties': {'code_right': {'type': 'string', 'enum': CODIGOS},
+                                  'code_left': {'type': 'string', 'enum': CODIGOS}}}
 
 
 #  v6: además de los códigos, una descripción corta en español por mano (para las columnas del formato del curso) y
@@ -151,7 +158,10 @@ def b64(p):
 # Endpoints compartidos (p. ej. AMD Token Factory): ritmo máximo por minuto, salida JSON sin esquema estricto y corte
 # limpio cuando se acaba el cupo del día. Todo por variables de entorno; sin ellas, el comportamiento es el de vLLM.
 MODO_JSON = os.environ.get('GILBRETH_JSON_MODE', 'schema')        # schema (vLLM) | object (Token Factory)
-RPM = float(os.environ.get('GILBRETH_RPM', '0') or 0)               # 0 = sin límite
+MODO_ESQUEMA = os.environ.get('GILBRETH_SCHEMA') or 'completo'    # completo (por defecto) | codigos (solo los 2 códigos)
+if MODO_ESQUEMA not in ('completo', 'codigos'):
+    raise ValueError(f"GILBRETH_SCHEMA={MODO_ESQUEMA!r}: use 'completo' (default) or 'codigos'")
+RPM =float(os.environ.get('GILBRETH_RPM', '0') or 0)               # 0 = sin límite
 _turnos, _cerrojo = deque(), threading.Lock()
 SIN_CUPO = threading.Event()                                         # el endpoint dijo que no queda cupo hoy
 
@@ -312,10 +322,20 @@ def cmd_ficha(a):
     print(f['texto'])
 
 
+def esquema_paso(a):
+    """Esquema del paso por segundo. Por defecto (GILBRETH_SCHEMA=completo) el de siempre (o el v6 con --v6); con
+    GILBRETH_SCHEMA=codigos, solo {code_right, code_left}: el texto y las imágenes no cambian."""
+    if MODO_ESQUEMA == 'codigos':
+        if getattr(a, 'v6', False):
+            raise ValueError('GILBRETH_SCHEMA=codigos asks for the two codes only; it cannot be combined with --v6')
+        return ESQUEMA_CODIGOS
+    return ESQUEMA_PASO_V6 if getattr(a, 'v6', False) else ESQUEMA_PASO
+
+
 def correr(a, items, armar):
     t = time.time()
+    esquema = esquema_paso(a)
     with ThreadPoolExecutor(a.hilos) as ex:
-        esquema = ESQUEMA_PASO_V6 if getattr(a, 'v6', False) else ESQUEMA_PASO
         crudos = list(ex.map(lambda it: llamar(a, armar(it), esquema, 'paso', 1100), items))
     return crudos, time.time() - t
 
