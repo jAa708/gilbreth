@@ -39,3 +39,12 @@ Each lever is an estimate for prioritising; the real saving is measured by filmi
 
 We did not find a commercial product documented to turn ordinary video, without markers or manual segmentation,
 into the full four-symbol ILO bimanual chart. Not finding it does not prove it does not exist.
+
+
+## Video-based work analysis products (checked 15 Oct 2026)
+| Product | What its page says | Source |
+|---|---|---|
+| OTRS10 (Broadleaf) | two-hand analysis: right and left hand from one video; usable for therblig analysis | [otrs.jp/feature](https://www.otrs.jp/feature/) |
+| Kaizen Copilot Time Studies (Retrocausal) | splits a smartphone video into steps, times each step, recommends layout and workflow changes | [retrocausal.ai/station-design](https://retrocausal.ai/station-design/) |
+| MTM TiConaut | generates initial MTM data from videos or work descriptions | [solutions.mtm.org](https://solutions.mtm.org/en-US) |
+None of these pages mentions the four-symbol ILO bimanual chart per hand and second.
