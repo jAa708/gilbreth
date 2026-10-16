@@ -23,6 +23,10 @@ COLORES = {'Operation': '#2e7d32', 'Transport + operation': '#66bb6a', 'Transpor
            'Delay': '#e53935', 'Not visible': '#9e9e9e'}
 MANO_EN = {'R': 'right', 'L': 'left', 'RL': 'both', 'LR': 'both'}
 RITMO_A_MANO = 60 / (284 / 60)      # minutos de trabajo manual por minuto de video, medido en el LEGO (≈ 12,7)
+MUESTRA = RAIZ / 'examples' / 'factory_screw' / 'sample_20s.mp4'   # clip de muestra para quien no tiene video a mano
+# reparto del tiempo de cada mano en palabras (la barra usa las 6 actividades; el texto las agrupa)
+GRUPOS = (('operating', ('OP', 'TR+OP')), ('transporting', ('TR',)), ('holding or waiting', ('S', 'D')),
+          ('not visible', ('NV',)))
 # costo patronal por hora (verificados el 12-oct-2026; detalle en docs/SOURCES.md)
 COSTOS = {
     'United States — production worker, manufacturing': (
@@ -53,7 +57,9 @@ def cargar(carpeta, huella=None):
     ev = json.loads((carpeta / 'errores.json').read_text(encoding='utf-8')) if (carpeta / 'errores.json').exists() else []
     cal = json.loads((carpeta / 'calibracion.json').read_text(encoding='utf-8')) \
         if (carpeta / 'calibracion.json').exists() else {}
-    video = next(iter(sorted(carpeta.glob('*.mp4'))), None)
+    # el video del ejemplo, nunca el clip de muestra de «Try your own video» que vive en la misma carpeta
+    video = carpeta / d['meta']['video'] if (carpeta / d['meta'].get('video', '-')).is_file() else \
+        next(iter(p for p in sorted(carpeta.glob('*.mp4')) if not p.name.startswith('sample_')), None)
     verdad = {int(s): v for s, v in json.loads((carpeta / 'verdad.json').read_text(encoding='utf-8')).items()} \
         if (carpeta / 'verdad.json').exists() else {}
     return d, ev, cal, video, verdad
@@ -98,6 +104,72 @@ def linea_comparada(filas, verdad, alto=300):
         x2='end:Q', y=alt.Y('hand:N', title=None, sort=orden),
         color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='top', title=None, columns=6)),
         tooltip=['hand', 'activity', 'start']).properties(height=alto)
+
+
+def reparto_manos(filas):
+    """% del tiempo observado de cada mano en cada código, de las filas (la misma fuente que la línea de tiempo)."""
+    total = sum(f['t1'] - f['t0'] for f in filas) or 1
+    out = {}
+    for mano, k in (('Left hand', 'mi'), ('Right hand', 'md')):
+        c = defaultdict(float)
+        for f in filas:
+            c[f[k]] += f['t1'] - f['t0']
+        out[mano] = {cod: 100 * s / total for cod, s in c.items()}
+    return out
+
+
+def barra_manos(filas):
+    """«See the hold» de un vistazo: una barra 100 % apilada por mano con el tiempo en cada actividad."""
+    datos = []
+    for mano, pct in reparto_manos(filas).items():
+        x = 0.0
+        for cod in ACT:                      # mismo orden que la leyenda: operar → no visible
+            p = pct.get(cod, 0.0)
+            if p <= 0:
+                continue
+            datos.append({'hand': mano, 'activity': ACT[cod], 'share': round(p, 1), 'x0': x, 'x1': x + p,
+                          'mid': x + p / 2, 'label': f'{p:.0f} %' if p >= 6 else ''})
+            x += p
+    escala = alt.Scale(domain=list(COLORES), range=list(COLORES.values()))
+    base = alt.Chart(pd.DataFrame(datos)).encode(y=alt.Y('hand:N', title=None, sort=['Left hand', 'Right hand'],
+                                                         axis=alt.Axis(labelFontSize=13, labelFontWeight='bold')))
+    barras = base.mark_bar().encode(
+        x=alt.X('x0:Q', title='% of the observed time', scale=alt.Scale(domain=[0, 100], nice=False)), x2='x1:Q',
+        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='top', title=None, columns=3, labelFontSize=11,
+                                                                    columnPadding=6, symbolSize=70)),
+        tooltip=['hand', 'activity', alt.Tooltip('share:Q', title='% of time')])
+    texto = base.mark_text(color='white', fontWeight='bold', fontSize=12).encode(x='mid:Q', text='label:N')
+    # alto por paso: con un alto fijo de 130 px las dos bandas se aplastaban en una (visto en Chrome)
+    return (barras + texto).properties(height=alt.Step(44))
+
+
+def texto_manos(filas):
+    """«Left hand: 5 % operating · 90 % holding or waiting», una línea por mano."""
+    lineas = []
+    for mano, pct in reparto_manos(filas).items():
+        partes = [f'{v:.0f} % {nombre}' for nombre, cods in GRUPOS
+                  if (v := sum(pct.get(c, 0.0) for c in cods)) >= 0.5]
+        lineas.append(f'**{mano}:** ' + ' · '.join(partes))
+    return '  \n'.join(lineas)
+
+
+def ver_manos(filas):
+    st.subheader('Where each hand’s time goes')
+    st.altair_chart(barra_manos(filas), width="stretch")
+    st.markdown(texto_manos(filas))
+    st.caption('Operating = ○ operation, alone or while transporting · holding or waiting = ▽ hold + D delay. A hand '
+               'that spends most of the time holding or waiting is the first place to look for a fixture or a better '
+               'split of the work.')
+
+
+def es_clip(meta):
+    """Los ejemplos de fábrica son recortes de 150 s con varias unidades: sus tiempos son del clip, no de una unidad."""
+    return meta.get('unidad') == 'clip'
+
+
+def evidencia(palanca, clip):
+    """La evidencia de mejora.py habla del «cycle»; en un clip con varias unidades es el clip."""
+    return palanca['evidence'].replace('of the cycle', 'of the clip') if clip else palanca['evidence']
 
 
 def acuerdo(cal):
@@ -170,9 +242,12 @@ vista = vista or VISTAS[0]
 
 if vista == 'Overview':
     pot = mejora.potencial(filas)
+    clip = es_clip(d['meta'])
+    por = f"per {pot['tiempo_s']:.0f}-s clip" if clip else 'per unit'
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric('Observed time per unit', f"{pot['tiempo_s']:.0f} s")
-    c2.metric('Estimated after the plan', f"{pot['nuevo_s']:.0f} s", f"-{pot['ahorro_pct']:.0f} %", delta_color='inverse')
+    c1.metric('Observed clip' if clip else 'Observed time per unit', f"{pot['tiempo_s']:.0f} s")
+    c2.metric('Same clip after the plan (estimate)' if clip else 'Estimated after the plan', f"{pot['nuevo_s']:.0f} s",
+              f"-{pot['ahorro_pct']:.0f} %", delta_color='inverse')
     c3.metric('Output per shift', f"+{pot['capacidad_pct']:.0f} %")
     corrida = (B.get('runs') or {}).get(d['meta'].get('run', ''))
     a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
@@ -190,13 +265,19 @@ if vista == 'Overview':
                'MTM-UAS needs ≈ 40 analyst-minutes '
                'per minute of work and MTM-1 ≈ 350 (IMD-EWD); labelling hand motions frame by frame took 79.8 min per '
                'minute of video in StrokeRehab (NeurIPS 2022). Sources: docs/SOURCES.md.')
+    if clip:
+        st.info(f"This example is a {pot['tiempo_s']:.0f}-second excerpt of a longer take, with several units in it. "
+                f"Times are for the whole clip, not per unit, and the plan estimates the same clip of work after "
+                f"the changes.")
+    ver_manos(filas)
+    st.subheader('Second by second')
     st.altair_chart(linea_tiempo(filas), width="stretch")
     if acuerdo(cal):
         st.success(acuerdo(cal))
     st.subheader('Top improvements')
     for p in pot['palancas'][:3]:
-        st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** per unit ({p['pct']:.0f} %). "
-                    f"{p['evidence']}")
+        st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** {por} ({p['pct']:.0f} %). "
+                    f"{evidencia(p, clip)}")
     st.subheader('How it works')
     st.markdown(
         '1. **Hands** — MediaPipe tracks both hands at 10 fps; handedness comes from a ±2 s majority vote.\n'
@@ -255,33 +336,49 @@ if vista == 'Improvement plan':
         beta = st.slider('Share of transport time cut by bringing materials into the normal working area',
                          0.0, 0.6, 0.3, 0.05)
     pot = mejora.potencial(filas, alfa, beta)
+    clip = es_clip(d['meta'])
+    por = f"per {pot['tiempo_s']:.0f}-s clip" if clip else 'per unit'
+    if clip:
+        st.caption(f"This example is a {pot['tiempo_s']:.0f}-second clip with several units, so every figure below is "
+                   f"for the whole clip: an estimate of how long the same clip of work would take after the changes.")
     c1, c2, c3 = st.columns(3)
-    c1.metric('Now', f"{pot['tiempo_s']:.0f} s per unit")
-    c2.metric('With the plan (estimate)', f"{pot['nuevo_s']:.0f} s per unit", f"-{pot['ahorro_s']:.0f} s",
-              delta_color='inverse')
+    c1.metric('Now (observed clip)' if clip else 'Now', f"{pot['tiempo_s']:.0f} s {'per clip' if clip else 'per unit'}")
+    c2.metric('With the plan (estimate)', f"{pot['nuevo_s']:.0f} s {'per clip' if clip else 'per unit'}",
+              f"-{pot['ahorro_s']:.0f} s", delta_color='inverse')
     c3.metric('Floor: time with some hand operating', f"{pot['piso_s']:.0f} s")
     if pot['palancas']:
-        dfp = pd.DataFrame([{'Change': p['title'], 'Seconds saved per unit': p['segundos']} for p in pot['palancas']])
+        eje = f'Seconds saved {por}'
+        dfp = pd.DataFrame([{'Change': p['title'], eje: p['segundos']} for p in pot['palancas']])
         st.altair_chart(alt.Chart(dfp).mark_bar(color='#2e7d32').encode(
-            x='Seconds saved per unit:Q', y=alt.Y('Change:N', sort='-x', title=None, axis=alt.Axis(labelLimit=420)),
+            x=f'{eje}:Q', y=alt.Y('Change:N', sort='-x', title=None, axis=alt.Axis(labelLimit=420)),
             tooltip=list(dfp.columns)).properties(height=40 + 40 * len(dfp)), width="stretch")
     for p in pot['palancas']:
         with st.container(border=True):
-            st.markdown(f"**{p['title']}** — ≈ **{p['segundos']:.1f} s** per unit ({p['pct']:.1f} %)")
-            st.caption(f"Evidence: {p['evidence']}  \nAssumption: {p['assumption']}"
+            st.markdown(f"**{p['title']}** — ≈ **{p['segundos']:.1f} s** {por} ({p['pct']:.1f} %)")
+            st.caption(f"Evidence: {evidencia(p, clip)}  \nAssumption: {p['assumption']}"
                        + (f"  \nSupport: {p['source']}" if p.get('source') else ''))
     st.subheader('What it is worth')
     pais = st.selectbox('Labour cost', list(COSTOS), help='Employer cost per hour; sources in docs/SOURCES.md')
     moneda, costo0, nota = COSTOS[pais]
     e1, e2, e3, e4 = st.columns(4)
     cap0 = 8 * 3600 / pot['tiempo_s'] if pot['tiempo_s'] else 0
-    u = e1.number_input('Units per shift (today)', 1.0, 100000.0, float(round(cap0, 1)))
+    if clip:
+        u = e1.number_input(f"{pot['tiempo_s']:.0f}-s clips of work per shift (today)", 1.0, 100000.0,
+                            float(round(cap0, 1)), help='Each clip holds several units, so the shift is counted in '
+                                                        'clip-lengths of the same work.')
+    else:
+        u = e1.number_input('Units per shift (today)', 1.0, 100000.0, float(round(cap0, 1)))
     h = e2.number_input('Shift length (h)', 1.0, 24.0, 8.0)
     n = e3.number_input('Shifts per year', 1, 1000, 250)
     c = e4.number_input(f'Labour cost per hour ({moneda})', 0.0, 1e6, float(costo0), key=f'costo_{pais}')
     st.caption(nota)
     eco = mejora.economia(pot, u, h, n, c)
-    if eco:
+    if eco and clip:
+        st.markdown(f"If the estimate holds: the same work with **{eco['horas_ahorradas_anio']:,.0f} fewer labour hours "
+                    f"a year** (≈ **{moneda} {eco['valor_anio']:,.0f}**), or the same shift doing "
+                    f"**{eco['unidades_turno_despues']:,.0f}** clips’ worth of work instead of "
+                    f"**{eco['unidades_turno_antes']:,.0f}** (+{pot['capacidad_pct']:.0f} % output).")
+    elif eco:
         st.markdown(f"If the estimate holds: same units with **{eco['horas_ahorradas_anio']:,.0f} fewer labour hours a year** "
                     f"(≈ **{moneda} {eco['valor_anio']:,.0f}**), or the same shift producing "
                     f"**{eco['unidades_turno_despues']:,.0f}** instead of **{eco['unidades_turno_antes']:,.0f}** units.")
@@ -347,6 +444,16 @@ def config(clave, defecto=''):
         return defecto
 
 
+def env_agente():
+    """Entorno del subproceso del agente: en Community Cloud los secretos no son variables de entorno, así que se copian
+    las claves que el agente lee (clave y modo JSON del endpoint, ritmo, y de dónde bajar el previo de movimiento)."""
+    env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
+    for clave in ('GILBRETH_API_KEY', 'GILBRETH_RPM', 'GILBRETH_JSON_MODE', 'GILBRETH_PRIOR_URL'):
+        if config(clave):
+            env[clave] = config(clave)
+    return env
+
+
 PASOS_EN = {'1/5': 'Tracking both hands (MediaPipe, CPU)', '2/5': 'Frames, hand crops and hand speed for every second',
             '3/5': 'Operation sheet: the vision model looks at 6 frames of the video',
             '4/5': 'Coding every second, hand by hand', '5/5': 'Chart rows, row descriptions and method alerts'}
@@ -398,10 +505,7 @@ def correr_agente(vid, npz, run, base, modelo, motor, respaldo=False):
         st.warning('The shared AMD endpoint that serves Gemma 4 is not answering right now (it is an experimental '
                    'service). Please try again in a while; the examples in the sidebar were computed with it.')
         return False
-    env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
-    for clave in ('GILBRETH_API_KEY', 'GILBRETH_RPM', 'GILBRETH_JSON_MODE'):   # clave, ritmo y modo JSON del endpoint
-        if config(clave):
-            env[clave] = config(clave)
+    env = env_agente()
     cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
            '--modelo', modelo, '--idioma', 'en', '--hilos', config('GILBRETH_THREADS', '8'), '--puntos', str(npz)] + extra
     if config('GILBRETH_LIVE_DESC', '1') == '0':      # endpoint compartido y lento: sin la 2.ª pasada de descripciones
@@ -434,6 +538,17 @@ def correr_agente(vid, npz, run, base, modelo, motor, respaldo=False):
     return ok
 
 
+def previo_en(previo):
+    """calibracion.json guarda el previo en español ('IMPACT' o 'ninguno (MIT puro)'); en la app va en inglés."""
+    if not previo:
+        return 'unknown'
+    if previo.startswith('ninguno'):
+        return 'none (MIT-pure mode)'
+    if previo.startswith('IMPACT'):                        # 'IMPACT' o 'IMPACT (other operators)'
+        return 'IMPACT motion prior' + previo[len('IMPACT'):]
+    return previo
+
+
 def mostrar_resultado(run, motor):
     if (run / 'motor.txt').exists():
         motor = (run / 'motor.txt').read_text(encoding='utf-8')
@@ -443,7 +558,7 @@ def mostrar_resultado(run, motor):
     pot2 = mejora.potencial(filas2)
     wall = json.loads((run / 'tiempo.json').read_text())['wall_s'] if (run / 'tiempo.json').exists() else None
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric('Observed time', f"{pot2['tiempo_s']:.0f} s")
+    c1.metric('Observed clip', f"{pot2['tiempo_s']:.0f} s")
     c2.metric('Estimated after the plan', f"{pot2['nuevo_s']:.0f} s", f"-{pot2['ahorro_pct']:.0f} %", delta_color='inverse')
     c3.metric('Output per shift', f"+{pot2['capacidad_pct']:.0f} %")
     if wall:
@@ -455,9 +570,11 @@ def mostrar_resultado(run, motor):
         st.caption(f"Computed by {motor}, then recoded after you reviewed the first {cal2.get('revisado_hasta_s', 0)} s. "
                    f"Gate: **{'calibrated model' if cal2.get('compuerta') == 'v7' else 'vision model kept'}** (on your reviewed "
                    f"seconds, held out: vision model {est.get('gemma', 0)}/{est.get('n', 0)}, calibrated {est.get('v7', 0)}/"
-                   f"{est.get('n', 0)}; motion prior: {cal2.get('previo', '?')}).")
+                   f"{est.get('n', 0)}; motion prior: {previo_en(cal2.get('previo'))}).")
     else:
         st.caption(f'Computed just now by {motor}. First draft from the vision model, not yet reviewed by an engineer.')
+    ver_manos(filas2)
+    st.subheader('Second by second')
     st.altair_chart(linea_tiempo(filas2), width="stretch")
     st.dataframe(tabla_filas(filas2)[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
                  width="stretch", height=380)
@@ -505,7 +622,7 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
         filas_rev = [{'t0': float(s), 't1': float(s + 1), 'md': CODIGO_DE[r['Right hand']], 'mi': CODIGO_DE[r['Left hand']]}
                      for s, (_, r) in zip(sorted(x for x in borrador if x < n), ed.iterrows())]
         (run / 'revisado.json').write_text(json.dumps({'filas': filas_rev}, ensure_ascii=False), encoding='utf-8')
-        env = {**os.environ, 'PYTHONIOENCODING': 'utf-8'}
+        env = env_agente()     # como correr_agente; sin GILBRETH_PRIOR_URL, en la nube (sin models/) caería al MIT puro
         cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
                '--modelo', modelo, '--idioma', 'en', '--puntos', str(npz), '--reusar-ventanas', '--sin-descripciones',
                '--calibrar', str(run / 'revisado.json')] + (['--ollama'] if respaldo else [])
@@ -517,6 +634,21 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
             st.code(p.stdout[-2000:] + p.stderr[-1000:])
         else:
             st.rerun()
+
+
+def nueva_subida(clave, nombre, datos, muestra=False):
+    """Una subida, o el clip de muestra por EXACTAMENTE el mismo camino: su propio directorio temporal, el video
+    dentro y su duración en st.session_state['subida']."""
+    import cv2
+    tmp = Path(tempfile.mkdtemp(prefix='gilbreth_'))
+    vid = tmp / ('video' + Path(nombre).suffix.lower())
+    vid.write_bytes(datos)
+    cap = cv2.VideoCapture(str(vid))
+    n_cuadros, fps = cap.get(cv2.CAP_PROP_FRAME_COUNT), cap.get(cv2.CAP_PROP_FPS) or 0
+    cap.release()
+    st.session_state['subida'] = {'clave': clave, 'dir': str(tmp), 'video': str(vid),
+                                  'dur': n_cuadros / fps if fps else 0, 'muestra': muestra}
+    return st.session_state['subida']
 
 
 if vista == 'Try your own video':
@@ -535,30 +667,39 @@ if vista == 'Try your own video':
                 + (f'; the full chart is computed by **{motor}**.' if base else
                    ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))
     up = st.file_uploader('Video', type=['mp4', 'mov', 'avi', 'mkv'])
+    sub = st.session_state.get('subida') or {}
     if up is not None:
-        import cv2
+        if sub.get('clave') != f'{up.name}:{up.size}':
+            sub = nueva_subida(f'{up.name}:{up.size}', up.name, up.getvalue())
+    elif sub.get('muestra'):
+        a, b = st.columns([5, 1], vertical_alignment='center')
+        a.caption('Using our 20-second sample: a screw-assembly station from *Factory Manipulation Videos* by '
+                  'Procedural Robotics Inc. (CC BY 4.0), the same take as the screw example. Upload your own video '
+                  'above to replace it.')
+        if b.button('Remove the sample', key='quitar_muestra', width='stretch'):
+            st.session_state.pop('subida', None)
+            st.rerun()
+    elif MUESTRA.exists() and st.button('No clip at hand? Use our 20-second sample (factory screw station, CC BY 4.0)',
+                                        key='usar_muestra'):
+        nueva_subida('sample:' + MUESTRA.name, MUESTRA.name, MUESTRA.read_bytes(), muestra=True)
+        st.rerun()                       # la siguiente corrida ya la trata como subida (con el botón para quitarla)
+    if up is not None or sub.get('muestra'):      # una subida o el clip de muestra: desde aquí, el mismo camino
         import extraer_puntos
         from manos import cargar as cargar_npz, pista, sensores
-        clave = f'{up.name}:{up.size}'
-        if st.session_state.get('subida', {}).get('clave') != clave:
-            tmp = Path(tempfile.mkdtemp(prefix='gilbreth_'))
-            vid = tmp / ('video' + Path(up.name).suffix.lower())
-            vid.write_bytes(up.getvalue())
-            cap = cv2.VideoCapture(str(vid))
-            n_cuadros, fps = cap.get(cv2.CAP_PROP_FRAME_COUNT), cap.get(cv2.CAP_PROP_FPS) or 0
-            cap.release()
-            st.session_state['subida'] = {'clave': clave, 'dir': str(tmp), 'video': str(vid),
-                                          'dur': n_cuadros / fps if fps else 0}
-        sub = st.session_state['subida']
         tmp, vid = Path(sub['dir']), Path(sub['video'])
         npz, run = tmp / 'puntos.npz', tmp / 'run'
+        if sub.get('muestra'):
+            with st.expander('Watch the sample clip'):
+                st.video(str(vid))
         if sub['dur'] > 121:
             st.error(f"This video is {sub['dur']:.0f} s long. Please upload 2 minutes or less.")
             st.stop()
         if not npz.exists():
             barra = st.progress(0.0, 'Tracking hands…')
-            nf, nd = extraer_puntos.extraer(vid, npz, lambda x: barra.progress(x, 'Tracking hands…'))
-            barra.progress(1.0, f'{nf} frames, {nd} hand detections')
+            sub['manos'] = extraer_puntos.extraer(vid, npz, lambda x: barra.progress(x, 'Tracking hands…'))
+            barra.empty()
+        if sub.get('manos'):
+            st.caption(f"Hand tracking (MediaPipe, CPU): {sub['manos'][0]} frames, {sub['manos'][1]} hand detections.")
         pi = pista(*cargar_npz(npz))
         limite = float(config('GILBRETH_MAX_LIVE_S', '120'))
         if pi and base and not (run / 'diagrama.json').exists() and sub['dur'] > limite + 1:

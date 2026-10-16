@@ -17,4 +17,11 @@ https://huggingface.co/datasets/procedural-robotics/factory-manipulation-videos.
 - One frame per chart row was extracted.
 - Gilbreth's bimanual chart, method alerts and improvement plan were computed on top of the video.
 
+Each excerpt holds several units, so the app gives its times per 150-s clip, not per unit.
+
+**Sample clip for "Try your own video":** `examples/factory_screw/sample_20s.mp4` is a 20-second excerpt of the
+same take, `screw_assembly_station12_worker003.mp4` (80–100 s of the original, that is 20–40 s of the screw
+example), cut and re-encoded (H.264, 1280×720). Same source, same CC BY 4.0 licence and attribution. The app offers
+it to visitors with no workstation video at hand, and it goes through exactly the same path as an upload.
+
 The dataset authors do not endorse this project.

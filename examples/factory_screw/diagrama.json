@@ -1,5 +1,6 @@
 {
  "meta": {
+  "unidad": "clip",
   "producto": "Small blue plastic components being assembled with screws.",
   "operacion": "Left hand fetches a workpiece and holds it at the work point; right hand fetches a screw and fastens it using the electric screwdriver.",
   "lugar": "Supply areas: blue bins on the left. Work point: center cardboard mat. Output: green conveyor belt on the right.",
