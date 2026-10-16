@@ -60,6 +60,9 @@ task (≈ 30–40 s) stand in for the engineer's review, takes 2–9 are measure
 | · workshop (1,347) / kitchen (1,958) | 48.4 / 55.0 % | 69.6 / 66.0 % | **80.3 / 74.9 %** |
 
 The gain over Gemma alone held from one person to the other: +9.6 and +9.7 points.
+At the level the engineer reads, the share of time each hand spends operating, transporting, holding or waiting is
+6–11 points from the human labels, and the hand that holds or waits the most is right in 81 % of the KIT takes
+(docs/RESULTS.md has the full comparison, including what the calibration does not improve).
 
 **The examples in the app, run on AMD Token Factory** (the shipped pipeline, gate on; second looks at data used
 during development):

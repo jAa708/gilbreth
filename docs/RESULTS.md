@@ -35,6 +35,18 @@ test on subject 1 (+9.7 points here, +9.6 there). The gate kept Gemma in 3 of th
 the gate scored 71.3 % on this subject, so the gate's choice, made on 40–100 reviewed hand-seconds per task, cost 6.2
 points here (on subject 1 it cost nothing). That is the next thing to study, on development data.
 
+## What the per-second figure means for the chart (15 Oct, second look, rule written before computing)
+An engineer reads the chart (share of time each hand operates, transports, holds, waits) and the plan, not the per-second
+score. On KIT subject 3 on AMD (72 takes of about 15 s) and on the gearbox example, against the human labels:
+- **Share of time per hand and activity:** Gilbreth is 10.9 points away on average on KIT (6.4 on the gearbox); Gemma
+  alone 10.7 (3.8). Both over-count transport and under-count the left hand operating.
+- **Which hand holds or waits the most:** right in 81 % of the KIT takes (Gemma alone 90 %).
+- **Plan:** estimated time after the plan within 7.8 % of the cycle of the plan built from the human labels (Gemma alone
+  9.1 %); the top lever matches in 43 % of the short KIT takes (49 %), where levers differ by under a second, and matches
+  on the gearbox (right hand, 28 s vs 21 s from the labels).
+So the calibration's per-second gain (+9.7 points) does not carry over to the time shares, which are already about as
+close with the vision model alone; making the chart, not only the seconds, closer is the next target.
+
 ## What did not work (measured, not shipped)
 - Higher image resolution per frame (560 tokens): worse (72 % vs 79 %).
 - Context frames ±0.5 s, smoothing isolated seconds, voting 5 times: worse or no change.
