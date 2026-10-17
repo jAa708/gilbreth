@@ -89,6 +89,22 @@ Criterion: **met** for both. Before looking, Codex audited the code (15 findings
 that mattered were fixed and the development figures recomputed). Where it applies: only where people doing the same
 task in the same setting have been labelled. Code: [`research/station_v10/`](../research/station_v10/).
 
+**At the chart level (17 Oct, second look at subject 4, declared as such).** The three chart measures of the next
+section, on the same 72 takes (tasks 1–9, takes 2–9) and the same seconds, with the station-mode predictions recomputed
+from the frozen code and data (they reproduce the 83.4 % exactly, 1,574 of 1,888 hand-seconds) and the shipped and
+Gemma-alone predictions of the clean test:
+
+| Subject 4, 72 takes | Gemma alone | Gilbreth (shipped) | **Station mode** |
+|---|---|---|---|
+| Share of time per hand and activity, points away from the human labels | 12.5 | 12.8 | **6.3** |
+| Which hand holds or waits the most: right | 79 % | 71 % | **92 %** |
+| Time after the plan, distance from the plan built on the human labels (% of the cycle) | 10.0 % | 9.4 % | **5.6 %** |
+| Top lever matches | 43 % | 44 % | 47 % |
+
+Where coworkers have been labelled, the per-second gain does carry over to what the engineer reads: station mode halves
+the error in the time shares and finds the hand to free in 92 % of the takes. The top lever still matches in only about
+half of these short takes. Script: `research/station_v10/diagrama_s4.py`.
+
 ## What the per-second figure means for the chart (15 Oct, second look, rule written before computing)
 An engineer reads the chart (share of time each hand operates, transports, holds, waits) and the plan, not the per-second
 score. On KIT subject 3 on AMD (72 takes of about 15 s) and on the gearbox example, against the human labels:

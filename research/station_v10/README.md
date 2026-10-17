@@ -19,6 +19,7 @@ training people out.
 | `sistema.py` | dominant hand, gradient boosting per second (`ajustar_predecir`) |
 | `final.py` | the frozen system: per-second model and 10 Hz model averaged (`predecir`) |
 | `validar.py` | leave-one-person-out validation and the learning curve |
+| `diagrama_s4.py` | the chart-level measures on subject 4 (time shares, hand to free, plan) for Gemma alone, the shipped mode and station mode |
 
 `sistema.py` and `final.py` are byte-identical to the frozen copies used for the test; `construir.py` and `cuadros.py`
 only read their paths from `rutas.py` and reproduce the frozen rows exactly (checked on subjects 1 and 3).

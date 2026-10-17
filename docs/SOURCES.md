@@ -27,6 +27,7 @@ Each lever is an estimate for prioritising; the real saving is measured by filmi
 |---|---|---|
 | US, manufacturing, production occupations: employer cost per hour worked | USD 39.25 (June 2026) | BLS, *Employer Costs for Employee Compensation*, Table 4 — [link](https://www.bls.gov/news.release/ecec.t04.htm) |
 | US, industrial engineers: mean wage | USD 52.84/h · USD 109,900/yr (May 2025) | BLS OEWS release USDL-26-0725 — [PDF](https://www.bls.gov/news.release/archives/ocwage_05152026.pdf) |
+| US, industrial engineers: jobs | about 365,100 (2025) | BLS, *Occupational Outlook Handbook*, Industrial Engineers — [link](https://www.bls.gov/ooh/architecture-and-engineering/industrial-engineers.htm) |
 | Colombia, 2026 minimum monthly wage | COP 1,750,905 (Decree 1469 of 2025; the transitional Decree 159 of 19 Feb 2026 set the same amount while 1469 was suspended, and its compiler's note says it "cumplió su objeto" once the suspension was lifted) | [Decree 0159 of 2026, art. 1](https://cancilleria.gov.co/normograma/compilacion/docs/decreto_0159_2026.htm) |
 | Colombia, minimum-wage operator: employer cost per scheduled hour | COP 14,921–16,839 (*own calculation*: wage + transport allowance COP 249,095 + severance, interest, bonus, vacation, pension 12 %, family fund 4 %, ARL 0.522–6.96 %, ± health/SENA/ICBF 13.5 % if not exempt; ÷ 182 h/month for a 42-h week) | Decree 1470 of 2025 (transport allowance); MinSalud and UGPP contribution rates; Law 2101 of 2021 (42-h week from 15 Jul 2026) |
 

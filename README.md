@@ -84,9 +84,11 @@ labelled person to learn from it averaged 83.8 %, so one labelled worker per sta
 second, which is what the app's review page produces, instead of KIT's per-frame labels: 82.5 % on subject 4. It only
 applies where people doing the same task have been labelled; elsewhere the shipped mode above is the one to use. Code,
 pre-registration and audit: [`research/station_v10/`](research/station_v10/).
-At the level the engineer reads, the share of time each hand spends operating, transporting, holding or waiting is
-6–11 points from the human labels, and the hand that holds or waits the most is right in 81 % of the KIT takes
-(docs/RESULTS.md has the full comparison, including what the calibration does not improve).
+At the level the engineer reads, the share of time each hand spends operating, transporting, holding or waiting: with
+the shipped mode it is 6–11 points from the human labels, about as close as Gemma alone, so the per-second gain does not
+carry over to the chart. With station mode it does: on subject 4 the time shares are **6.3 points** away against 12.5
+for Gemma alone, and the hand that holds or waits the most is right in **92 %** of the takes (79 % for Gemma alone;
+a second look at the same test, declared as such). docs/RESULTS.md has both comparisons.
 
 **The examples in the app, run on AMD Token Factory** (the shipped pipeline, gate on; second looks at data used
 during development):
