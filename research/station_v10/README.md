@@ -38,6 +38,6 @@ only read their paths from `rutas.py` and reproduce the frozen rows exactly (che
    `--prueba 4` builds subject 4 reading its labels only for takes 0–1 (the reviewed ones).
 
 ## Where it does not apply
-A new station with nobody labelled: use the shipped mode. Not measured outside KIT. With the app's per-second labels
+A new station with nobody labelled: use the shipped mode. Outside KIT it has one second look so far (the gearbox example of the app, IMPACT: 77.9 % with `agent/estacion.py` against 73.9 % shipped; docs/RESULTS.md) and a pre-registered test on eight new IMPACT runs waiting for Gemma on AMD Token Factory. With the app's per-second labels
 instead of KIT's per-frame labels, the 10 Hz model has nothing finer to learn from; the per-second model alone scored
 82.5 % on subject 4.

@@ -274,7 +274,7 @@ if vista == 'Overview':
     c1.metric('Observed clip' if clip else 'Observed time per unit', f"{pot['tiempo_s']:.0f} s")
     c2.metric('Same clip after the plan (estimate)' if clip else 'Estimated after the plan', f"{pot['nuevo_s']:.0f} s",
               f"-{pot['ahorro_pct']:.0f} %", delta_color='inverse')
-    c3.metric('Output per shift', f"+{pot['capacidad_pct']:.0f} %")
+    c3.metric('Output per shift (estimate)', f"+{pot['capacidad_pct']:.0f} %")
     corrida = (B.get('runs') or {}).get(d['meta'].get('run', ''))
     a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
     if corrida:
@@ -355,8 +355,9 @@ if vista == 'Bimanual chart':
     a, b = st.columns(2)
     a.download_button('Download the chart (Excel, course format)', excel_bytes(str(EJ[nombre]), HUELLA), 'bimanual_chart.xlsx',
                       width="stretch", disabled=MODO_EST, help='Shipped mode only' if MODO_EST else None)
-    b.download_button('Download the raw result (JSON)', json.dumps(d, ensure_ascii=False, indent=1), 'diagrama.json',
-                      width="stretch")
+    b.download_button('Download the raw result (JSON)',
+                      json.dumps(EST if MODO_EST else d, ensure_ascii=False, indent=1),
+                      'diagrama_estacion.json' if MODO_EST else 'diagrama.json', width="stretch")
 
 if vista == 'Improvement plan':
     with st.expander('Assumptions (change them)', expanded=False):
