@@ -71,6 +71,10 @@ only the 30–40 reviewed seconds of the new person. Built and chosen on KIT sub
 | Gemma alone | 67.5 % | 47.7 % | 55.4 % | 47.5 % | 49.5 % | 53.5 % |
 | Station mode, 4 people to learn from | 86.9 % | 82.2 % | 85.4 % | 84.3 % | 86.4 % | **85.0 %** |
 
+How many labelled people it needs (each new person scored with every combination of the others, development): 1 person
+83.8 % (20 runs), 2 people 84.5 % (30), 3 people 84.9 % (20), 4 people 85.0 % (5). Almost all of the gain comes from the
+first labelled person.
+
 **Clean test, KIT subject 4** (trained on subjects 1, 2, 3, 5, 6 plus the reviewed takes of subject 4; the same 1,888
 hand-seconds as above; pre-registered criterion: above v9 in total and not below it in workshop or kitchen):
 

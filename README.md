@@ -78,7 +78,8 @@ and the same review as above:
 | Total | 51.5 % | 57.4 % | **83.4 %** (±1 s: 91.5 %) |
 | · workshop / kitchen | 56.1 / 48.5 % | 69.8 / 49.0 % | **82.9 / 83.7 %** |
 
-Leaving one of the five training people out at a time, the same system averaged 85.0 % (82.2–86.9 %). With labels per
+Leaving one of the five training people out at a time, the same system averaged 85.0 % (82.2–86.9 %); with a single
+labelled person to learn from it averaged 83.8 %, so one labelled worker per station is most of the gain. With labels per
 second, which is what the app's review page produces, instead of KIT's per-frame labels: 82.5 % on subject 4. It only
 applies where people doing the same task have been labelled; elsewhere the shipped mode above is the one to use. Code,
 pre-registration and audit: [`research/station_v10/`](research/station_v10/).
