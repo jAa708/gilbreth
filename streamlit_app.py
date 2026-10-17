@@ -1,6 +1,6 @@
 """Gilbreth: AI motion study from a workstation video.
 A phone video of a manual operation goes in; a draft bimanual (left-hand / right-hand) chart, method alerts and an
-improvement plan in seconds come out, for the methods engineer to review.
+improvement plan in seconds saved per unit come out, for the methods engineer to review.
 Vision model: Gemma 4 31B served on AMD GPUs (AMD Token Factory, or vLLM on ROCm). Hand tracking: MediaPipe."""
 import json, os, sys, tempfile
 from collections import defaultdict
@@ -210,7 +210,7 @@ def alertas_agrupadas(ev):
 st.title('⏱️ Gilbreth')
 st.markdown('**AI motion study from a workstation video.** A phone video of a manual operation goes in; a draft '
             '**bimanual chart** (what each hand does, second by second), **method alerts** and an **improvement plan '
-            'in seconds** come out — for the methods engineer to review.')
+            'in seconds saved per unit** come out — for the methods engineer to review.')
 
 EJ = ejemplos(tuple(sorted((p.parent.name, p.stat().st_mtime) for p in (RAIZ / 'examples').glob('*/diagrama.json'))))
 with st.sidebar:
@@ -282,7 +282,7 @@ if vista == 'Overview':
     st.markdown(
         '1. **Hands** — MediaPipe tracks both hands at 10 fps; handedness comes from a ±2 s majority vote.\n'
         '2. **Operation sheet** — the vision model looks at 6 frames and writes what is assembled, where the parts '
-        'and tools are, and the typical cycle. Nothing about the product is hard-coded.\n'
+        'and tools are, and the typical cycle. Nothing product-specific is hard-coded.\n'
         '3. **Every second** — Gemma 4 31B, served on AMD GPUs, gets 4 marked frames, a crop of each hand and '
         'hand-speed data, and returns the activity of each hand (ILO symbols: ○ operation, ⇨ transport, '
         'D delay, ▽ hold) as schema-checked JSON.\n'
@@ -290,7 +290,7 @@ if vista == 'Overview':
         'correction how much to trust the vision model vs. the hand motion, and a **gate** checks on the reviewed '
         'seconds (without seeing itself) that it really beats the vision model before recoding the rest.\n'
         '5. **Outputs** — chart rows (a new row whenever either hand changes activity), method alerts, the '
-        'improvement plan in seconds, and the Excel chart in the course format.')
+        'improvement plan in seconds saved per unit, and the Excel chart in the course format.')
 
 if vista == 'Bimanual chart':
     izq, der = st.columns([3, 2])
@@ -394,11 +394,13 @@ if vista == 'Method alerts':
         st.info('No method alerts for this operation.')
 
 if vista == 'Accuracy & AMD':
-    st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Two tests, each '
+    st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Three tests, each '
                 'pre-registered and looked at **once** with the system frozen, each on a person of the KIT Bimanual '
                 'dataset never used before; the dataset’s labels of the first two takes of each task (≈ 30–40 s) stand in for '
                 'the engineer’s review, and takes 2–9 are measured.')
     st.dataframe(pd.DataFrame([
+        ['Subject 4 on AMD Token Factory (shipped system), 1,888 hand-seconds', '41.6 %', '51.5 %', '57.4 % (±1 s: 71.2 %)'],
+        ['   workshop 756 · kitchen 1,132', '37.0 · 44.7 %', '56.1 · 48.5 %', '69.8 · 49.0 %'],
         ['Subject 3 on AMD Token Factory (shipped system), 2,258 hand-seconds', '41.7–41.8 %', '55.4 %', '65.1 % (±1 s: 80.1 %)'],
         ['   workshop 1,086 · kitchen 1,172', '41.8 · 41.7 %', '59.3 · 51.9 %', '66.5 · 63.9 %'],
         ['Subject 1 on a lab GPU (Gemma 4-bit), 3,305 hand-seconds', '—', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
@@ -661,8 +663,8 @@ if vista == 'Try your own video':
                                              config('GILBRETH_FALLBACK_ENGINE', f'{respaldo} on AMD GPUs (AMD Token Factory)'))
         if estado == 'respaldo':
             st.info(f'Live runs use **{motor}**, the best of the vision models we screened on AMD after Gemma 4 left the '
-                    f'shared Token Factory catalogue on 15 Oct. {config("GILBRETH_FALLBACK_NOTE", "")} Every example and '
-                    'measurement in this app was computed with Gemma 4 31B on AMD.')
+                    f'shared Token Factory catalogue on 15 Oct. {config("GILBRETH_FALLBACK_NOTE", "")} Every example in this app '
+                    'and the KIT tests on subjects 3 and 4 were computed with Gemma 4 31B on AMD.')
     st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU'
                 + (f'; the full chart is computed by **{motor}**.' if base else
                    ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))

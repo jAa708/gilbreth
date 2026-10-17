@@ -27,8 +27,9 @@ against 55.3 % for Gemma on the same development seconds), the app runs the live
 image check, and says so on screen; the examples and the measurements are always Gemma's.
 
 On 15 Oct, around 10:39 (Colombia time), `Gemma-4-31B-IT` left the Token Factory catalog (`/models` no longer lists it and
-requests answer "Requested model Gemma-4-31B-IT not supported"). Every example, benchmark and test in this repository was
-computed before that. While Gemma is not listed, the live demo runs on the fallback and says so before the upload.
+requests answer "Requested model Gemma-4-31B-IT not supported"). The five app examples, the benchmark and the KIT
+subject 3 test were computed before that; the KIT subject 4 tests ran on 17 Oct, after Gemma came back. While Gemma is
+not listed, the live demo runs on the fallback and says so before the upload.
 It was listed again on 16 Oct at 22:20 (Colombia time), answering text and image requests, and the app picked it up on
 its own (every 5 minutes it checks whether Gemma answers an image request). A full KIT subject (90 takes, about 20
 minutes of video) cost about

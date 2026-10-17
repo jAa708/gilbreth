@@ -6,7 +6,8 @@ seconds come out — for the methods engineer to review and approve.**
 Built for the **AMD Developer Hackathon: ACT III** (Track 1, *Intelligent Industry*) by team **ArkhanLabs**
 (Juan David Sabogal Orozco, industrial engineering student, Cali, Colombia).
 Vision model: **Gemma 4 31B** on **AMD GPUs** through **AMD Token Factory** (the event's OpenAI-compatible endpoint)
-for every example and test here. Hand tracking: **MediaPipe**.
+for every example and for the KIT tests on subjects 3 and 4 (subject 1 ran earlier on a lab GPU). Hand tracking:
+**MediaPipe**.
 
 > **Status, 16 Oct:** AMD removed `Gemma-4-31B-IT` from Token Factory on 15 Oct and listed it again on 16 Oct
 > (22:20 Colombia time); the app went back to Gemma on its own. The agent does not depend on one model: for the hours
@@ -38,7 +39,7 @@ observed cycle times with Gilbreth.
 ## How it works
 1. **Hands** — MediaPipe tracks both hands at 10 fps; handedness from a ±2 s majority vote.
 2. **Operation sheet** — Gemma looks at 6 frames of the whole video and writes what is assembled, where the parts,
-   tools and documents are, and the typical cycle. Nothing about the product is hard-coded.
+   tools and documents are, and the typical cycle. Nothing product-specific is hard-coded.
 3. **Every second** — Gemma 4 31B on AMD GPUs gets 4 frames with the hands marked, a crop of each hand and
    hand-speed data, and returns the activity of each hand as schema-checked JSON.
 4. **Human calibration (the human + AI loop)** — the engineer corrects the first cycle (≥ 30 s) in the review page.
