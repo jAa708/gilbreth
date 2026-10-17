@@ -20,7 +20,7 @@ def cargar(ruta, **entorno):
     global _n
     _n += 1
     viejo = {k: os.environ.get(k) for k in ('GILBRETH_SCHEMA', 'GILBRETH_JSON_MODE', 'GILBRETH_RPM',
-                                            'GILBRETH_LATENCIAS', 'GILBRETH_API_KEY')}
+                                            'GILBRETH_LATENCIAS', 'GILBRETH_API_KEY', 'GILBRETH_ESTRICTO')}
     try:
         for k in viejo:
             os.environ.pop(k, None)
@@ -81,10 +81,12 @@ def paquete():
 
 
 class Servidor:
-    """Fake OpenAI-compatible server: records every request body and answers by the window shown in image 1."""
+    """Fake OpenAI-compatible server: records every request body and answers by the window shown in image 1.
+    limpio=True answers like vLLM with json_schema (the bare JSON and finish_reason 'stop'); otherwise like a chatty
+    json_object endpoint (text before the JSON, no finish_reason)."""
 
-    def __init__(self, respuestas):
-        self.respuestas, self.cuerpos = respuestas, []
+    def __init__(self, respuestas, limpio=False):
+        self.respuestas, self.cuerpos, self.limpio = respuestas, [], limpio
 
     def __call__(self, req, timeout=None):
         cuerpo = json.loads(req.data)
@@ -92,8 +94,12 @@ class Servidor:
         img = next(c for c in cuerpo['messages'][0]['content'] if c.get('type') == 'image_url')
         k = int(base64.b64decode(img['image_url']['url'].split(',', 1)[1])[2:].decode().split(';')[0][2:])
         r = self.respuestas[k]
-        texto = '' if r is None else 'Sure: ' + json.dumps(r)
-        cuerpo_resp = json.dumps({'choices': [{'message': {'content': texto}}]}).encode()
+        if self.limpio:
+            texto = '' if r is None else json.dumps(r)
+            cuerpo_resp = json.dumps({'choices': [{'message': {'content': texto}, 'finish_reason': 'stop'}]}).encode()
+        else:
+            texto = '' if r is None else 'Sure: ' + json.dumps(r)
+            cuerpo_resp = json.dumps({'choices': [{'message': {'content': texto}}]}).encode()
         return mock.Mock(read=lambda: cuerpo_resp)
 
 
@@ -104,9 +110,9 @@ def ns(pq, **kw):
     return argparse.Namespace(**base)
 
 
-def correr_ventanas(mod, respuestas, **kw):
+def correr_ventanas(mod, respuestas, limpio=False, **kw):
     pq = paquete()
-    srv = Servidor(respuestas)
+    srv = Servidor(respuestas, limpio)
     with mock.patch('urllib.request.urlopen', srv), mock.patch('time.sleep'), contextlib.redirect_stdout(io.StringIO()):
         mod.cmd_ventanas(ns(pq, **kw))
     pred = json.loads((pq / 'pred_v5_vent_x.json').read_text(encoding='utf-8'))
@@ -168,7 +174,9 @@ class Codigos(unittest.TestCase):
     def test_mismo_texto_e_imagenes(self):
         corto = cargar(AGENTE, GILBRETH_SCHEMA='codigos')
         largo = cargar(AGENTE)
-        _, c_corto = correr_ventanas(corto, CORTAS)
+        #  codigos + schema = strict mode: vLLM answers the bare JSON (a wrapped code cannot come out of json_schema)
+        limpias = {k: (v if k != 3 else {**v, 'code_right': 'TR+OP'}) for k, v in CORTAS.items()}
+        _, c_corto = correr_ventanas(corto, limpias, limpio=True)
         _, c_largo = correr_ventanas(largo, COMPLETAS)
         self.assertEqual(len(c_corto), len(c_largo))
         mensajes = lambda cs: sorted(json.dumps(c['cuerpo']['messages'], sort_keys=True) for c in cs)
@@ -201,13 +209,23 @@ class Codigos(unittest.TestCase):
         self.assertEqual(ag.codigos({}, curso), ('D', 'D'))
         self.assertFalse(ag._fallida({'code_right': 'NV', 'code_left': 'OP'}))
         self.assertTrue(ag._fallida({'code_right': 'NV'}))
-        pred, _ = correr_ventanas(ag, CORTAS)
+        esperado = {0: ('OP', 'S', False), 1: ('TR', 'D', False),
+                    2: ('OP', 'TR', False),      # no documents_in_use field: the codes stay
+                    3: ('TR+OP', 'D', False), 4: ('D', 'OP', False),   # NV with the hand seen 90 % -> D
+                    5: ('D', 'OP', True),        # invalid code = dropped: copies the nearest valid (k=4)
+                    6: ('D', 'OP', True)}        # empty answer = dropped: copies the nearest valid (k=4)
+        #  json_object (not strict): the chatty answer and the wrapped code are rescued as before
+        obj = cargar(AGENTE, GILBRETH_SCHEMA='codigos', GILBRETH_JSON_MODE='object')
+        self.assertFalse(obj.ESTRICTO)
+        pred, _ = correr_ventanas(obj, CORTAS)
+        self.assertEqual({o['k']: (o['md'], o['mi'], bool(o.get('relleno'))) for o in pred}, esperado)
+        #  json_schema (strict): the wrapped code of k=3 is not in CODIGOS -> failed, copies the nearest valid (k=2)
+        self.assertTrue(ag.ESTRICTO)
+        pred, _ = correr_ventanas(ag, CORTAS, limpio=True)
         got = {o['k']: (o['md'], o['mi'], bool(o.get('relleno'))) for o in pred}
-        self.assertEqual(got, {0: ('OP', 'S', False), 1: ('TR', 'D', False),
-                               2: ('OP', 'TR', False),      # no documents_in_use field: the codes stay
-                               3: ('TR+OP', 'D', False), 4: ('D', 'OP', False),   # NV with the hand seen 90 % -> D
-                               5: ('D', 'OP', True),        # invalid code = dropped: copies the nearest valid (k=4)
-                               6: ('D', 'OP', True)})       # empty answer = dropped: copies the nearest valid (k=4)
+        self.assertEqual(got, {**esperado, 3: ('OP', 'TR', True)})
+        crudo = {o['k']: o['crudo'] for o in pred}
+        self.assertTrue(all(crudo[k].get('_invalida') and ag._fallida(crudo[k]) for k in (3, 5, 6)))   # kept as failed
 
     def test_valor_invalido(self):
         with self.assertRaises(ValueError):

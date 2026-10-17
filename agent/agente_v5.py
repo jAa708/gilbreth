@@ -11,6 +11,8 @@ Opciones: --convencion curso|oit (sostener mientras la otra mano transporta: D o
           --sin-recortes, --etiqueta x
 Entorno: GILBRETH_SCHEMA=codigos pide en cada paso solo {code_right, code_left} (mismo texto e imágenes; por defecto
          'completo', el esquema de siempre).
+         Modo estricto (GILBRETH_SCHEMA=codigos con GILBRETH_JSON_MODE=schema, o GILBRETH_ESTRICTO=1): solo vale el
+         JSON entero del esquema; lo demás cuenta como respuesta fallida, y un rechazo del esquema para la corrida.
 """
 import argparse, base64, json, os, random, re, threading, time, urllib.error, urllib.request
 from collections import Counter, deque
@@ -162,6 +164,13 @@ MODO_ESQUEMA = os.environ.get('GILBRETH_SCHEMA') or 'completo'    # completo (po
 if MODO_ESQUEMA not in ('completo', 'codigos'):
     raise ValueError(f"GILBRETH_SCHEMA={MODO_ESQUEMA!r}: use 'completo' (default) or 'codigos'")
 RPM =float(os.environ.get('GILBRETH_RPM', '0') or 0)               # 0 = sin límite
+#  Modo estricto (medidas de la MI300X, 16-oct): con el esquema corto pedido como json_schema (GILBRETH_SCHEMA=codigos y
+#  GILBRETH_JSON_MODE=schema) o con GILBRETH_ESTRICTO=1, una respuesta vale solo si el servidor terminó por sí mismo
+#  (finish_reason 'stop') y el texto ENTERO es el objeto del esquema: exactamente sus claves y códigos de CODIGOS. No se
+#  rescata nada del texto con la expresión regular (la respuesta queda marcada como fallida, '_invalida'), y si el
+#  servidor rechaza response_format el agente PARA en vez de seguir sin esquema (la corrida diría «schema» sin serlo).
+#  Sin esas variables (producción: esquema completo, json_object en Token Factory) no cambia nada.
+ESTRICTO = os.environ.get('GILBRETH_ESTRICTO') == '1' or (MODO_JSON == 'schema' and MODO_ESQUEMA == 'codigos')
 _turnos, _cerrojo = deque(), threading.Lock()
 SIN_CUPO = threading.Event()                                         # el endpoint dijo que no queda cupo hoy
 
@@ -180,6 +189,22 @@ def _turno():
                 return
             espera = 60.5 - (ahora - _turnos[0])
         time.sleep(max(espera, 0.2))
+
+
+def respuesta_estricta(eleccion, texto, esquema):
+    """Modo estricto: (objeto, None) si la respuesta cumple el esquema al pie de la letra; si no, (None, motivo)."""
+    if eleccion.get('finish_reason') != 'stop':
+        return None, f"finish_reason {eleccion.get('finish_reason')!r} (se esperaba 'stop')"
+    try:
+        j = json.loads(texto)                       # el texto completo: nada de buscar un {...} dentro
+    except ValueError:
+        return None, 'el texto no es un objeto JSON entero'
+    if not isinstance(j, dict) or set(j) != set(esquema['required']):
+        return None, f"claves {sorted(j) if isinstance(j, dict) else type(j).__name__} != {sorted(esquema['required'])}"
+    malos = [k for k in ('code_right', 'code_left') if k in esquema['properties'] and j[k] not in CODIGOS]
+    if malos:
+        return None, f'código fuera de {CODIGOS} en {malos}'
+    return j, None
 
 
 def llamar(a, contenido, esquema, nombre, max_tokens=900):
@@ -211,12 +236,20 @@ def llamar(a, contenido, esquema, nombre, max_tokens=900):
                 with _cerrojo, open(os.environ['GILBRETH_LATENCIAS'], 'a', encoding='utf-8') as f:   # una línea entera por hilo
                     f.write(json.dumps({'paso': nombre, 's': round(time.time() - t0, 3), 'imagenes': sum(
                         1 for c in contenido if c.get('type') == 'image_url'), **(r.get('usage') or {})}) + '\n')
-            texto = r['choices'][0]['message'].get('content') or ''
+            eleccion = r['choices'][0]
+            texto = eleccion['message'].get('content') or ''
+            if ESTRICTO:                            # fallida y contada, nunca rescatada (ver ESTRICTO)
+                j, motivo = respuesta_estricta(eleccion, texto, esquema)
+                return j if motivo is None else {'_error': f'respuesta inválida (modo estricto): {motivo}',
+                                                 '_invalida': True, '_texto': texto[:300]}
             m = re.search(r'\{.*\}', texto, re.S)
             return json.loads(m.group(0)) if m else {}
         except urllib.error.HTTPError as e:
             detalle = e.read().decode('utf-8', 'replace')[:300].lower()
             if e.code == 400 and 'response_format' in cuerpo and ('response_format' in detalle or 'schema' in detalle):
+                if ESTRICTO:                        # seguir sin esquema mediría otra cosa: la corrida para aquí
+                    raise RuntimeError(f"vLLM rechazó {cuerpo['response_format']['type']} (HTTP 400: {detalle[:200]}); "
+                                       'en modo estricto no se sigue sin esquema')
                 cuerpo.pop('response_format')       # API sin salida estructurada: el JSON se saca del texto
                 continue
             if e.code in (400, 402, 403, 429) and any(p in detalle for p in ('credit', 'quota', 'spend', 'insufficient')):
