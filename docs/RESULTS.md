@@ -5,7 +5,7 @@ frozen, and the decision rule was written before measuring (pre-registration). A
 the right code. Baseline = best constant code per hand over the whole set.
 
 The LEGO and IMPACT sets below were tests for v7 (11 Oct) and were then reused while choosing v9 (the gate), so for the
-shipped system the clean tests are **KIT subject 1** (lab GPU) and **KIT subject 3** (AMD, below). On IMPACT, v9 scored 72.9 % in that development table
+shipped system the clean tests are **KIT subject 1** (lab GPU), **KIT subject 3** and **KIT subject 4** (AMD, below). On IMPACT, v9 scored 72.9 % in that development table
 (Gemma 70.0 %, v7 73.6 %).
 
 ## Clean tests
@@ -34,6 +34,56 @@ Pre-registered criterion (v9 ≥ Gemma in workshop and in kitchen, and > Gemma i
 test on subject 1 (+9.7 points here, +9.6 there). The gate kept Gemma in 3 of the 9 tasks; the calibrated model without
 the gate scored 71.3 % on this subject, so the gate's choice, made on 40–100 reviewed hand-seconds per task, cost 6.2
 points here (on subject 1 it cost nothing). That is the next thing to study, on development data.
+
+## Clean test on AMD (17 Oct): KIT Bimanual subject 4, the shipped system
+Pre-registered on 16 Oct at 22:35, when Gemma came back to Token Factory, before any result of subject 4 existed; looked
+at once. Same system and same calculation as subject 3 (agent commit `ab7188a`, which only adds the strict mode used
+for the MI300X runs and behaves byte for byte like `5b3edd6` with the shipped settings). 90 takes, 1,190 windows, no
+failed answers, about US$0.15 of quota.
+
+| KIT subject 4 (new person), on AMD | Baseline | Gemma alone | Calibrated (v7) | **Gilbreth (v9)** | ±1 s |
+|---|---|---|---|---|---|
+| Workshop, 756 hand-seconds | 37.0 % | 56.1 % | 72.2 % | **69.8 %** | 79.1 % |
+| Kitchen, 1,132 hand-seconds | 44.7 % | 48.5 % | 54.4 % | **49.0 %** | 66.0 % |
+| Total, 1,888 hand-seconds | 41.6 % | 51.5 % | 61.5 % | **57.4 %** | 71.2 % |
+
+Pre-registered criterion: **met** (+5.9 points). The gate kept Gemma in 4 of the 9 tasks (three kitchen tasks, two of
+them ties on the reviewed takes) and cost 4.1 points against the calibrated model without the gate; on subject 3 it
+cost 6.2, on subject 1 nothing.
+
+## Station mode, v10 (16–17 Oct): learning from other people at the same station
+When people doing the same tasks have already been labelled, the system can learn from all of their seconds instead of
+only the 30–40 reviewed seconds of the new person. Built and chosen on KIT subjects 1, 2 and 3 (already used), then on
+5 and 6 (downloaded that night), always leaving one person out; then frozen, pre-registered and tested once on subject 4.
+- Inputs per hand and second: hand-tracker motion (the second, its halves, a 10 Hz profile, ±2 s, the other hand),
+  Gemma's codes and attributes (±2 s, the other hand), the task, and the person's **dominant hand** in that task, read
+  from the reviewed takes (share of seconds operating). Subject 3 is left-handed: learning only from the other people
+  (no reviewed takes, no dominant hand) the model scored 48 % on them; with the reviewed takes 78 %, and with the
+  dominant hand as well 83 %.
+- Two gradient-boosting models averaged: one per second, one at 10 Hz trained on KIT's per-frame labels and averaged
+  per second. 85 % of the errors were in the second next to a change of activity (94 % right away from changes); the
+  10 Hz model is what helps there.
+- Tried and dropped on development data: a second stacking level, Viterbi smoothing, self-training, Extra Trees, a
+  recurrent network, prior correction, more weight on the reviewed takes.
+
+| Leaving one person out (development) | s1 | s2 | s3 | s5 | s6 | Mean |
+|---|---|---|---|---|---|---|
+| Gemma alone | 67.5 % | 47.7 % | 55.4 % | 47.5 % | 49.5 % | 53.5 % |
+| Station mode, 4 people to learn from | 86.9 % | 82.2 % | 85.4 % | 84.3 % | 86.4 % | **85.0 %** |
+
+**Clean test, KIT subject 4** (trained on subjects 1, 2, 3, 5, 6 plus the reviewed takes of subject 4; the same 1,888
+hand-seconds as above; pre-registered criterion: above v9 in total and not below it in workshop or kitchen):
+
+| Subject 4 | Workshop | Kitchen | Total | Total ±1 s |
+|---|---|---|---|---|
+| Gemma alone | 56.1 % | 48.5 % | 51.5 % | 69.7 % |
+| Gilbreth (v9, shipped) | 69.8 % | 49.0 % | 57.4 % | 71.2 % |
+| **Station mode** | **82.9 %** | **83.7 %** | **83.4 %** | **91.5 %** |
+| Station mode, per-second labels only (what the review page gives) | 82.9 % | 82.2 % | 82.5 % | 91.0 % |
+
+Criterion: **met** for both. Before looking, Codex audited the code (15 findings, no leak of the test labels; the ones
+that mattered were fixed and the development figures recomputed). Where it applies: only where people doing the same
+task in the same setting have been labelled. Code: [`research/station_v10/`](../research/station_v10/).
 
 ## What the per-second figure means for the chart (15 Oct, second look, rule written before computing)
 An engineer reads the chart (share of time each hand operates, transports, holds, waits) and the plan, not the per-second

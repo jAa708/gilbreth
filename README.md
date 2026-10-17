@@ -8,9 +8,10 @@ Built for the **AMD Developer Hackathon: ACT III** (Track 1, *Intelligent Indust
 Vision model: **Gemma 4 31B** on **AMD GPUs** through **AMD Token Factory** (the event's OpenAI-compatible endpoint)
 for every example and test here. Hand tracking: **MediaPipe**.
 
-> **Status, 15 Oct:** AMD removed `Gemma-4-31B-IT` from Token Factory that morning. The agent does not depend on one
-> model: we screened six vision models on AMD on the same development seconds, with the rule written beforehand, and
-> the live demo now runs the best one, `Qwen3.8-Flash-Next` (56.9 % against 55.3 % for Gemma), and names it on screen.
+> **Status, 16 Oct:** AMD removed `Gemma-4-31B-IT` from Token Factory on 15 Oct and listed it again on 16 Oct
+> (22:20 Colombia time); the app went back to Gemma on its own. The agent does not depend on one model: for the hours
+> Gemma is not served, we screened six vision models on AMD with a rule written beforehand, and the live demo falls
+> back to the best one, `Qwen3.8-Flash-Next` (56.9 % against 55.3 % for Gemma), and names it on screen.
 
 > Named after Frank and Lillian Gilbreth, who filmed workers a century ago to study and improve their motions.
 
@@ -48,18 +49,39 @@ observed cycle times with Gilbreth.
    tracking and codes; the improvement planner (`agent/mejora.py`) turns the chart into seconds saved per lever.
 
 ## How accurate (measured)
-Accuracy = share of (hand, second) pairs with the right activity code. Two tests, each pre-registered and looked at
+Accuracy = share of (hand, second) pairs with the right activity code. Three tests, each pre-registered and looked at
 **once** with the system frozen, each on a person of the KIT Bimanual dataset never used before; the dataset's labels of the first two takes of each
 task (≈ 30–40 s) stand in for the engineer's review, takes 2–9 are measured.
 
 | KIT Bimanual, new person | Constant baseline | Gemma alone | **Gilbreth** |
 |---|---|---|---|
+| **Subject 4, on AMD Token Factory (the shipped system)**, 1,888 hand-seconds | 41.6 % | 51.5 % | **57.4 %** (±1 s: 71.2 %) |
+| · workshop (756) / kitchen (1,132) | 37.0 / 44.7 % | 56.1 / 48.5 % | **69.8 / 49.0 %** |
 | **Subject 3, on AMD Token Factory (the shipped system)**, 2,258 hand-seconds | 41.7–41.8 % | 55.4 % | **65.1 %** (±1 s: 80.1 %) |
 | · workshop (1,086) / kitchen (1,172) | 41.8 / 41.7 % | 59.3 / 51.9 % | **66.5 / 63.9 %** |
 | Subject 1, lab GPU (Gemma 4-bit), 3,305 hand-seconds | — | 67.5 % | **77.1 %** (±1 s: 87.2 %) |
 | · workshop (1,347) / kitchen (1,958) | 48.4 / 55.0 % | 69.6 / 66.0 % | **80.3 / 74.9 %** |
 
-The gain over Gemma alone held from one person to the other: +9.6 and +9.7 points.
+Gilbreth beat Gemma alone on all three people: +5.9, +9.7 and +9.6 points. In the subject 4 kitchen it barely moved
+(+0.5): on the reviewed takes the calibration did not beat Gemma in three of the five kitchen tasks (two were ties), so
+the gate kept Gemma there; without the gate, the kitchen would have reached 54.4 %.
+
+### Station mode: when other workers at the same station are already labelled
+If the same tasks were already labelled for other people, Gilbreth can learn from all of their seconds instead of only
+the new person's 30 s: hand-tracker motion (whole second, half seconds and the 10 Hz profile), Gemma's codes and
+attributes, and the new person's **dominant hand** read from the reviewed takes (in development it lifted the
+left-handed subject 3 from 78 % to 83 %). Trained on five KIT people (subjects 1, 2, 3, 5, 6) and tested once on subject 4, the same seconds
+and the same review as above:
+
+| Subject 4, 1,888 hand-seconds | Gemma alone | Gilbreth (shipped) | **Station mode** |
+|---|---|---|---|
+| Total | 51.5 % | 57.4 % | **83.4 %** (±1 s: 91.5 %) |
+| · workshop / kitchen | 56.1 / 48.5 % | 69.8 / 49.0 % | **82.9 / 83.7 %** |
+
+Leaving one of the five training people out at a time, the same system averaged 85.0 % (82.2–86.9 %). With labels per
+second, which is what the app's review page produces, instead of KIT's per-frame labels: 82.5 % on subject 4. It only
+applies where people doing the same task have been labelled; elsewhere the shipped mode above is the one to use. Code,
+pre-registration and audit: [`research/station_v10/`](research/station_v10/).
 At the level the engineer reads, the share of time each hand spends operating, transporting, holding or waiting is
 6–11 points from the human labels, and the hand that holds or waits the most is right in 81 % of the KIT takes
 (docs/RESULTS.md has the full comparison, including what the calibration does not improve).
