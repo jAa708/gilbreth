@@ -66,6 +66,13 @@ def cargar(carpeta, huella=None):
 
 
 @st.cache_data
+def estacion_de(carpeta, huella=None):
+    """El mismo ejemplo codificado en modo estación (agent/estacion.py), si existe estacion.json."""
+    f = Path(carpeta) / 'estacion.json'
+    return json.loads(f.read_text(encoding='utf-8')) if f.exists() else None
+
+
+@st.cache_data
 def banco():
     p = RAIZ / 'docs' / 'benchmark.json'
     return json.loads(p.read_text(encoding='utf-8')) if p.exists() else {}
@@ -172,11 +179,17 @@ def evidencia(palanca, clip):
     return palanca['evidence'].replace('of the cycle', 'of the clip') if clip else palanca['evidence']
 
 
-def acuerdo(cal):
+def acuerdo(cal, est=None):
     r = cal.get('acierto_vs_humano_desde_60s') or {}
     if 'gilbreth' not in r:
         return ''
     g, v = r['gilbreth'], r['gemma']
+    if est:
+        e = est['acierto_vs_humano_desde_60s']['estacion']
+        return (f"Station mode: agreement with the human labels after the reviewed minute **{100 * e[0] / e[1]:.1f} %** of "
+                f"{e[1]:,} hand-seconds (shipped mode {100 * g[0] / g[1]:.1f} %, vision model alone "
+                f"{100 * v[0] / v[1]:.1f} %; a second look at this example). Seconds where the dataset gives both hands "
+                f"the same verb are left out, because its labels do not say which hand holds.")
     return (f"Agreement with the human labels after the reviewed minute: **{100 * g[0] / g[1]:.1f} %** of "
             f"{g[1]:,} hand-seconds (vision model alone: {100 * v[0] / v[1]:.1f} %). Seconds where the dataset gives "
             f"both hands the same verb are left out, because its labels do not say which hand holds.")
@@ -229,7 +242,20 @@ with st.sidebar:
                + ' and MediaPipe hand tracking.')
     if d['meta'].get('licencia_en'):
         st.caption(d['meta']['licencia_en'])
-filas = d['filas']
+_fe = EJ[nombre] / 'estacion.json'
+EST = estacion_de(str(EJ[nombre]), _fe.stat().st_mtime if _fe.exists() else None)
+MODO_EST = False
+if EST:
+    with st.sidebar:
+        st.divider()
+        modo = st.radio('Chart from', ['Shipped mode (reviewed minute)', 'Station mode (reviewed coworkers)'],
+                        key=f'modo_{nombre}', help='Station mode learns from workers already reviewed at the same '
+                                                   'station (agent/estacion.py).')
+        MODO_EST = modo.startswith('Station')
+        if MODO_EST:
+            st.caption(EST['meta']['estacion'] + '. The new worker: first '
+                       f"{EST['meta']['revisado_hasta_s']:.0f} s reviewed, the rest coded in station mode.")
+filas = EST['filas'] if MODO_EST else d['filas']
 B = banco()
 
 # navegación con estado: st.tabs vuelve a la primera pestaña en cada recarga (p. ej. al subir un video)
@@ -272,8 +298,8 @@ if vista == 'Overview':
     ver_manos(filas)
     st.subheader('Second by second')
     st.altair_chart(linea_tiempo(filas), width="stretch")
-    if acuerdo(cal):
-        st.success(acuerdo(cal))
+    if acuerdo(cal, EST if MODO_EST else None):
+        st.success(acuerdo(cal, EST if MODO_EST else None))
     st.subheader('Top improvements')
     for p in pot['palancas'][:3]:
         st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** {por} ({p['pct']:.0f} %). "
@@ -297,7 +323,7 @@ if vista == 'Bimanual chart':
     with izq:
         if verdad:
             st.altair_chart(linea_comparada(filas, verdad), width="stretch")
-            st.caption(acuerdo(cal) or 'Gilbreth vs. the human labels of the dataset.')
+            st.caption(acuerdo(cal, EST if MODO_EST else None) or 'Gilbreth vs. the human labels of the dataset.')
         else:
             st.altair_chart(linea_tiempo(filas, 200), width="stretch")
         df = tabla_filas(filas)
@@ -317,15 +343,18 @@ if vista == 'Bimanual chart':
         st.markdown(f"**Left hand** {SYM[f['mi']]} {ACT[f['mi']]}{que('desc_mi')}  \n"
                     f"**Right hand** {SYM[f['md']]} {ACT[f['md']]}{que('desc_md')}")
         img = EJ[nombre] / 'frames' / f'{fila:04d}.jpg'
-        if img.exists():
+        if img.exists() and not MODO_EST:
             st.image(str(img), caption='Frame at the middle of the row')
-        if cal:
+        if cal and MODO_EST:
+            st.info(f"The first {EST['meta']['revisado_hasta_s']:.0f} s were reviewed with human labels; the rest was "
+                    f"coded in station mode, learning from {EST['meta']['estacion'].split(': ')[-1]}.")
+        elif cal:
             st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed with human labels; the rest was coded by "
                     f"the agent. Gate: **{'the calibrated model recoded it' if cal.get('compuerta') == 'v7' else 'the vision model was kept'}**"
                     f" (it scored higher on the reviewed seconds, tested without seeing itself).")
     a, b = st.columns(2)
     a.download_button('Download the chart (Excel, course format)', excel_bytes(str(EJ[nombre]), HUELLA), 'bimanual_chart.xlsx',
-                      width="stretch")
+                      width="stretch", disabled=MODO_EST, help='Shipped mode only' if MODO_EST else None)
     b.download_button('Download the raw result (JSON)', json.dumps(d, ensure_ascii=False, indent=1), 'diagrama.json',
                       width="stretch")
 
@@ -387,7 +416,7 @@ if vista == 'Improvement plan':
 
 if vista == 'Method alerts':
     st.markdown('Signals for the engineer to look at, from hand tracking plus the chart codes. They are prompts to '
-                'check, not verdicts.')
+                'check, not verdicts.' + (' Computed on the shipped chart.' if MODO_EST else ''))
     if ev:
         st.dataframe(alertas_agrupadas(ev), hide_index=True, width="stretch")
     else:
@@ -416,6 +445,23 @@ if vista == 'Accuracy & AMD':
         ['Gearbox, IMPACT operator not in the training data, first 60 s reviewed (307 hand-seconds)', '70.0 %', '73.9 %'],
         ['LEGO, two batches of blind human labels (92 hand-seconds)', '58.7 %', '62.0 %'],
     ], columns=['Example', 'Vision model alone', 'Gilbreth']), hide_index=True, width="stretch")
+    st.subheader('Station mode: when coworkers at the same station are already reviewed')
+    st.markdown('Gilbreth learns from all the reviewed seconds of other workers doing the same task (hand motion, '
+                'Gemma\'s codes and each worker\'s dominant hand), not only from the new worker\'s first minute. '
+                'Run it with `python agent/estacion.py --station runs/w1 runs/w2 --new runs/w3 --reviewed-until 60`; '
+                'on the gearbox example, pick **Station mode** in the sidebar.')
+    st.dataframe(pd.DataFrame([
+        ['KIT subject 4, clean test (5 labelled coworkers), per hand and second', '51.5 %', '57.4 %',
+         '83.4 % (82.5 % with per-second labels)'],
+        ['   on the chart: share of time per hand, points from the human labels', '12.5', '12.8', '6.3'],
+        ['   on the chart: the hand that holds or waits the most, right', '79 %', '71 %', '92 %'],
+        ['Gearbox example, IMPACT (9 reviewed coworkers), from second 60, 307 hand-seconds', '70.0 %', '73.9 %',
+         '77.9 %'],
+    ], columns=['', 'Vision model alone', 'Shipped mode', 'Station mode']), hide_index=True, width="stretch")
+    st.caption('KIT subject 4 per hand and second: pre-registered, looked at once. The chart rows and the gearbox are '
+               'second looks at data already used, declared as such. The gearbox figure is agent/estacion.py as '
+               'shipped (per-second labels). Where nobody at the station has been reviewed yet, the shipped mode is the '
+               'one to use. Details: docs/RESULTS.md.')
     st.subheader('Running on AMD')
     if B.get('runs'):
         st.markdown(f"Model **{B.get('modelo', '')}** served on **{B.get('gpu') or 'AMD GPUs'}**"

@@ -105,6 +105,22 @@ Where coworkers have been labelled, the per-second gain does carry over to what 
 the error in the time shares and finds the hand to free in 92 % of the takes. The top lever still matches in only about
 half of these short takes. Script: `research/station_v10/diagrama_s4.py`.
 
+**Outside KIT: the gearbox example in the app (17 Oct, second look, declared as such).** Station = the 11 runs of the
+9 IMPACT operators the motion prior already uses (their per-second labels as the review, Gemma's codes only); the new
+worker = the gearbox operator, first 60 s reviewed, scored like the app (from second 60, 307 hand-seconds):
+
+| Gearbox, from second 60 | Gemma alone | Gilbreth (shipped) | **Station mode (`agent/estacion.py`)** |
+|---|---|---|---|
+| Per hand and second | 70.0 % | 73.9 % | **77.9 %** |
+| Share of time per hand, points away from the human labels | 3.8 | 6.4 | 3.9 |
+| Hand that holds or waits the most | right | wrong | right |
+| Top lever | wrong | right | right |
+
+`agent/estacion.py` is the shipped station mode: the frozen per-second system with per-second labels (what the review
+page exports). The lab version with the dataset's per-frame labels (`final.py`, both models) scored 81.1 % on the same
+seconds. One video: it shows that station mode runs outside KIT, not how much it gains there; a pre-registered test on
+eight IMPACT runs never coded before is waiting for Gemma on AMD Token Factory.
+
 ## What the per-second figure means for the chart (15 Oct, second look, rule written before computing)
 An engineer reads the chart (share of time each hand operates, transports, holds, waits) and the plan, not the per-second
 score. On KIT subject 3 on AMD (72 takes of about 15 s) and on the gearbox example, against the human labels:

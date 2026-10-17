@@ -90,6 +90,12 @@ carry over to the chart. With station mode it does: on subject 4 the time shares
 for Gemma alone, and the hand that holds or waits the most is right in **92 %** of the takes (79 % for Gemma alone;
 a second look at the same test, declared as such). docs/RESULTS.md has both comparisons.
 
+**Use it:** `python agent/estacion.py --station runs/w1 runs/w2 --new runs/w3 --reviewed-until 60` (each station run
+reviewed in `revisar.html`, the new one at least for its first minute). In the app, the gearbox example has a
+**Station mode** switch in the sidebar: learning from 9 reviewed IMPACT operators, it agrees with the human labels on
+**77.9 %** of the 307 hand-seconds after the reviewed minute (shipped mode 73.9 %, Gemma alone 70.0 %; a second look at
+that example) and gets the hand to free and the top lever right.
+
 **The examples in the app, run on AMD Token Factory** (the shipped pipeline, gate on; second looks at data used
 during development):
 - gearbox, IMPACT operator not in the training data, first 60 s reviewed, human labels from second 60 (307

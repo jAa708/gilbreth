@@ -4,7 +4,9 @@
 - the video (re-encoded to 480p, audio removed),
 - the frames,
 - the human labels (`verdad.json`),
-- the chart computed from them.
+- the chart computed from them,
+- `estacion.json`: the same video coded in station mode (`agent/estacion.py`), learning from the labelled
+  runs of 9 other IMPACT operators (their per-second labels, derived from the dataset).
 
 It may be used only for non-commercial purposes, and adaptations must keep the same licence. See
 `LICENSE-DATA-IMPACT` (a summary of the dataset's licence notice; the original is
