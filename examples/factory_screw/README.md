@@ -24,5 +24,9 @@ same take, `screw_assembly_station12_worker003.mp4` (107–127 s of the original
 example: two full cycles with both hands in view, the left one holding the part while the right one drives the
 screws), cut and re-encoded (H.264, 1280×720). Until 18 Oct it was 80–100 s, mostly a wait between parts. Same source, same CC BY 4.0 licence and attribution. The app offers
 it to visitors with no workstation video at hand, and it goes through exactly the same path as an upload.
+`sample_run/` is a stored run of the full agent on that clip (Gemma 4 31B on AMD Token Factory, from the public
+app on 18 Oct 2026, first draft, not reviewed): the app shows it at once, and the button charts the clip again live.
+Its chart is the one the app downloaded; the method alerts and the Excel were rebuilt on CPU the same way the agent
+builds them (hand tracking of the clip + those per-second codes).
 
 The dataset authors do not endorse this project.

@@ -1,0 +1,233 @@
+{
+ "meta": {
+  "producto": "Assembly of a small blue circular component using a handheld power tool.",
+  "operacion": "Left hand fetches and holds the blue workpiece on the mat; right hand uses the electric screwdriver to fasten a part into the workpiece.",
+  "lugar": "Supply areas: blue bins on the left. Work point: center brown mat. Output: green conveyor belt on the right.",
+  "video": "sample_20s.mp4",
+  "fecha": "2026-10-18",
+  "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
+  "camara": "Operator is at the bottom center. The left hand (Cyan) appears on the left/center and the right hand (Magenta) appears on the right/center of the image.",
+  "nota_en": "Live run on the public app, 18 Oct 2026 01:06 (Colombia), Gemma 4 31B on AMD Token Factory; first draft, not reviewed by an engineer."
+ },
+ "indicadores": {
+  "duracion_s": 20.0,
+  "filas": 12,
+  "MD": {
+   "OP": 60.0,
+   "D": 20.0,
+   "TR": 20.0
+  },
+  "MD_productivo_pct": 60.0,
+  "MD_improductivo_pct": 20.0,
+  "MI": {
+   "S": 50.0,
+   "D": 20.0,
+   "TR": 20.0,
+   "OP": 10.0
+  },
+  "MI_productivo_pct": 10.0,
+  "MI_improductivo_pct": 70.0
+ },
+ "filas": [
+  {
+   "t0": 0.0,
+   "t1": 2.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Operation · L: Hold"
+   ],
+   "ks": [
+    0,
+    1
+   ],
+   "n": 1,
+   "dur": 2.0,
+   "desc_md": "Operation",
+   "desc_mi": "Hold"
+  },
+  {
+   "t0": 2.0,
+   "t1": 3.0,
+   "md": "D",
+   "mi": "D",
+   "obs": [
+    "R: Delay · L: Delay"
+   ],
+   "ks": [
+    2
+   ],
+   "n": 2,
+   "dur": 1.0,
+   "desc_md": "Delay",
+   "desc_mi": "Delay"
+  },
+  {
+   "t0": 3.0,
+   "t1": 4.0,
+   "md": "D",
+   "mi": "TR",
+   "obs": [
+    "R: Delay · L: Transport"
+   ],
+   "ks": [
+    3
+   ],
+   "n": 3,
+   "dur": 1.0,
+   "desc_md": "Delay",
+   "desc_mi": "Transport"
+  },
+  {
+   "t0": 4.0,
+   "t1": 8.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Operation · L: Hold"
+   ],
+   "ks": [
+    4,
+    5,
+    6,
+    7
+   ],
+   "n": 4,
+   "dur": 4.0,
+   "desc_md": "Operation",
+   "desc_mi": "Hold"
+  },
+  {
+   "t0": 8.0,
+   "t1": 10.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "R: Transport · L: Delay"
+   ],
+   "ks": [
+    8,
+    9
+   ],
+   "n": 5,
+   "dur": 2.0,
+   "desc_md": "Transport",
+   "desc_mi": "Delay"
+  },
+  {
+   "t0": 10.0,
+   "t1": 11.0,
+   "md": "TR",
+   "mi": "TR",
+   "obs": [
+    "R: Transport · L: Transport"
+   ],
+   "ks": [
+    10
+   ],
+   "n": 6,
+   "dur": 1.0,
+   "desc_md": "Transport",
+   "desc_mi": "Transport"
+  },
+  {
+   "t0": 11.0,
+   "t1": 12.0,
+   "md": "D",
+   "mi": "TR",
+   "obs": [
+    "R: Delay · L: Transport"
+   ],
+   "ks": [
+    11
+   ],
+   "n": 7,
+   "dur": 1.0,
+   "desc_md": "Delay",
+   "desc_mi": "Transport"
+  },
+  {
+   "t0": 12.0,
+   "t1": 13.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Operation · L: Hold"
+   ],
+   "ks": [
+    12
+   ],
+   "n": 8,
+   "dur": 1.0,
+   "desc_md": "Operation",
+   "desc_mi": "Hold"
+  },
+  {
+   "t0": 13.0,
+   "t1": 14.0,
+   "md": "TR",
+   "mi": "D",
+   "obs": [
+    "R: Transport · L: Delay"
+   ],
+   "ks": [
+    13
+   ],
+   "n": 9,
+   "dur": 1.0,
+   "desc_md": "Transport",
+   "desc_mi": "Delay"
+  },
+  {
+   "t0": 14.0,
+   "t1": 15.0,
+   "md": "D",
+   "mi": "TR",
+   "obs": [
+    "R: Delay · L: Transport"
+   ],
+   "ks": [
+    14
+   ],
+   "n": 10,
+   "dur": 1.0,
+   "desc_md": "Delay",
+   "desc_mi": "Transport"
+  },
+  {
+   "t0": 15.0,
+   "t1": 17.0,
+   "md": "OP",
+   "mi": "OP",
+   "obs": [
+    "R: Operation · L: Operation"
+   ],
+   "ks": [
+    15,
+    16
+   ],
+   "n": 11,
+   "dur": 2.0,
+   "desc_md": "Operation",
+   "desc_mi": "Operation"
+  },
+  {
+   "t0": 17.0,
+   "t1": 20.0,
+   "md": "OP",
+   "mi": "S",
+   "obs": [
+    "R: Operation · L: Hold"
+   ],
+   "ks": [
+    17,
+    18,
+    19
+   ],
+   "n": 12,
+   "dur": 3.0,
+   "desc_md": "Operation",
+   "desc_mi": "Hold"
+  }
+ ]
+}

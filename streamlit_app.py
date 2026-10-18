@@ -25,6 +25,7 @@ COLORES = {'Operation': '#2e7d32', 'Transport + operation': '#66bb6a', 'Transpor
 MANO_EN = {'R': 'right', 'L': 'left', 'RL': 'both', 'LR': 'both'}
 RITMO_A_MANO = 60 / (284 / 60)      # minutos de trabajo manual por minuto de video, medido en el LEGO (≈ 12,7)
 MUESTRA = RAIZ / 'examples' / 'factory_screw' / 'sample_20s.mp4'   # clip de muestra para quien no tiene video a mano
+MUESTRA_RUN = RAIZ / 'examples' / 'factory_screw' / 'sample_run'     # lo que el agente sacó de esa muestra en AMD (en vivo, 18-oct)
 # reparto del tiempo de cada mano en palabras (la barra usa las 6 actividades; el texto las agrupa)
 GRUPOS = (('operating', ('OP', 'TR+OP')), ('transporting', ('TR',)), ('holding or waiting', ('S', 'D')),
           ('not visible', ('NV',)))
@@ -240,11 +241,12 @@ with st.sidebar:
 
 HUELLA = (EJ[nombre] / 'diagrama.json').stat().st_mtime  # la caché se renueva si el ejemplo cambia
 d, ev, cal, video, verdad = cargar(str(EJ[nombre]), HUELLA)
-with st.sidebar:
-    st.caption('Computed with ' + d['meta'].get('motor_en', 'Gemma 4 31B on AMD GPUs (AMD Token Factory)')
-               + ' and MediaPipe hand tracking.')
-    if d['meta'].get('licencia_en'):
-        st.caption(d['meta']['licencia_en'])
+if st.session_state.get('vista') != 'Try your own video':     # en vivo, la licencia del ejemplo no aplica al clip
+    with st.sidebar:
+        st.caption('Computed with ' + d['meta'].get('motor_en', 'Gemma 4 31B on AMD GPUs (AMD Token Factory)')
+                   + ' and MediaPipe hand tracking.')
+        if d['meta'].get('licencia_en'):
+            st.caption(d['meta']['licencia_en'])
 _fe = EJ[nombre] / 'estacion.json'
 EST = estacion_de(str(EJ[nombre]), _fe.stat().st_mtime if _fe.exists() else None)
 MODO_EST = False
@@ -625,7 +627,7 @@ def previo_en(previo):
     return previo
 
 
-def mostrar_resultado(run, motor):
+def mostrar_resultado(run, motor, nota=None):
     if (run / 'motor.txt').exists():
         motor = (run / 'motor.txt').read_text(encoding='utf-8')
     d2 = json.loads((run / 'diagrama.json').read_text(encoding='utf-8'))
@@ -655,7 +657,7 @@ def mostrar_resultado(run, motor):
             st.caption('On these reviewed seconds the calibrated model did not beat the vision model, so its codes stay '
                        'for the rest; your corrections are kept. In our tests the engineer reviewed 20–60 s.')
     else:
-        st.caption(f'Computed just now by {motor}. First draft from the vision model, not yet reviewed by an engineer.')
+        st.caption(nota or f'Computed just now by {motor}. First draft from the vision model, not yet reviewed by an engineer.')
     ver_manos(filas2)
     st.subheader('Second by second')
     st.altair_chart(linea_tiempo(filas2), width="stretch")
@@ -768,8 +770,8 @@ if vista == 'Try your own video':
     elif sub.get('muestra'):
         a, b = st.columns([5, 1], vertical_alignment='center')
         a.caption('Using our 20-second sample: a screw-assembly station from *Factory Manipulation Videos* by '
-                  'Procedural Robotics Inc. (CC BY 4.0), the same take as the screw example. Upload your own video '
-                  'above to replace it.')
+                  'Procedural Robotics Inc. (CC BY 4.0), the same take as the screw example. Below, what the full agent '
+                  'charted on it on AMD; press the button to chart it again live. Upload your own video above to replace it.')
         if b.button('Remove the sample', key='quitar_muestra', width='stretch'):
             st.session_state.pop('subida', None)
             st.rerun()
@@ -783,7 +785,7 @@ if vista == 'Try your own video':
         tmp, vid = Path(sub['dir']), Path(sub['video'])
         npz, run = tmp / 'puntos.npz', tmp / 'run'
         if sub.get('muestra'):
-            with st.expander('Watch the sample clip'):
+            with st.expander('Watch the sample clip', expanded=True):
                 st.video(str(vid))
         if sub['dur'] > 121:
             st.error(f"This video is {sub['dur']:.0f} s long. Please upload 2 minutes or less.")
@@ -824,6 +826,12 @@ if vista == 'Try your own video':
             mostrar_resultado(run, motor)
             if base:
                 revisar(run, vid, npz, base, modelo, estado == 'respaldo', sub['dur'])
+        elif sub.get('muestra') and (MUESTRA_RUN / 'diagrama.json').exists():
+            # lo que el agente resolvió en la muestra, sin esperar: una corrida en vivo guardada (la app la rehace con el botón)
+            st.subheader('What Gilbreth charted on this sample')
+            mostrar_resultado(MUESTRA_RUN, motor, nota='A stored run of the full agent on this clip: Gemma 4 31B on AMD '
+                              'Token Factory, from this public app on 18 Oct 2026 (first draft, not reviewed by an '
+                              'engineer). Press the button above to chart it again live; results vary a little between runs.')
         elif not pi:
             st.warning('No hands found. Film from above, with both hands and the work area in view.')
         else:
