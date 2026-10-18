@@ -20,8 +20,9 @@ https://huggingface.co/datasets/procedural-robotics/factory-manipulation-videos.
 Each excerpt holds several units, so the app gives its times per 150-s clip, not per unit.
 
 **Sample clip for "Try your own video":** `examples/factory_screw/sample_20s.mp4` is a 20-second excerpt of the
-same take, `screw_assembly_station12_worker003.mp4` (80–100 s of the original, that is 20–40 s of the screw
-example), cut and re-encoded (H.264, 1280×720). Same source, same CC BY 4.0 licence and attribution. The app offers
+same take, `screw_assembly_station12_worker003.mp4` (107–127 s of the original, that is 47–67 s of the screw
+example: two full cycles with both hands in view, the left one holding the part while the right one drives the
+screws), cut and re-encoded (H.264, 1280×720). Until 18 Oct it was 80–100 s, mostly a wait between parts. Same source, same CC BY 4.0 licence and attribution. The app offers
 it to visitors with no workstation video at hand, and it goes through exactly the same path as an upload.
 
 The dataset authors do not endorse this project.
