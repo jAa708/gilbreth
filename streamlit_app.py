@@ -100,13 +100,13 @@ def linea_tiempo(filas, alto=240):
         tooltip=['hand', 'activity', 'what', 'start', 'end']).properties(height=alto)
 
 
-def linea_comparada(filas, verdad, alto=300):
+def linea_comparada(filas, verdad, alto=300, quien='Gilbreth'):
     """Agente vs. etiqueta humana, por mano (los segundos sin etiqueta humana quedan en blanco)."""
-    filas_d = [{'hand': f'{mano} · Gilbreth', 'start': f['t0'], 'end': f['t1'], 'activity': ACT[f[k]]}
+    filas_d = [{'hand': f'{mano} · {quien}', 'start': f['t0'], 'end': f['t1'], 'activity': ACT[f[k]]}
                for f in filas for mano, k in (('Left', 'mi'), ('Right', 'md'))]
     filas_d += [{'hand': f'{mano} · human', 'start': s, 'end': s + 1, 'activity': ACT[v[k]]}
                 for s, v in verdad.items() for mano, k in (('Left', 'mi'), ('Right', 'md')) if not v['nulo_' + k]]
-    orden = ['Left · Gilbreth', 'Left · human', 'Right · Gilbreth', 'Right · human']
+    orden = [f'Left · {quien}', 'Left · human', f'Right · {quien}', 'Right · human']
     escala = alt.Scale(domain=list(COLORES), range=list(COLORES.values()))
     return alt.Chart(pd.DataFrame(filas_d)).mark_bar().encode(
         x=alt.X('start:Q', title='seconds', scale=alt.Scale(domain=[0, max(f['t1'] for f in filas)], nice=False)),
@@ -223,6 +223,12 @@ def tabla(df):
     st.table(df.astype(str).set_index(df.columns[0]))
 
 
+def mostrar_alertas(ev):
+    tabla(alertas_agrupadas(ev))
+    st.caption("Hand(s) 'both' = it happens with the left hand and with the right hand, not necessarily at the same time. "
+               "Alerts come from the hand tracking and the codes: they point to what to check on the video.")
+
+
 def alertas_agrupadas(ev):
     por = defaultdict(list)
     for e in ev:
@@ -230,9 +236,9 @@ def alertas_agrupadas(ev):
     filas = []
     for tipo, lista in sorted(por.items(), key=lambda x: -sum(e['t1'] - e['t0'] for e in x[1])):
         manos = ''.join(sorted({c for e in lista for c in e['mano']}))
-        filas.append({'Alert': errores.TITLE_EN.get(tipo, tipo), 'Hand': MANO_EN.get(manos, manos),
-                      'Times': len(lista), 'Total s': round(sum(e['t1'] - e['t0'] for e in lista), 1),
-                      'First at': ', '.join(f"{e['t0']:.0f} s" for e in lista[:4]) + (' …' if len(lista) > 4 else ''),
+        filas.append({'Alert': errores.TITLE_EN.get(tipo, tipo), 'Hand(s)': MANO_EN.get(manos, manos),
+                      'How many times': len(lista), 'Total time (s)': round(sum(e['t1'] - e['t0'] for e in lista), 1),
+                      'Starts at (first 4)': ', '.join(f"{e['t0']:.0f} s" for e in lista[:4]) + (' …' if len(lista) > 4 else ''),
                       'What to change': errores.FIX_EN.get(tipo, '')})
     return pd.DataFrame(filas)
 
@@ -272,13 +278,16 @@ if EN_VIVO:
     with st.sidebar:
         st.divider()
         st.caption('The sidebar describes the selected example. Your own video, or the sample, is charted in the main '
-                   'panel by the full agent with the shipped mode (for the sample, a stored run shows at once).')
+                   'panel by the full agent in the default mode: the vision model, then your review of the first seconds '
+                   'and the gate (for the sample, a stored run shows at once).')
 elif EST:
     with st.sidebar:
         st.divider()
         # este puesto ya tiene compañeros revisados: se abre en el modo entregado y el modo estación queda a un clic
         # (así lo cuentan el video, el README y Accuracy & AMD; careo de cierre del 18-oct)
-        modo = st.radio('This example: chart from', ['Station mode (reviewed coworkers)', 'Shipped mode (reviewed minute)'],
+        modo = st.radio('How this example is coded',
+                        ['Station mode: also learns from coworkers already reviewed at this station',
+                         "Shipped mode (default): only this worker's first 60 s reviewed"],
                         index=1,
                         key=f'modo_{nombre}', help='Station mode learns from workers already reviewed at the same '
                                                    'station (agent/estacion.py). The shipped mode needs no one '
@@ -288,7 +297,9 @@ elif EST:
             st.caption(EST['meta']['estacion'] + '. The new worker: first '
                        f"{EST['meta']['revisado_hasta_s']:.0f} s reviewed, the rest coded in station mode.")
         else:
-            st.caption('What a station with nobody reviewed before gets: the reviewed minute of this worker only.')
+            st.caption("What any new station gets: an engineer reviews this worker's first 60 s and Gilbreth learns "
+                       "from that alone.")
+        st.caption('The chart, the time shares and the plan in every view follow the mode you pick.')
 filas = EST['filas'] if MODO_EST else d['filas']
 B = banco()
 
@@ -316,12 +327,15 @@ if vista == 'Overview':
     c1.metric('Observed clip' if clip else 'Observed time per unit', f"{pot['tiempo_s']:.0f} s")
     c2.metric('Same clip after the plan (estimate)' if clip else 'Estimated after the plan', f"{pot['nuevo_s']:.0f} s",
               f"-{pot['ahorro_pct']:.0f} %", delta_color='inverse')
-    c3.metric('Output per shift (estimate)', f"+{pot['capacidad_pct']:.0f} %")
+    c3.metric('Output per shift (estimate)', f"+{pot['capacidad_pct']:.0f} %",
+              help=f"Units the same shift makes after the plan, against today, if the estimate holds: "
+                   f"{pot['tiempo_s']:.0f} s ÷ {pot['nuevo_s']:.0f} s − 1. A cycle {pot['ahorro_pct']:.0f} % shorter makes "
+                   f"{pot['capacidad_pct']:.0f} % more units.")
     corrida = (B.get('runs') or {}).get(d['meta'].get('run', ''))
     a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
     if corrida:
         c4.metric('Agent on AMD (unattended)', f"{corrida['wall_s'] / 60:.1f} min",
-                  f"vs ≈ {a_mano:.0f} min by hand (estimate)", delta_color='off', **SIN_FLECHA,
+                  f"vs ≈ {a_mano:.0f} min by hand (estimate) · paced by the free endpoint", delta_color='off', **SIN_FLECHA,
                   help='Unattended wall time on the shared AMD Token Factory endpoint, paced to its limit of 20 requests '
                        'per minute (about one request per second of video). Details in Accuracy & AMD.')
     elif d['meta'].get('minutos_a_mano'):
@@ -330,11 +344,11 @@ if vista == 'Overview':
     else:
         c4.metric('Charting by hand (estimate)', f"≈ {pot['tiempo_s'] / 60 * RITMO_A_MANO:.0f} min",
                   f"at ≈ {RITMO_A_MANO:.0f} min per video-minute", delta_color='off', **SIN_FLECHA)
-    st.caption(f'Charting by hand: for our course project we estimate ≈ 60 min of one person for a 4.7-min video (≈ '
-               f'{RITMO_A_MANO:.0f} min per minute of video; other videos are scaled from it). Published references for related manual analyses: '
-               'MTM-UAS needs ≈ 40 analyst-minutes '
-               'per minute of work and MTM-1 ≈ 350 (IMD-EWD); labelling hand motions frame by frame took 79.8 min per '
-               'minute of video in StrokeRehab (NeurIPS 2022). Sources: docs/SOURCES.md.')
+    st.caption(f'Charting by hand: we estimate ≈ 60 min of one person for our 4.7-min course video (≈ '
+               f'{RITMO_A_MANO:.0f} min per minute of video) and scale other videos from it. Published manual methods take '
+               'longer: MTM time studies, which set standard times from motions, need ≈ 40–350 analyst-minutes per '
+               'minute of work, and labelling hand motions frame by frame took 79.8 min per minute of video in a '
+               'NeurIPS 2022 dataset. Sources: docs/SOURCES.md.')
     if clip:
         st.info(f"This example is a {pot['tiempo_s']:.0f}-second excerpt of a longer take, with several units in it. "
                 f"Times are for the whole clip, not per unit, and the plan estimates the same clip of work after "
@@ -351,16 +365,18 @@ if vista == 'Overview':
                     f"{evidencia(p, clip)}")
     st.subheader('How it works')
     st.markdown(
-        '1. **Hands** — MediaPipe tracks both hands at 10 fps; handedness comes from a ±2 s majority vote.\n'
+        '1. **Hands** — MediaPipe tracks both hands at 10 fps; left and right are decided by a vote over ±2 s, so '
+        'the labels do not swap.\n'
         '2. **Operation sheet** — the vision model looks at 6 frames and writes what is assembled, where the parts '
         'and tools are, and the typical cycle. Nothing product-specific is hard-coded.\n'
         '3. **Every second** — Gemma 4 31B, served on AMD GPUs, gets 4 marked frames, a crop of each hand and '
         'hand-speed data, and returns the activity of each hand (ILO symbols: ○ operation, ⇨ transport, '
         'D delay, ▽ hold) as schema-checked JSON.\n'
         '4. **Human calibration** — the engineer corrects the first seconds, ideally the first cycle (20–50 s in the '
-        'KIT tests, 60 s at IMPACT). A small model learns from that '
-        'correction how much to trust the vision model vs. the hand motion, and a **gate** checks on the reviewed '
-        'seconds (without seeing itself) that it really beats the vision model before recoding the rest.\n'
+        'KIT Bimanual tests, 60 s in IMPACT: two research datasets of people filmed doing hand tasks). A small model '
+        'learns from that correction how much to trust the vision model vs. the hand motion, and a **gate** lets it '
+        'recode the rest only if it beats the vision model on reviewed seconds it was not trained on; otherwise the '
+        'vision model\'s codes stay.\n'
         '5. **Outputs** — chart rows (a new row whenever either hand changes activity), method alerts, the '
         'improvement plan in seconds saved per unit, and the Excel chart in the course format.')
 
@@ -368,38 +384,63 @@ if vista == 'Bimanual chart':
     izq, der = st.columns([3, 2])
     with izq:
         if verdad:
-            st.altair_chart(linea_comparada(filas, verdad), width="stretch")
+            st.altair_chart(linea_comparada(filas, verdad, quien='station mode' if MODO_EST else 'Gilbreth'),
+                            width="stretch")
+            n_rev = (EST['meta']['revisado_hasta_s'] if MODO_EST else (cal or {}).get('revisado_hasta_s', 0)) or 0
+            st.caption(f"In each pair of rows, the top one is {'station mode' if MODO_EST else 'Gilbreth'} and the bottom "
+                       f"one the dataset's own human labels (blank = no label for that hand in that second). The first "
+                       f"{n_rev:.0f} s are the reviewed part, so the agreement below is counted from there. A hand-second "
+                       f"is one hand during one second.")
             st.caption(acuerdo(cal, EST if MODO_EST else None) or 'Gilbreth vs. the human labels of the dataset.')
         else:
-            st.altair_chart(linea_tiempo(filas, 200), width="stretch")
+            st.altair_chart(linea_tiempo(filas, 240), width="stretch")
         df = tabla_filas(filas)
         st.caption('ILO symbols: ○ operation · ⇨ transport · D delay · ▽ hold. Course convention: ▽ only while the '
-                   'other hand operates; a hand that holds while the other one fetches is waiting, so it is D.')
+                   'other hand operates; a hand that holds while the other one fetches is waiting, so it is D. In the '
+                   'colours, light green "Transport + operation" = the hand moves while it works (counted as ○), and grey '
+                   '"Not visible" = the hand is out of view or not tracked.')
+        st.caption('Station mode gives codes only, without the notes in words.' if MODO_EST else
+                   d['meta'].get('nota_desc_en') or 'Each hand has a code (the symbol the chart counts) and a short note in '
+                   'words from a second pass of the vision model; when they disagree, the code is what counts. "Holds" '
+                   'with D is not an error: holding while the other hand only fetches counts as waiting.')
+        st.caption('Tick a row to play the video from that row; its frame and both hands\' codes show on the right. '
+                   'L and R = the ILO symbol of each hand.')
         sel = st.dataframe(df[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
                            width="stretch", height=460, on_select='rerun', selection_mode='single-row',
-                           column_config={'Time': st.column_config.TextColumn(width='small'), 'L': st.column_config.TextColumn(width='small'),
-                                          'R': st.column_config.TextColumn(width='small')})
-        st.caption(d['meta'].get('nota_desc_en') or 'Row descriptions come from a second pass of the vision model; '
-                   'where one disagrees with the symbol, the symbol is what the chart counts and what the engineer reviews.')
+                           column_config={'Time': st.column_config.TextColumn(width='small'),
+                                          'L': st.column_config.TextColumn(width='small', help='ILO symbol of the left hand'),
+                                          'R': st.column_config.TextColumn(width='small', help='ILO symbol of the right hand'),
+                                          'Left hand': st.column_config.TextColumn(width='medium'),
+                                          'Right hand': st.column_config.TextColumn(width='medium')})
     fila = sel.selection.rows[0] if sel and sel.selection.rows else 0
     f = filas[fila]
     with der:
         if video:
             st.video(str(video), start_time=int(f['t0']))
         st.markdown(f"**Row {fila + 1}** · {f['t0']:.0f}–{f['t1']:.0f} s")
-        que = lambda k: f" — {f[k]}" if f.get(k) else ''
+        que = lambda k: f" · *vision model's note:* {f[k]}" if f.get(k) else ''
         st.markdown(f"**Left hand** {SYM[f['mi']]} {ACT[f['mi']]}{que('desc_mi')}  \n"
                     f"**Right hand** {SYM[f['md']]} {ACT[f['md']]}{que('desc_md')}")
         img = EJ[nombre] / 'frames' / f'{fila:04d}.jpg'
         if img.exists() and not MODO_EST:
             st.image(str(img), caption='Frame at the middle of the row')
+        quien_rev = ("a person: the author checked every row of that part" if 'lego' in str(EJ[nombre])
+                     else "the IMPACT dataset's own human labels, standing in for the engineer")
         if cal and MODO_EST:
-            st.info(f"The first {EST['meta']['revisado_hasta_s']:.0f} s were reviewed with the dataset's per-second labels; the rest was "
+            st.info(f"The first {EST['meta']['revisado_hasta_s']:.0f} s were reviewed ({quien_rev}); the rest was "
                     f"coded in station mode, learning from {EST['meta']['estacion'].split(': ')[-1]}.")
         elif cal:
-            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed with the dataset's per-second labels; the rest was coded by "
-                    f"the agent. Gate: **{'the calibrated model recoded it' if cal.get('compuerta') == 'v7' else 'the vision model was kept'}**"
-                    f" (it scored higher on the reviewed seconds, tested without seeing itself).")
+            est = cal.get('estimacion') or {}
+            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed ({quien_rev}); the agent coded the rest. "
+                    f"Gate (the check that decides who codes the rest): "
+                    + (f"**the model calibrated on the review recoded it**. " if cal.get('compuerta') == 'v7' else
+                       f"**the vision model's codes were kept**. ")
+                    + (f"On reviewed seconds it was not trained on, the calibrated model got {est.get('v7', 0)} of "
+                       f"{est.get('n', 0)} hand-seconds right, the vision model alone {est.get('gemma', 0)}."
+                       if est.get('n') else ''))
+        else:
+            st.info("Nobody reviewed this clip: the chart is the vision model's first draft (no calibration, no gate), "
+                    "and there are no human labels to score it against.")
     a, b = st.columns(2)
     a.download_button('Download the chart (Excel, course format)',
                       excel_bytes(str(EJ[nombre]), HUELLA, _fe.stat().st_mtime if MODO_EST else None),
@@ -425,7 +466,9 @@ if vista == 'Improvement plan':
     c1.metric('Now (observed clip)' if clip else 'Now', f"{pot['tiempo_s']:.0f} s {'per clip' if clip else 'per unit'}")
     c2.metric('With the plan (estimate)', f"{pot['nuevo_s']:.0f} s {'per clip' if clip else 'per unit'}",
               f"-{pot['ahorro_s']:.0f} s", delta_color='inverse')
-    c3.metric('Floor: time with some hand operating', f"{pot['piso_s']:.0f} s")
+    c3.metric('Lowest time these changes can reach', f"{pot['piso_s']:.0f} s",
+              help='Seconds in which at least one hand is operating. The plan only cuts holding, waiting and transport '
+                   'time, so it never goes below this.')
     if pot['palancas']:
         eje = f'Seconds saved {por}'
         dfp = pd.DataFrame([{'Change': p['title'], eje: p['segundos']} for p in pot['palancas']])
@@ -447,7 +490,9 @@ if vista == 'Improvement plan':
                             float(round(cap0, 1)), help='Each clip holds several units, so the shift is counted in '
                                                         'clip-lengths of the same work.')
     else:
-        u = e1.number_input('Units per shift (today)', 1.0, 100000.0, float(round(cap0, 1)))
+        u = e1.number_input('Units per shift (today)', 1.0, 100000.0, float(round(cap0, 1)),
+                            help=f"Prefilled as shift length ÷ observed time per unit (8 h ÷ {pot['tiempo_s']:.0f} s ≈ "
+                                 f"{cap0:.0f}). Type your real figure.")
     h = e2.number_input('Shift length (h)', 1.0, 24.0, 8.0)
     n = e3.number_input('Shifts per year', 1, 1000, 250)
     c = e4.number_input(f'Labour cost per hour ({moneda})', 0.0, 1e6, float(costo0), key=f'costo_{pais}')
@@ -469,7 +514,7 @@ if vista == 'Method alerts':
     st.markdown('Signals for the engineer to look at, from hand tracking plus the chart codes. They are prompts to '
                 'check, not verdicts.' + (' Computed on the shipped chart.' if MODO_EST else ''))
     if ev:
-        tabla(alertas_agrupadas(ev))
+        mostrar_alertas(ev)
     else:
         st.info('No method alerts for this operation.')
 
@@ -477,30 +522,37 @@ if vista == 'Accuracy & AMD':
     if glosario():
         with st.expander('What the terms mean (station mode, gate, hand-seconds, ±1 s…)'):
             st.markdown(glosario())
-    st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each '
-                'pre-registered and scored **once** with the system frozen, on recordings it had never seen: three new '
-                'people in the KIT Bimanual dataset (the labels of the first two takes of each task, ≈ 20–50 s, stand in for the '
-                'engineer’s review; takes 2–9 are measured) and one on a second dataset, IMPACT (8 runs never coded before, by '
-                'operators not in the motion prior; the first 60 s of each reviewed, measured from second 60).')
+    st.markdown('Accuracy = share of hand-seconds (one hand during one second) with the right activity code. Four '
+                'tests, each pre-registered (rule written before looking) and scored **once** with the system frozen, on '
+                'recordings it had never seen: three new people in the KIT Bimanual dataset (each person does 9 workshop '
+                'or kitchen tasks, 10 times each: takes 0–9; the labels of takes 0–1, ≈ 20–50 s, stand in for the '
+                'engineer’s review and takes 2–9 are scored) and one on a second dataset, IMPACT (gearbox work: 8 runs '
+                'never coded before, by operators not in the motion prior; the first 60 s of each reviewed, scored from '
+                'second 60).')
     tabla(pd.DataFrame([
-        ['Subject 4 on AMD Token Factory (shipped system), 1,888 hand-seconds', '41.6 %', '51.5 %', '57.4 % (±1 s: 71.2 %)'],
-        ['   workshop 756 · kitchen 1,132', '37.0 · 44.7 %', '56.1 · 48.5 %', '69.8 · 49.0 %'],
-        ['Subject 3 on AMD Token Factory (shipped system), 2,258 hand-seconds', 'by task below', '55.4 %', '65.1 % (±1 s: 80.1 %)'],
-        ['   workshop 1,086 · kitchen 1,172', '41.8 · 41.7 %', '59.3 · 51.9 %', '66.5 · 63.9 %'],
-        ['Subject 1 on a lab GPU (Gemma 4-bit), 3,305 hand-seconds', 'by task below', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
-        ['   workshop 1,347 · kitchen 1,958', '48.4 · 55.0 %', '69.6 · 66.0 %', '80.3 · 74.9 %'],
-        ['IMPACT, 8 runs never coded before, 4 operators not in the prior, on AMD Token Factory, 3,142 hand-seconds', '46.5 %',
+        ['KIT subject 4 (new person), on AMD Token Factory, 1,888 hand-seconds', '41.6 %', '51.5 %', '57.4 % (±1 s: 71.2 %)'],
+        ['   split: workshop tasks 756 · kitchen tasks 1,132 hand-seconds', '37.0 · 44.7 %', '56.1 · 48.5 %', '69.8 · 49.0 %'],
+        ['KIT subject 3 (new person), on AMD Token Factory, 2,258 hand-seconds', '— (see split)', '55.4 %', '65.1 % (±1 s: 80.1 %)'],
+        ['   split: workshop tasks 1,086 · kitchen tasks 1,172 hand-seconds', '41.8 · 41.7 %', '59.3 · 51.9 %', '66.5 · 63.9 %'],
+        ['KIT subject 1, run before the event on a lab GPU (Gemma 4-bit, not AMD), 3,305 hand-seconds', '— (see split)', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
+        ['   split: workshop tasks 1,347 · kitchen tasks 1,958 hand-seconds', '48.4 · 55.0 %', '69.6 · 66.0 %', '80.3 · 74.9 %'],
+        ['IMPACT (gearbox work), 8 runs never coded before, 4 operators not in the motion prior, on AMD Token Factory, 3,142 hand-seconds', '46.5 %',
          '66.5 %', '71.1 % (±1 s: 82.4 %)'],
-        ['   the hand to free and the top lever match the ones from the human labels, 8 runs', '—', '8 of 8', '8 of 8'],
+        ['   improvement-plan check, 8 runs: same hand to free with a fixture and same biggest saving as a plan built '
+         'from the human labels', '—', '8 of 8', '8 of 8'],
     ], columns=['New person', 'Constant baseline', 'Vision model alone', 'Gilbreth']))
+    st.caption('Constant baseline: always answering the single best code for each hand, the floor to beat. Vision model '
+               'alone: Gemma 4 31B with no review. Gilbreth: the vision model + a small model calibrated on the reviewed '
+               'seconds + the gate (the shipped mode). ±1 s: also counted right if the human code is one second before or '
+               'after.')
     st.caption('On development data, 63–80 % of the remaining errors sit in the second next to a change of activity. '
                'Times are observed times, not standard times (no rating or allowances). Earlier lab runs and '
                'everything we tried and dropped: docs/RESULTS.md.')
-    st.markdown('**The examples in this app, run on AMD** (the shipped pipeline, gate on; second looks at data used '
-                'during development)')
+    st.markdown('**The examples in this app, run on AMD** (the shipped pipeline, gate on; second looks: measured on data '
+                'already used during development, so weaker evidence than the tests above)')
     tabla(pd.DataFrame([
         ['Gearbox, IMPACT operator not in the training data, first 60 s reviewed (307 hand-seconds)', '70.0 %', '73.9 %'],
-        ['LEGO, two batches of blind human labels (92 hand-seconds)', '58.7 %', '62.0 %'],
+        ['LEGO, 92 hand-seconds labelled by a person who did not see Gilbreth\'s output (two batches)', '58.7 %', '62.0 %'],
     ], columns=['Example', 'Vision model alone', 'Gilbreth']))
     st.subheader('Station mode: when coworkers at the same station are already reviewed')
     st.markdown('Gilbreth learns from all the reviewed seconds of other workers doing the same task (hand motion, '
@@ -510,12 +562,14 @@ if vista == 'Accuracy & AMD':
     tabla(pd.DataFrame([
         ['KIT subject 4, clean test (5 labelled coworkers), per hand and second', '51.5 %', '57.4 %',
          '83.4 % (82.5 % with per-second labels)'],
-        ['   on the chart: share of time per hand, points from the human labels', '12.5', '12.8', '6.3'],
-        ['   on the chart: takes where it finds the hand that holds or waits the most', '79 %', '71 %', '92 %'],
+        ['   chart level: gap between each hand\'s time shares and the human labels, in points (lower is better)', '12.5',
+         '12.8', '6.3'],
+        ['   chart level: takes (KIT repetitions) where it picks the right hand as the one that holds or waits most',
+         '79 %', '71 %', '92 %'],
         ['Gearbox example, IMPACT (9 reviewed coworkers), from second 60, 307 hand-seconds', '70.0 %', '73.9 %',
          '77.9 %'],
         ['IMPACT clean test, 8 new runs (same 9 coworkers), 3,142 hand-seconds', '66.5 %', '71.1 %',
-         '71.3 % (per-second version, as in the app: 72.2 %)'],
+         '72.2 % (the version this app runs; the frozen two-model version: 71.3 %)'],
     ], columns=['Test', 'Vision model alone', 'Shipped mode', 'Station mode']))
     st.caption('KIT subject 4 and the IMPACT test: pre-registered, looked at once. The chart rows and the gearbox are '
                'second looks at data already used, declared as such. Outside KIT station mode tied the shipped mode: '
@@ -532,13 +586,15 @@ if vista == 'Accuracy & AMD':
                     'plastic': 'Plastic parts', 'cardboard': 'Cardboard box'}
         PASO_EN = {'ficha': 'Operation sheet', 'paso': 'Per-second coding', 'desc': 'Row descriptions'}
         st.dataframe(pd.DataFrame([{'Video': VIDEO_EN.get(k, k), 'Video length (s)': v['video_s'], 'Agent wall time (s)': v['wall_s'],
-                                    'Seconds of video per minute': v['video_s_per_min']}
+                                    'Video seconds charted per minute of wall time': v['video_s_per_min']}
                                    for k, v in B['runs'].items()]), hide_index=True, width="stretch")
-        st.dataframe(pd.DataFrame([{'Step': PASO_EN.get(k, k), 'Requests': v['requests'], 'Latency p50 (s)': v['p50_s'],
-                                    'Latency p95 (s)': v['p95_s'], 'Prompt tokens (mean)': v['prompt_tokens_mean'],
+        st.dataframe(pd.DataFrame([{'Step': PASO_EN.get(k, k), 'Requests': v['requests'], 'Latency, median (s)': v['p50_s'],
+                                    'Latency, slowest 5 % (s)': v['p95_s'], 'Prompt tokens (mean)': v['prompt_tokens_mean'],
                                     'Output tokens (mean)': v['completion_tokens_mean']}
                                    for k, v in B.get('pasos', {}).items()]), hide_index=True, width="stretch")
-        st.caption('Steps: operation sheet (1 request per video), per-second coding (1 per second of video), '
+        st.caption('The shared endpoint allows 20 requests per minute per team and the agent sends about one per second '
+                   'of video, plus one per chart row, so that limit sets the wall time, not the GPU. '
+                   'Steps: operation sheet (1 request per video), per-second coding (1 per second of video), '
                    'row descriptions (1 per chart row). Wall time covers the GPU part; hand tracking ran on CPU.'
                    + (f" Endpoint: {B['endpoint']}; wall time includes pacing to its limits, request latency and "
                       f"retries." if B.get('endpoint') else ''))
@@ -771,7 +827,7 @@ def mostrar_resultado(run, motor, nota=None):
                         f"{evidencia(p, True)}")
     if ev2:
         st.subheader('Method alerts')
-        tabla(alertas_agrupadas(ev2))
+        mostrar_alertas(ev2)
     a, b = st.columns(2)
     if (run / 'diagrama_bimanual.xlsx').exists():
         a.download_button('Download the chart (Excel)', (run / 'diagrama_bimanual.xlsx').read_bytes(),
@@ -940,7 +996,8 @@ if vista == 'Try your own video':
                     st.caption(f'One request per second of video on a shared endpoint: about {pide / ritmo:.0f} min '
                                f'for this {sub["dur"]:.0f}-second clip.')
                 boton_vivo = True
-                if st.button(f'Chart it with the full agent · {motor}', type='primary'):
+                if st.button(f'Chart it with the full agent{" again, live" if sub.get("muestra") else ""} · {motor}',
+                             type='primary'):
                     correr_agente(vid, npz, run, base, modelo, motor, estado == 'respaldo')
         if (run / 'diagrama.json').exists():
             mostrar_resultado(run, motor)
@@ -949,6 +1006,10 @@ if vista == 'Try your own video':
         elif sub.get('muestra') and (MUESTRA_RUN / 'diagrama.json').exists():
             # lo que el agente resolvió en la muestra, sin esperar: una corrida en vivo guardada (la app la rehace con el botón)
             st.subheader('What Gilbreth charted on this sample')
+            st.caption('What comes next, after a live run: a table of the first seconds opens, one row per second. You pick '
+                       'each hand\'s activity from a list and press «Apply my review». Gilbreth then recodes the rest on CPU '
+                       'in under a minute, with no new requests to the model, and the gate keeps the vision model\'s codes '
+                       'unless the calibrated one beats it on your reviewed seconds.')
             mostrar_resultado(MUESTRA_RUN, motor, nota='A stored run of the full agent on this clip: Gemma 4 31B on AMD '
                               'Token Factory, from this public app on 18 Oct 2026 (first draft, not reviewed by an '
                               'engineer; its method alerts and Excel were rebuilt on CPU from those codes).'
@@ -978,7 +1039,7 @@ if vista == 'Try your own video':
                        '"hold" from "operate" needs the vision model.')
             ev_vivo = errores.detectar(pi)
             if ev_vivo:
-                tabla(alertas_agrupadas(ev_vivo))
+                mostrar_alertas(ev_vivo)
     if not base:
         st.info('The full agent needs the vision model on an AMD GPU endpoint, which is not connected to this copy of '
                 'the app. The examples in the sidebar were computed with the full agent.')

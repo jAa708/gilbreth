@@ -67,6 +67,9 @@ observed cycle times with Gilbreth.
 - **Clean test (pre-registered)** — the pass rule, the data and the frozen system were written down before looking, and the test set was scored once.
 - **Second look** — a measurement on data already used during development, declared as such. It is weaker evidence than a clean test.
 - **ILO symbols** — ○ operation, ⇨ transport, D delay, ▽ hold. Course convention: ▽ only while the other hand operates; a hand that holds while the other one fetches is waiting, so it is D.
+- **Transport + operation / Not visible** — chart colours: the hand moves while it works (counted as ○), and the hand is out of view or not tracked.
+- **KIT Bimanual** — a research dataset of people filmed doing workshop and kitchen tasks with both hands, labelled second by second. Each person does 9 tasks, 10 times each; one repetition is a **take** (takes 0–9).
+- **IMPACT** — a second research dataset: operators reassembling a gearbox with tools, with per-second hand labels.
 - **AMD Token Factory** — AMD's hosted model service on AMD GPUs, with an OpenAI-compatible API: the endpoint of the event.
 
 ## How accurate (measured)
