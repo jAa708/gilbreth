@@ -8,7 +8,7 @@
   "convencion_texto": "holding the workpiece while the other hand is only transporting (not operating) is also D (course convention);",
   "camara": "Operator is at the top. The right hand (magenta) appears on the left/center and the left hand (cyan) appears on the center/right of the image.",
   "run": "gearbox",
-  "title_en": "Gearbox reassembly with tools (IMPACT dataset, unseen operator)",
+  "title_en": "Gearbox reassembly with tools (IMPACT dataset, operator not in training)",
   "motor_en": "Gemma 4 31B on AMD GPUs (AMD Token Factory, shared endpoint)",
   "licencia_en": "Video and labels: IMPACT dataset (KratosWen/IMPACT on Hugging Face), CC BY-NC-SA 4.0. This example (chart and frames) is shared under the same licence, for non-commercial use."
  },

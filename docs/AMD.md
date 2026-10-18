@@ -28,15 +28,16 @@ image check, and says so on screen; the examples and the measurements are always
 
 On 15 Oct, around 10:39 (Colombia time), `Gemma-4-31B-IT` left the Token Factory catalog (`/models` no longer lists it and
 requests answer "Requested model Gemma-4-31B-IT not supported"). The five app examples, the benchmark and the KIT
-subject 3 test were computed before that; the KIT subject 4 tests ran on 17 Oct, after Gemma came back. While Gemma is
+subject 3 test were computed before that; the KIT subject 4 and IMPACT tests ran on 17 Oct, after Gemma came back. While Gemma is
 not listed, the live demo runs on the fallback and says so before the upload.
 It was listed again on 16 Oct at 22:20 (Colombia time), answering text and image requests, and the app picked it up on
 its own (every 5 minutes it checks whether Gemma answers an image request). A full KIT subject (90 takes, about 20
 minutes of video) cost about
-US$0.15 of the daily quota with Gemma.
+US$0.13–0.15 of the daily quota with Gemma.
 
 One second of video costs about 1.45 requests (one per second plus one per chart row for the descriptions; 1,390
-requests for 957.7 s of video in the five examples), so a 5-minute video needs at least 24 minutes at 18 requests per
+requests for 957.7 s of video in the five examples; each per-second coding request carries about 1,570 image tokens, the
+median `image_tokens` of its 954 answers in `runs/latencias.jsonl`), so a 5-minute video needs at least 24 minutes at 18 requests per
 minute, plus request latency and retries on the shared endpoint (median 19.5 s per coding request on 14 Oct).
 Those 1,390 requests used US$0.130 of the daily quota (the sum of the `cost` field Token Factory returns with each
 answer): about US$0.008 per minute of video. That is the Gemma API spend only; it leaves out hosting, the CPU part and

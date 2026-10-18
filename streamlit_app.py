@@ -267,8 +267,10 @@ if EN_VIVO:
 elif EST:
     with st.sidebar:
         st.divider()
-        # este puesto ya tiene compañeros revisados: se abre en modo estación (el modo entregado queda a un clic)
+        # este puesto ya tiene compañeros revisados: se abre en el modo entregado y el modo estación queda a un clic
+        # (así lo cuentan el video, el README y Accuracy & AMD; careo de cierre del 18-oct)
         modo = st.radio('This example: chart from', ['Station mode (reviewed coworkers)', 'Shipped mode (reviewed minute)'],
+                        index=1,
                         key=f'modo_{nombre}', help='Station mode learns from workers already reviewed at the same '
                                                    'station (agent/estacion.py). The shipped mode needs no one '
                                                    'reviewed before: it is what a brand-new station gets.')
@@ -335,7 +337,8 @@ if vista == 'Overview':
         st.success(acuerdo(cal, EST if MODO_EST else None))
     st.subheader('Top improvements')
     for p in pot['palancas'][:3]:
-        st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** {por} ({p['pct']:.0f} %). "
+        nd_p = 1 if p['segundos'] < 20 else 0          # 15.5 s y no «16 s»: como en las tarjetas del plan
+        st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.{nd_p}f} s** {por} ({p['pct']:.{nd_p}f} %). "
                     f"{evidencia(p, clip)}")
     st.subheader('How it works')
     st.markdown(
@@ -504,7 +507,7 @@ if vista == 'Accuracy & AMD':
     ], columns=['Test', 'Vision model alone', 'Shipped mode', 'Station mode']))
     st.caption('KIT subject 4 and the IMPACT test: pre-registered, looked at once. The chart rows and the gearbox are '
                'second looks at data already used, declared as such. Outside KIT station mode tied the shipped mode: '
-               'there the shipped motion prior already comes from the same 9 operators. The coworkers\' Gemma codes '
+               'there the shipped motion prior likely already comes from the same 9 operators (not measured). The coworkers\' Gemma codes '
                'come partly from the lab GPU run (KIT subject 1, the IMPACT station); the new worker\'s from AMD. The gearbox figure is agent/estacion.py as '
                'shipped (per-second labels). Where nobody at the station has been reviewed yet, the shipped mode is the '
                'one to use. Details: docs/RESULTS.md.')
@@ -859,7 +862,7 @@ if vista == 'Try your own video':
                    ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))
     st.caption('Privacy: your clip is processed on this app\'s server. For the full chart, still frames and hand crops '
                'are sent to AMD Token Factory (developer.amd.com.cn), AMD\'s hosted model service. Avoid clips that show '
-               'faces or confidential work. Uploads are deleted when you replace them, and after a few hours.')
+               'faces or confidential work. Uploads are deleted when you replace them; older ones are cleared after six hours.')
     up = st.file_uploader('Video', type=['mp4', 'mov', 'avi', 'mkv'])
     sub = st.session_state.get('subida') or {}
     if up is not None:
