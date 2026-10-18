@@ -52,8 +52,9 @@ observed cycle times with Gilbreth.
 ## How accurate (measured)
 Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each pre-registered and looked at
 **once** with the system frozen, on people never used before: three in the KIT Bimanual dataset (the labels of the
-first two takes of each task, ≈ 20–50 s, stand in for the engineer's review; takes 2–9 are measured) and one at
-another station, IMPACT (8 runs never coded before; the first 60 s of each reviewed, measured from second 60).
+first two takes of each task, ≈ 20–50 s, stand in for the engineer's review; takes 2–9 are measured) and one on a
+second dataset, IMPACT (8 runs never coded before by 4 operators not in the motion prior, which comes from other
+operators at that station; the first 60 s of each run reviewed, measured from second 60).
 
 | KIT Bimanual, new person | Constant baseline | Gemma alone | **Gilbreth** |
 |---|---|---|---|
@@ -63,11 +64,11 @@ another station, IMPACT (8 runs never coded before; the first 60 s of each revie
 | · workshop (1,086) / kitchen (1,172) | 41.8 / 41.7 % | 59.3 / 51.9 % | **66.5 / 63.9 %** |
 | Subject 1, lab GPU (Gemma 4-bit), 3,305 hand-seconds | — | 67.5 % | **77.1 %** (±1 s: 87.2 %) |
 | · workshop (1,347) / kitchen (1,958) | 48.4 / 55.0 % | 69.6 / 66.0 % | **80.3 / 74.9 %** |
-| **IMPACT, another station: 4 new operators, 8 new runs, on AMD Token Factory**, 3,142 hand-seconds | 46.5 % | 66.5 % | **71.1 %** (±1 s: 82.4 %) |
+| **IMPACT, 8 runs never coded before, 4 operators not in the prior, on AMD Token Factory**, 3,142 hand-seconds | 46.5 % | 66.5 % | **71.1 %** (±1 s: 82.4 %) |
 | · disassembly (1,296) / reassembly (1,846) | 44.9 / 47.6 % | 68.4 / 65.2 % | **74.7 / 68.5 %** |
 
-Gilbreth beat Gemma alone in all four tests: +5.9, +9.7 and +9.6 points in KIT and +4.6 at IMPACT, where the
-engineer's decisions on the chart (the hand to free and the top lever of the plan) came out right in all 8 runs. In the subject 4 kitchen it barely moved
+Gilbreth beat Gemma alone in all four tests: +5.9, +9.7 and +9.6 points in KIT and +4.6 at IMPACT. There the hand to free and
+the top lever of the plan matched the ones built from the human labels in all 8 runs, as they did for Gemma alone. In the subject 4 kitchen it barely moved
 (+0.5): on the reviewed takes the calibration did not beat Gemma in three of the five kitchen tasks (two were ties), so
 the gate kept Gemma there; without the gate, the kitchen would have reached 54.4 %.
 
@@ -87,8 +88,9 @@ Leaving one of the five training people out at a time, the same system averaged 
 labelled person to learn from it averaged 83.8 %, so one labelled worker per station is most of the gain. With labels per
 second, which is what the app's review page produces, instead of KIT's per-frame labels: 82.5 % on subject 4. It only
 applies where people doing the same task have been labelled; elsewhere the shipped mode above is the one to use.
-**Outside KIT it did not add:** in the pre-registered IMPACT test it tied the shipped mode (71.3 % against 71.1 %;
-72.2 % with per-second labels), where the shipped motion prior already comes from the same 9 operators the station
+**Outside KIT it did not add:** in the pre-registered IMPACT test the frozen two-model version tied the shipped mode
+(71.3 % against 71.1 %); the per-second version, the one the app uses, scored 72.2 % but lower within ±1 s (81.0 %
+against 82.4 %), where the shipped motion prior already comes from the same 9 operators the station
 mode learned from. Code, pre-registrations and audit: [`research/station_v10/`](research/station_v10/).
 At the level the engineer reads, the share of time each hand spends operating, transporting, holding or waiting: with
 the shipped mode it is 6–13 points from the human labels, about as close as Gemma alone, so the per-second gain does not

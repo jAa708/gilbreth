@@ -431,8 +431,8 @@ if vista == 'Accuracy & AMD':
     st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each '
                 'pre-registered and looked at **once** with the system frozen, on people never used before: three in '
                 'the KIT Bimanual dataset (the labels of the first two takes of each task, ≈ 20–50 s, stand in for the '
-                'engineer’s review; takes 2–9 are measured) and one at another station, IMPACT (8 runs never coded before; '
-                'the first 60 s of each reviewed, measured from second 60).')
+                'engineer’s review; takes 2–9 are measured) and one on a second dataset, IMPACT (8 runs never coded before, by '
+                'operators not in the motion prior; the first 60 s of each reviewed, measured from second 60).')
     st.dataframe(pd.DataFrame([
         ['Subject 4 on AMD Token Factory (shipped system), 1,888 hand-seconds', '41.6 %', '51.5 %', '57.4 % (±1 s: 71.2 %)'],
         ['   workshop 756 · kitchen 1,132', '37.0 · 44.7 %', '56.1 · 48.5 %', '69.8 · 49.0 %'],
@@ -440,9 +440,9 @@ if vista == 'Accuracy & AMD':
         ['   workshop 1,086 · kitchen 1,172', '41.8 · 41.7 %', '59.3 · 51.9 %', '66.5 · 63.9 %'],
         ['Subject 1 on a lab GPU (Gemma 4-bit), 3,305 hand-seconds', '—', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
         ['   workshop 1,347 · kitchen 1,958', '48.4 · 55.0 %', '69.6 · 66.0 %', '80.3 · 74.9 %'],
-        ['IMPACT, another station: 4 new operators, 8 new runs, on AMD Token Factory, 3,142 hand-seconds', '46.5 %',
+        ['IMPACT, 8 runs never coded before, 4 operators not in the prior, on AMD Token Factory, 3,142 hand-seconds', '46.5 %',
          '66.5 %', '71.1 % (±1 s: 82.4 %)'],
-        ['   the hand to free and the top lever on the chart, 8 runs', '—', '8 of 8', '8 of 8'],
+        ['   the hand to free and the top lever match the ones from the human labels, 8 runs', '—', '8 of 8', '8 of 8'],
     ], columns=['New person', 'Constant baseline', 'Vision model alone', 'Gilbreth']),
         hide_index=True, width="stretch")
     st.caption('On development data, 63–80 % of the remaining errors sit in the second next to a change of activity. '
@@ -467,7 +467,7 @@ if vista == 'Accuracy & AMD':
         ['Gearbox example, IMPACT (9 reviewed coworkers), from second 60, 307 hand-seconds', '70.0 %', '73.9 %',
          '77.9 %'],
         ['IMPACT clean test, 8 new runs (same 9 coworkers), 3,142 hand-seconds', '66.5 %', '71.1 %',
-         '71.3 % (72.2 % with per-second labels)'],
+         '71.3 % (per-second version, as in the app: 72.2 %)'],
     ], columns=['', 'Vision model alone', 'Shipped mode', 'Station mode']), hide_index=True, width="stretch")
     st.caption('KIT subject 4 and the IMPACT test: pre-registered, looked at once. The chart rows and the gearbox are '
                'second looks at data already used, declared as such. Outside KIT station mode tied the shipped mode: '

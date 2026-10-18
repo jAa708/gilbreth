@@ -123,8 +123,10 @@ seconds. One video: it shows that station mode runs outside KIT, not how much it
 on eight IMPACT runs never coded before (next section) found a tie with the shipped mode.
 
 ## Clean test outside KIT (17 Oct): IMPACT, 8 runs never coded before
-Another station: gearbox disassembly and reassembly with tools (IMPACT), the 4 test operators, 8 runs that Gemma, the
-shipped system and station mode had never coded (34.9 min of video). Gemma-4-31B-IT on AMD Token Factory with the
+A second dataset: gearbox disassembly and reassembly with tools (IMPACT), the 4 test operators (not in the motion
+prior, which comes from the other 9 operators of the same station; one of them, LE07UF17, is also the operator of the
+app's gearbox example, a different run), 8 runs that Gemma, the shipped system and station mode had never coded (34.9
+min of video). Gemma-4-31B-IT on AMD Token Factory with the
 shipped pipeline (2,094 requests, no failed answers); the first 60 s of each run reviewed with the dataset's labels,
 measured from second 60. Pre-registered before Gemma had coded any of them, the script audited by Codex (no leak of
 the labels) and sealed, looked at once. Station mode learned from the 11 labelled runs of the other 9 IMPACT
@@ -140,9 +142,10 @@ operators (their Gemma codes come from the lab run, codes only).
 | Share of time per hand, points away from the labels | — | 8.1 | 8.0 | 8.9 | 8.3 |
 
 Pre-registered criterion (station mode above the shipped mode in total): met by 6 hand-seconds (2,239 against 2,233),
-which is a tie. What the test shows: outside KIT the shipped system beats Gemma by 4.6 points on new people at a new
-station, and on runs of 4–5 minutes the engineer's decisions (the hand to free and the top lever) come out right in all
-8 runs with any of the systems. Station mode adds nothing here. Two likely reasons, not measured: the shipped motion
+which is a tie. What the test shows: outside KIT the shipped system codes 143 more hand-seconds right than Gemma alone
+(+4.6 points) on people the prior never saw. On runs of 4–5 minutes the hand to free and the top lever match the ones
+built from the human labels in all 8 runs, for every system including Gemma alone, so the chart-level gain here is
+none; the time shares stay about 8 points away. Station mode adds nothing here. Two likely reasons, not measured: the shipped motion
 prior was built from these same 9 operators, so at IMPACT the shipped mode already learns from the station; and the
 station's Gemma codes come from the lab run, the test's from AMD. Pre-registration with the result:
 `research/station_v10/PREREGISTRO_V10_IMPACT.md`.
