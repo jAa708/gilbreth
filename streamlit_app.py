@@ -209,6 +209,15 @@ def excel_bytes(carpeta, huella=None, huella_est=None):
         return ruta.read_bytes()
 
 
+def glosario():
+    """Los términos del README (sección «Glossary»): una sola fuente para el repo y la app."""
+    try:
+        t = (RAIZ / 'README.md').read_text(encoding='utf-8')
+        return t.split('## Glossary\n', 1)[1].split('\n## ', 1)[0].strip()
+    except Exception:
+        return ''
+
+
 def tabla(df):
     """Tabla estática que parte el texto en líneas (st.dataframe cortaba las columnas largas en pantallas de portátil)."""
     st.table(df.astype(str).set_index(df.columns[0]))
@@ -465,6 +474,9 @@ if vista == 'Method alerts':
         st.info('No method alerts for this operation.')
 
 if vista == 'Accuracy & AMD':
+    if glosario():
+        with st.expander('What the terms mean (station mode, gate, hand-seconds, ±1 s…)'):
+            st.markdown(glosario())
     st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each '
                 'pre-registered and scored **once** with the system frozen, on recordings it had never seen: three new '
                 'people in the KIT Bimanual dataset (the labels of the first two takes of each task, ≈ 20–50 s, stand in for the '

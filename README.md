@@ -54,6 +54,21 @@ observed cycle times with Gilbreth.
 5. **Rows, alerts, plan** — a new row whenever either hand changes activity; rule-based method alerts from hand
    tracking and codes; the improvement planner (`agent/mejora.py`) turns the chart into seconds saved per lever.
 
+## Glossary
+- **Hand-second** — one hand during one second of video. Accuracy is the share of hand-seconds whose activity code matches the human label.
+- **±1 s** — the same count, but a hand-second also counts as right if the system gives the human code one second before or after it. Most remaining errors sit on the second next to a change of activity.
+- **Constant baseline** — the score of always answering the single best code for each hand: the floor any model has to beat.
+- **Gemma alone (vision model alone)** — the codes of Gemma 4 31B on its own, with no calibration.
+- **Shipped mode** — what a brand-new station gets, and what the result tables call "Gilbreth": Gemma's codes, a small model calibrated on the engineer's review of this worker's first seconds, and the gate.
+- **Gate** — the check that lets the calibrated model recode the rest of the video only if it beats Gemma on the reviewed seconds, scored on seconds it was not fitted on. Otherwise Gemma's codes stay.
+- **Station mode** — when other workers doing the same tasks at the same station are already labelled, the model learns from all their seconds (hand motion, Gemma's codes and the new worker's dominant hand), not only from the new worker's first seconds. It ships as `agent/estacion.py`; the gearbox example has a switch in the sidebar.
+- **Motion prior** — hand-motion examples from other operators of the IMPACT dataset that the calibrated model starts from (CC BY-NC-SA 4.0, published separately as release `prior-v1`).
+- **MIT-pure mode** — running without the motion prior: the model learns only from the reviewed seconds and scores lower.
+- **Clean test (pre-registered)** — the pass rule, the data and the frozen system were written down before looking, and the test set was scored once.
+- **Second look** — a measurement on data already used during development, declared as such. It is weaker evidence than a clean test.
+- **ILO symbols** — ○ operation, ⇨ transport, D delay, ▽ hold. Course convention: ▽ only while the other hand operates; a hand that holds while the other one fetches is waiting, so it is D.
+- **AMD Token Factory** — AMD's hosted model service on AMD GPUs, with an OpenAI-compatible API: the endpoint of the event.
+
 ## How accurate (measured)
 Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each pre-registered and scored
 **once** with the system frozen, on recordings it had never seen: three new people in the KIT Bimanual dataset (the labels of the
