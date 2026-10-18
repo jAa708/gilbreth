@@ -364,9 +364,11 @@ if vista == 'Bimanual chart':
         st.caption('ILO symbols: ○ operation · ⇨ transport · D delay · ▽ hold. Course convention: ▽ only while the '
                    'other hand operates; a hand that holds while the other one fetches is waiting, so it is D.')
         sel = st.dataframe(df[['Time', 'Left hand', 'L', 'R', 'Right hand']], hide_index=True,
-                           width="stretch", height=460, on_select='rerun', selection_mode='single-row')
-        if d['meta'].get('nota_desc_en'):
-            st.caption(d['meta']['nota_desc_en'])
+                           width="stretch", height=460, on_select='rerun', selection_mode='single-row',
+                           column_config={'Time': st.column_config.TextColumn(width='small'), 'L': st.column_config.TextColumn(width='small'),
+                                          'R': st.column_config.TextColumn(width='small')})
+        st.caption(d['meta'].get('nota_desc_en') or 'Row descriptions come from a second pass of the vision model; '
+                   'where one disagrees with the symbol, the symbol is what the chart counts and what the engineer reviews.')
     fila = sel.selection.rows[0] if sel and sel.selection.rows else 0
     f = filas[fila]
     with der:
