@@ -61,7 +61,8 @@ only the 20–50 reviewed seconds of the new person. Built and chosen on KIT sub
   from the reviewed takes (share of seconds operating). Subject 3 is left-handed: on development data, with the
   dominant hand the model scored 82.8–83.2 % on that person, against 76.7–81.0 % for the variants without it.
 - Two gradient-boosting models averaged: one per second, one at 10 Hz trained on KIT's per-frame labels and averaged
-  per second. 85 % of the errors were in the second next to a change of activity (94 % right away from changes); the
+  per second. On development data (subjects 1–3, per-second model), 85 % of the errors were in the second next to a
+  change of activity (964 of 1,128; 94 % right away from changes); the
   10 Hz model is what helps there.
 - Tried and dropped on development data: a second stacking level, Viterbi smoothing, self-training, Extra Trees, a
   recurrent network, prior correction, more weight on the reviewed takes.
