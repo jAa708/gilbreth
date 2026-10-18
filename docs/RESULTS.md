@@ -5,8 +5,9 @@ frozen, and the decision rule was written before measuring (pre-registration). A
 the right code. Baseline = best constant code per hand over the whole set.
 
 The LEGO and IMPACT sets below were tests for v7 (11 Oct) and were then reused while choosing v9 (the gate), so for the
-shipped system the clean tests are **KIT subject 1** (lab GPU), **KIT subject 3** and **KIT subject 4** (AMD, below). On IMPACT, v9 scored 72.9 % in that development table
-(Gemma 70.0 %, v7 73.6 %).
+shipped system the clean tests are **KIT subject 1** (lab GPU), **KIT subject 3** and **KIT subject 4** (AMD, below), and
+the **IMPACT test of 17 Oct** on 8 runs never coded before (AMD, below). On IMPACT, v9 scored 72.9 % in that development
+table (Gemma 70.0 %, v7 74.3 %; v7 scored 73.6 % in its 11 Oct test).
 
 ## Clean tests
 | Test set | Baseline | Gemma alone (v5) | Calibrated (v7) | v7 + gate (v9) |
@@ -39,7 +40,7 @@ points here (on subject 1 it cost nothing). That is the next thing to study, on 
 Pre-registered on 16 Oct at 22:35, when Gemma came back to Token Factory, before any result of subject 4 existed; looked
 at once. Same system and same calculation as subject 3 (agent commit `ab7188a`, which only adds the strict mode used
 for the MI300X runs and behaves byte for byte like `5b3edd6` with the shipped settings). 90 takes, 1,190 windows, no
-failed answers, about US$0.15 of quota.
+failed answers, about US$0.13 of quota.
 
 | KIT subject 4 (new person), on AMD | Baseline | Gemma alone | Calibrated (v7) | **Gilbreth (v9)** | ±1 s |
 |---|---|---|---|---|---|
@@ -53,13 +54,12 @@ cost 6.2, on subject 1 nothing.
 
 ## Station mode, v10 (16–17 Oct): learning from other people at the same station
 When people doing the same tasks have already been labelled, the system can learn from all of their seconds instead of
-only the 30–40 reviewed seconds of the new person. Built and chosen on KIT subjects 1, 2 and 3 (already used), then on
+only the 20–50 reviewed seconds of the new person. Built and chosen on KIT subjects 1, 2 and 3 (already used), then on
 5 and 6 (downloaded that night), always leaving one person out; then frozen, pre-registered and tested once on subject 4.
 - Inputs per hand and second: hand-tracker motion (the second, its halves, a 10 Hz profile, ±2 s, the other hand),
   Gemma's codes and attributes (±2 s, the other hand), the task, and the person's **dominant hand** in that task, read
-  from the reviewed takes (share of seconds operating). Subject 3 is left-handed: learning only from the other people
-  (no reviewed takes, no dominant hand) the model scored 48 % on them; with the reviewed takes 78 %, and with the
-  dominant hand as well 83 %.
+  from the reviewed takes (share of seconds operating). Subject 3 is left-handed: on development data, with the
+  dominant hand the model scored 82.8–83.2 % on that person, against 76.7–81.0 % for the variants without it.
 - Two gradient-boosting models averaged: one per second, one at 10 Hz trained on KIT's per-frame labels and averaged
   per second. 85 % of the errors were in the second next to a change of activity (94 % right away from changes); the
   10 Hz model is what helps there.
@@ -118,8 +118,33 @@ worker = the gearbox operator, first 60 s reviewed, scored like the app (from se
 
 `agent/estacion.py` is the shipped station mode: the frozen per-second system with per-second labels (what the review
 page exports). The lab version with the dataset's per-frame labels (`final.py`, both models) scored 81.1 % on the same
-seconds. One video: it shows that station mode runs outside KIT, not how much it gains there; a pre-registered test on
-eight IMPACT runs never coded before is waiting for Gemma on AMD Token Factory.
+seconds. One video: it shows that station mode runs outside KIT, not how much it gains there; the pre-registered test
+on eight IMPACT runs never coded before (next section) found a tie with the shipped mode.
+
+## Clean test outside KIT (17 Oct): IMPACT, 8 runs never coded before
+Another station: gearbox disassembly and reassembly with tools (IMPACT), the 4 test operators, 8 runs that Gemma, the
+shipped system and station mode had never coded (34.9 min of video). Gemma-4-31B-IT on AMD Token Factory with the
+shipped pipeline (2,094 requests, no failed answers); the first 60 s of each run reviewed with the dataset's labels,
+measured from second 60. Pre-registered before Gemma had coded any of them, the script audited by Codex (no leak of
+the labels) and sealed, looked at once. Station mode learned from the 11 labelled runs of the other 9 IMPACT
+operators (their Gemma codes come from the lab run, codes only).
+
+| IMPACT, 3,142 hand-seconds from second 60 | Baseline | Gemma alone | **Gilbreth (shipped)** | Station mode | Station mode, per-second labels |
+|---|---|---|---|---|---|
+| Per hand and second | 46.5 % | 66.5 % | **71.1 %** | 71.3 % | 72.2 % |
+| Within ±1 s | — | 78.4 % | **82.4 %** | 79.6 % | 81.0 % |
+| Disassembly (1,296) / reassembly (1,846) | 44.9 / 47.6 % | 68.4 / 65.2 % | 74.7 / 68.5 % | 74.0 / 69.3 % | 73.6 / 71.2 % |
+| Hand that holds or waits the most, right (8 runs) | — | 8 / 8 | 8 / 8 | 8 / 8 | 8 / 8 |
+| Top lever matches (8 runs) | — | 8 / 8 | 8 / 8 | 8 / 8 | 8 / 8 |
+| Share of time per hand, points away from the labels | — | 8.1 | 8.0 | 8.9 | 8.3 |
+
+Pre-registered criterion (station mode above the shipped mode in total): met by 6 hand-seconds (2,239 against 2,233),
+which is a tie. What the test shows: outside KIT the shipped system beats Gemma by 4.6 points on new people at a new
+station, and on runs of 4–5 minutes the engineer's decisions (the hand to free and the top lever) come out right in all
+8 runs with any of the systems. Station mode adds nothing here. Two likely reasons, not measured: the shipped motion
+prior was built from these same 9 operators, so at IMPACT the shipped mode already learns from the station; and the
+station's Gemma codes come from the lab run, the test's from AMD. Pre-registration with the result:
+`research/station_v10/PREREGISTRO_V10_IMPACT.md`.
 
 ## What the per-second figure means for the chart (15 Oct, second look, rule written before computing)
 An engineer reads the chart (share of time each hand operates, transports, holds, waits) and the plan, not the per-second

@@ -1,6 +1,6 @@
 # Station mode (v10): learning from other people at the same station
 
-Gilbreth's shipped mode codes a new video from Gemma 4 plus a calibration on the first 30–40 seconds the engineer
+Gilbreth's shipped mode codes a new video from Gemma 4 plus a calibration on the first 20–50 seconds the engineer
 reviews. When people doing **the same tasks in the same setting** have already been labelled, station mode learns from
 all of their seconds, plus the new person's reviewed takes and their **dominant hand** (read from those takes).
 
@@ -20,6 +20,7 @@ training people out.
 | `final.py` | the frozen system: per-second model and 10 Hz model averaged (`predecir`) |
 | `validar.py` | leave-one-person-out validation and the learning curve |
 | `diagrama_s4.py` | the chart-level measures on subject 4 (time shares, hand to free, plan) for Gemma alone, the shipped mode and station mode |
+| `PREREGISTRO_V10_IMPACT.md`, `impact_v10.py`, `impact_diagrama.py` | the pre-registered test outside KIT (IMPACT, 8 new runs), with its amendments, seal and result; the two scripts as they ran in the lab (lab paths), kept for audit |
 
 `sistema.py` and `final.py` are byte-identical to the frozen copies used for the test; `construir.py` and `cuadros.py`
 only read their paths from `rutas.py` and reproduce the frozen rows exactly (checked on subjects 1 and 3).
@@ -38,6 +39,6 @@ only read their paths from `rutas.py` and reproduce the frozen rows exactly (che
    `--prueba 4` builds subject 4 reading its labels only for takes 0–1 (the reviewed ones).
 
 ## Where it does not apply
-A new station with nobody labelled: use the shipped mode. Outside KIT it has one second look so far (the gearbox example of the app, IMPACT: 77.9 % with `agent/estacion.py` against 73.9 % shipped; docs/RESULTS.md) and a pre-registered test on eight new IMPACT runs waiting for Gemma on AMD Token Factory. With the app's per-second labels
+A new station with nobody labelled: use the shipped mode. Outside KIT it has one second look so far (the gearbox example of the app, IMPACT: 77.9 % with `agent/estacion.py` against 73.9 % shipped; docs/RESULTS.md) and the pre-registered test on eight new IMPACT runs, where it tied the shipped mode (71.3 % against 71.1 %). With the app's per-second labels
 instead of KIT's per-frame labels, the 10 Hz model has nothing finer to learn from; the per-second model alone scored
 82.5 % on subject 4.

@@ -248,13 +248,17 @@ MODO_EST = False
 if EST:
     with st.sidebar:
         st.divider()
-        modo = st.radio('Chart from', ['Shipped mode (reviewed minute)', 'Station mode (reviewed coworkers)'],
+        # este puesto ya tiene compañeros revisados: se abre en modo estación (el modo entregado queda a un clic)
+        modo = st.radio('Chart from', ['Station mode (reviewed coworkers)', 'Shipped mode (reviewed minute)'],
                         key=f'modo_{nombre}', help='Station mode learns from workers already reviewed at the same '
-                                                   'station (agent/estacion.py).')
+                                                   'station (agent/estacion.py). The shipped mode needs no one '
+                                                   'reviewed before: it is what a brand-new station gets.')
         MODO_EST = modo.startswith('Station')
         if MODO_EST:
             st.caption(EST['meta']['estacion'] + '. The new worker: first '
                        f"{EST['meta']['revisado_hasta_s']:.0f} s reviewed, the rest coded in station mode.")
+        else:
+            st.caption('What a station with nobody reviewed before gets: the reviewed minute of this worker only.')
 filas = EST['filas'] if MODO_EST else d['filas']
 B = banco()
 
@@ -424,10 +428,11 @@ if vista == 'Method alerts':
         st.info('No method alerts for this operation.')
 
 if vista == 'Accuracy & AMD':
-    st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Three tests, each '
-                'pre-registered and looked at **once** with the system frozen, each on a person of the KIT Bimanual '
-                'dataset never used before; the dataset’s labels of the first two takes of each task (≈ 30–40 s) stand in for '
-                'the engineer’s review, and takes 2–9 are measured.')
+    st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each '
+                'pre-registered and looked at **once** with the system frozen, on people never used before: three in '
+                'the KIT Bimanual dataset (the labels of the first two takes of each task, ≈ 20–50 s, stand in for the '
+                'engineer’s review; takes 2–9 are measured) and one at another station, IMPACT (8 runs never coded before; '
+                'the first 60 s of each reviewed, measured from second 60).')
     st.dataframe(pd.DataFrame([
         ['Subject 4 on AMD Token Factory (shipped system), 1,888 hand-seconds', '41.6 %', '51.5 %', '57.4 % (±1 s: 71.2 %)'],
         ['   workshop 756 · kitchen 1,132', '37.0 · 44.7 %', '56.1 · 48.5 %', '69.8 · 49.0 %'],
@@ -435,7 +440,10 @@ if vista == 'Accuracy & AMD':
         ['   workshop 1,086 · kitchen 1,172', '41.8 · 41.7 %', '59.3 · 51.9 %', '66.5 · 63.9 %'],
         ['Subject 1 on a lab GPU (Gemma 4-bit), 3,305 hand-seconds', '—', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
         ['   workshop 1,347 · kitchen 1,958', '48.4 · 55.0 %', '69.6 · 66.0 %', '80.3 · 74.9 %'],
-    ], columns=['KIT Bimanual, new person', 'Constant baseline', 'Vision model alone', 'Gilbreth']),
+        ['IMPACT, another station: 4 new operators, 8 new runs, on AMD Token Factory, 3,142 hand-seconds', '46.5 %',
+         '66.5 %', '71.1 % (±1 s: 82.4 %)'],
+        ['   the hand to free and the top lever on the chart, 8 runs', '—', '8 of 8', '8 of 8'],
+    ], columns=['New person', 'Constant baseline', 'Vision model alone', 'Gilbreth']),
         hide_index=True, width="stretch")
     st.caption('On development data, 63–80 % of the remaining errors sit in the second next to a change of activity. '
                'Times are observed times, not standard times (no rating or allowances). Earlier lab runs and '
@@ -458,9 +466,13 @@ if vista == 'Accuracy & AMD':
         ['   on the chart: the hand that holds or waits the most, right', '79 %', '71 %', '92 %'],
         ['Gearbox example, IMPACT (9 reviewed coworkers), from second 60, 307 hand-seconds', '70.0 %', '73.9 %',
          '77.9 %'],
+        ['IMPACT clean test, 8 new runs (same 9 coworkers), 3,142 hand-seconds', '66.5 %', '71.1 %',
+         '71.3 % (72.2 % with per-second labels)'],
     ], columns=['', 'Vision model alone', 'Shipped mode', 'Station mode']), hide_index=True, width="stretch")
-    st.caption('KIT subject 4 per hand and second: pre-registered, looked at once. The chart rows and the gearbox are '
-               'second looks at data already used, declared as such. The gearbox figure is agent/estacion.py as '
+    st.caption('KIT subject 4 and the IMPACT test: pre-registered, looked at once. The chart rows and the gearbox are '
+               'second looks at data already used, declared as such. Outside KIT station mode tied the shipped mode: '
+               'there the shipped motion prior already comes from the same 9 operators. The coworkers\' Gemma codes '
+               'come partly from the lab GPU run (KIT subject 1, the IMPACT station); the new worker\'s from AMD. The gearbox figure is agent/estacion.py as '
                'shipped (per-second labels). Where nobody at the station has been reviewed yet, the shipped mode is the '
                'one to use. Details: docs/RESULTS.md.')
     st.subheader('Running on AMD')
@@ -609,9 +621,9 @@ def mostrar_resultado(run, motor):
     c1, c2, c3, c4 = st.columns(4)
     c1.metric('Observed clip', f"{pot2['tiempo_s']:.0f} s")
     c2.metric('Estimated after the plan', f"{pot2['nuevo_s']:.0f} s", f"-{pot2['ahorro_pct']:.0f} %", delta_color='inverse')
-    c3.metric('Output per shift', f"+{pot2['capacidad_pct']:.0f} %")
+    c3.metric('Output per shift (estimate)', f"+{pot2['capacidad_pct']:.0f} %")
     if wall:
-        c4.metric('Agent wall time', f'{wall:.0f} s', f'≈ {pot2["tiempo_s"] / 60 * RITMO_A_MANO:.0f} min by hand',
+        c4.metric('Agent wall time', f'{wall:.0f} s', f'≈ {pot2["tiempo_s"] / 60 * RITMO_A_MANO:.0f} min by hand (estimate)',
                   delta_color='off')
     cal2 = json.loads((run / 'calibracion.json').read_text(encoding='utf-8')) if (run / 'calibracion.json').exists() else None
     if cal2:
