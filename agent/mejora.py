@@ -41,8 +41,8 @@ def potencial(filas, alfa=0.5, beta=0.3):
                 'title': f'Free the {HAND[x]} hand (fixture or jig)',
                 'evidencia': f'La {MANO[x]} sostiene o espera {libre:.0f} s mientras la {MANO[y]} trabaja; en ese '
                              f'tiempo la {MANO[y]} transporta {tr:.0f} s y opera {op:.0f} s, una cosa detrás de otra.',
-                'evidence': f'The {HAND[x]} hand holds or waits {libre:.0f} s while the {HAND[y]} hand works; meanwhile '
-                            f'the {HAND[y]} hand transports {tr:.0f} s and operates {op:.0f} s, one after the other.',
+                'evidence': f'The {HAND[x]} hand holds or waits {libre:.0f} s while the {HAND[y]} hand works alone: '
+                            f'{tr:.0f} s fetching or carrying, then {op:.0f} s operating, one after the other.',
                 'supuesto': f'Con la {MANO[x]} libre, ella trae la siguiente pieza mientras la {MANO[y]} opera: '
                             f'se ahorra min(transporte, operación).',
                 'assumption': f'With the {HAND[x]} hand free, it fetches the next part while the {HAND[y]} hand '
