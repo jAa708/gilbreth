@@ -448,7 +448,7 @@ if vista == 'Accuracy & AMD':
     st.dataframe(pd.DataFrame([
         ['Subject 4 on AMD Token Factory (shipped system), 1,888 hand-seconds', '41.6 %', '51.5 %', '57.4 % (±1 s: 71.2 %)'],
         ['   workshop 756 · kitchen 1,132', '37.0 · 44.7 %', '56.1 · 48.5 %', '69.8 · 49.0 %'],
-        ['Subject 3 on AMD Token Factory (shipped system), 2,258 hand-seconds', '41.7–41.8 %', '55.4 %', '65.1 % (±1 s: 80.1 %)'],
+        ['Subject 3 on AMD Token Factory (shipped system), 2,258 hand-seconds', '—', '55.4 %', '65.1 % (±1 s: 80.1 %)'],
         ['   workshop 1,086 · kitchen 1,172', '41.8 · 41.7 %', '59.3 · 51.9 %', '66.5 · 63.9 %'],
         ['Subject 1 on a lab GPU (Gemma 4-bit), 3,305 hand-seconds', '—', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
         ['   workshop 1,347 · kitchen 1,958', '48.4 · 55.0 %', '69.6 · 66.0 %', '80.3 · 74.9 %'],
@@ -664,7 +664,7 @@ def mostrar_resultado(run, motor):
     if pot2['palancas']:
         st.subheader('Top improvements')
         for p in pot2['palancas'][:3]:
-            st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.{nd}f} s** in this clip ({p['pct']:.0f} %). "
+            st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.{nd}f} s** in this clip ({p['pct']:.{nd}f} %). "
                         f"{p['evidence']}")
     if ev2:
         st.subheader('Method alerts')

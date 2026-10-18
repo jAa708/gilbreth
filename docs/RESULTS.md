@@ -3,6 +3,9 @@
 Protocol: every design choice was made on **development** data; each **test** set was looked at once with the system
 frozen, and the decision rule was written before measuring (pre-registration). Accuracy = (hand, second) pairs with
 the right code. Baseline = best constant code per hand over the whole set.
+The pre-registrations are the lab notes written before each test, committed together with their results
+([`research/preregistrations/`](../research/preregistrations/) for the shipped system,
+[`research/station_v10/`](../research/station_v10/) for station mode and IMPACT): the notes are the evidence, not the git dates.
 
 The LEGO and IMPACT sets below were tests for v7 (11 Oct) and were then reused while choosing v9 (the gate), so for the
 shipped system the clean tests are **KIT subject 1** (lab GPU), **KIT subject 3** and **KIT subject 4** (AMD, below), and
@@ -22,7 +25,7 @@ Pre-registered criterion for the final test (v9 ≥ Gemma in workshop and kitche
 
 ## Clean test on AMD (15 Oct): KIT Bimanual subject 3, the shipped system
 Pre-registered at 00:30 before the subject was downloaded; looked at once. The system exactly as shipped (commit
-`5b3edd6`): Gemma-4-31B-IT on AMD Token Factory, the IMPACT motion prior, the gate; the first two takes of each task
+`1db0ed0`; `5b3edd6` in the lab notes, before the e-mail rewrite of 17 Oct): Gemma-4-31B-IT on AMD Token Factory, the IMPACT motion prior, the gate; the first two takes of each task
 reviewed, takes 2-9 measured. 1,512 requests, US$0.15, no failed answers.
 
 | KIT subject 3 (new person), on AMD | Baseline | Gemma alone | **Gilbreth (v9)** | ±1 s |
@@ -38,8 +41,8 @@ points here (on subject 1 it cost nothing). That is the next thing to study, on 
 
 ## Clean test on AMD (17 Oct): KIT Bimanual subject 4, the shipped system
 Pre-registered on 16 Oct at 22:35, when Gemma came back to Token Factory, before any result of subject 4 existed; looked
-at once. Same system and same calculation as subject 3 (agent commit `ab7188a`, which only adds a strict mode prepared
-for MI300X runs, not run during the event, and behaves byte for byte like `5b3edd6` with the shipped settings). 90 takes, 1,190 windows, no
+at once. Same system and same calculation as subject 3 (agent commit `4710607`, `ab7188a` in the lab notes, which only adds a strict mode prepared
+for MI300X runs, not run during the event, and behaves byte for byte like `1db0ed0` with the shipped settings). 90 takes, 1,190 windows, no
 failed answers, about US$0.13 of quota.
 
 | KIT subject 4 (new person), on AMD | Baseline | Gemma alone | Calibrated (v7) | **Gilbreth (v9)** | ±1 s |

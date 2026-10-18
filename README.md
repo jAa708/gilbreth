@@ -58,13 +58,14 @@ Accuracy = share of (hand, second) pairs with the right activity code. Four test
 **once** with the system frozen, on recordings it had never seen: three new people in the KIT Bimanual dataset (the labels of the
 first two takes of each task, ≈ 20–50 s, stand in for the engineer's review; takes 2–9 are measured) and one on a
 second dataset, IMPACT (8 runs never coded before by 4 operators not in the motion prior, which comes from other
-operators at that station; the first 60 s of each run reviewed, measured from second 60).
+operators at that station; other runs of these 4 operators were used in development; the first 60 s of each run
+reviewed, measured from second 60). The pre-registrations are in [`research/`](research/).
 
 | KIT Bimanual, new person | Constant baseline | Gemma alone | **Gilbreth** |
 |---|---|---|---|
 | **Subject 4, on AMD Token Factory (the shipped system)**, 1,888 hand-seconds | 41.6 % | 51.5 % | **57.4 %** (±1 s: 71.2 %) |
 | · workshop (756) / kitchen (1,132) | 37.0 / 44.7 % | 56.1 / 48.5 % | **69.8 / 49.0 %** |
-| **Subject 3, on AMD Token Factory (the shipped system)**, 2,258 hand-seconds | 41.7–41.8 % | 55.4 % | **65.1 %** (±1 s: 80.1 %) |
+| **Subject 3, on AMD Token Factory (the shipped system)**, 2,258 hand-seconds | — | 55.4 % | **65.1 %** (±1 s: 80.1 %) |
 | · workshop (1,086) / kitchen (1,172) | 41.8 / 41.7 % | 59.3 / 51.9 % | **66.5 / 63.9 %** |
 | Subject 1, lab GPU (Gemma 4-bit), 3,305 hand-seconds | — | 67.5 % | **77.1 %** (±1 s: 87.2 %) |
 | · workshop (1,347) / kitchen (1,958) | 48.4 / 55.0 % | 69.6 / 66.0 % | **80.3 / 74.9 %** |
@@ -132,6 +133,10 @@ python scripts/prepare_runs.py runs lego=examples/lego/lego_480p.mp4 gearbox=exa
 python scripts/tokenfactory_batch.py lego gearbox      # 20 requests per minute, writes docs/benchmark.json
 # while Gemma-4-31B-IT is not listed: add --modelo Qwen3.8-Flash-Next --sin-razonar
 ```
+For the calibrated mode as measured, point the agent at the motion prior (CC BY-NC-SA 4.0, a separate release):
+`GILBRETH_PRIOR_URL=https://github.com/jAa708/gilbreth/releases/download/prior-v1/motion_prior_impact.npz`
+(Docker: `-e GILBRETH_PRIOR_URL=…`). Without it the agent runs MIT-pure.
+
 In the app, set `GILBRETH_VLLM_URL=https://developer.amd.com.cn/radeon/api/v1`, `GILBRETH_MODEL=Gemma-4-31B-IT`,
 `GILBRETH_JSON_MODE=object`, `GILBRETH_RPM=18` and `GILBRETH_API_KEY` (Streamlit secrets) to chart uploads live;
 `GILBRETH_FALLBACK_MODEL=Qwen3.8-Flash-Next` covers the times Gemma is not served (see `docs/AMD.md`).
@@ -153,7 +158,8 @@ the 31B model.
 ## Licences and data
 - Code: **MIT** (this repository).
 - **Motion prior** (`models/motion_prior_impact.npz`): features derived from the IMPACT dataset, **CC BY-NC-SA 4.0**,
-  published separately with attribution and downloaded on use (`GILBRETH_PRIOR_URL`). Without it the agent runs in
+  published separately with attribution as release
+  [`prior-v1`](https://github.com/jAa708/gilbreth/releases/tag/prior-v1) and downloaded on use (`GILBRETH_PRIOR_URL`). Without it the agent runs in
   **MIT-pure** mode (`--sin-previo`), which learns only from your reviewed seconds and measured clearly lower
   (KIT, development: 49.8 % vs 62.4 %), because the gate cannot trust a model trained on so few seconds.
 - `examples/impact_gearbox/` is **CC BY-NC-SA 4.0, not MIT**: video, frames and labels from the IMPACT dataset,
@@ -168,9 +174,12 @@ the 31B model.
 ## Limits
 - Observed times, not standard times: no performance rating or allowances yet; one cycle is not a standard.
 - Tasks where operating means moving the hand a lot (kitchen: stirring, wiping) score lower (KIT kitchen vs workshop:
-  74.9 vs 80.3 % on subject 1, 63.9 vs 66.5 % on AMD with subject 3): the learned motion confuses operation with transport, which is why the gate exists.
+  49.0 vs 69.8 % on subject 4 and 63.9 vs 66.5 % on subject 3, both on AMD; 74.9 vs 80.3 % on subject 1): the learned motion confuses operation with transport, which is why the gate exists.
 - The improvement plan is a scenario estimate with visible assumptions, not a measurement.
 
 ## Timeline
-Preparation (data exploration, measurement protocol, first prototypes) started on 9 Oct 2026, before the kickoff.
-During the event: the runs on AMD Token Factory, the improvement planner, this app and the submission material.
+Preparation (9–11 Oct, before the kickoff): data exploration, the measurement protocol, the agent (Gemma + calibrated
+hand motion + gate) and its clean test on KIT subject 1 on a lab GPU. The first commit (12 Oct, about two hours after
+the kickoff) already holds that prototype. During the event (12–17 Oct): the improvement planner, this app and its
+review loop, the runs and clean tests on AMD Token Factory (KIT subjects 3 and 4, IMPACT), station mode and the
+submission material.

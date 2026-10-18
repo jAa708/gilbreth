@@ -11,7 +11,7 @@ from unittest import mock
 
 RAIZ = Path(__file__).resolve().parents[1]
 AGENTE = RAIZ / 'agent' / 'agente_v5.py'
-REFERENCIA = '5b3edd6'          # agent logic frozen by the 16-Oct pre-registration (system B)
+REFERENCIA = '1db0ed0'          # agent logic frozen by the 16-Oct pre-registration (system B); 5b3edd6 before the e-mail rewrite
 _n = 0
 
 
