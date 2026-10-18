@@ -36,7 +36,7 @@ def potencial(filas, alfa=0.5, beta=0.3):
         par_total += s
         if s > 0:
             palancas.append({
-                'clave': f'liberar_{x}', 'segundos': s,
+                'clave': f'liberar_{x}', 'segundos': s, 'libre_s': libre, 'tr_s': tr, 'op_s': op,
                 'titulo': f'Liberar la mano {MANO[x]} (soporte o plantilla)',
                 'title': f'Free the {HAND[x]} hand (fixture or jig)',
                 'evidencia': f'La {MANO[x]} sostiene o espera {libre:.0f} s mientras la {MANO[y]} trabaja; en ese '

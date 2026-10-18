@@ -44,7 +44,7 @@ COSTOS = {
 @st.cache_data
 def ejemplos(huella):            # sin «_»: st.cache_data no mira los parámetros que empiezan con guion bajo
     out = {}
-    orden = ['impact_gearbox', 'factory_screw', 'factory_cardboard', 'factory_plastic', 'lego']
+    orden = ['lego', 'impact_gearbox', 'factory_screw', 'factory_cardboard', 'factory_plastic']
     for d in sorted((RAIZ / 'examples').glob('*/diagrama.json'),
                     key=lambda p: (orden.index(p.parent.name) if p.parent.name in orden else len(orden), p.parent.name)):
         meta = json.loads(d.read_text(encoding='utf-8'))['meta']
@@ -250,12 +250,12 @@ st.markdown("**Film a worker's hands at a workstation. Gilbreth shows what each 
             "plant supervisors in small and mid-size factories: Gemma 4 31B labels the video on AMD GPUs, and the "
             "engineer reviews the start and approves the result.")
 
-CORTO = {'impact_gearbox': 'Gearbox · IMPACT dataset, new operator', 'factory_screw': 'Screw station · factory video',
-         'factory_cardboard': 'Cardboard boxes · factory video', 'factory_plastic': 'Plastic parts · factory video',
+CORTO = {'impact_gearbox': 'Gearbox · vs human labels', 'factory_screw': 'Screw station · factory video',
+         'factory_cardboard': 'Cardboard · factory video', 'factory_plastic': 'Plastic parts · factory video',
          'lego': 'LEGO digger · one full unit'}
 EJ = ejemplos(tuple(sorted((p.parent.name, p.stat().st_mtime) for p in (RAIZ / 'examples').glob('*/diagrama.json'))))
 with st.sidebar:
-    st.header('Examples')
+    st.header('Pick an example video')
     nombre = st.selectbox('Operation', list(EJ), label_visibility='collapsed',
                           format_func=lambda k: CORTO.get(EJ[k].name, k))
     st.caption(nombre)
@@ -279,21 +279,18 @@ elif EST:
         st.divider()
         # este puesto ya tiene compañeros revisados: se abre en el modo entregado y el modo estación queda a un clic
         # (así lo cuentan el video, el README y Accuracy & AMD; careo de cierre del 18-oct)
-        modo = st.radio('How this example is coded',
-                        ['Station mode: also learns from coworkers already reviewed at this station',
-                         "Shipped mode (default): only this worker's first 60 s reviewed"],
+        modo = st.radio('Which human review does Gilbreth learn from?',
+                        ['Station mode: also coworkers already reviewed at this station',
+                         "This worker's first 60 s only (default: what any new station gets)"],
                         index=1,
                         key=f'modo_{nombre}', help='Station mode learns from workers already reviewed at the same '
-                                                   'station (agent/estacion.py). The shipped mode needs no one '
-                                                   'reviewed before: it is what a brand-new station gets.')
+                                                   'station (agent/estacion.py). The default needs no one reviewed '
+                                                   'before: it is what a brand-new station gets. Every number on the '
+                                                   'page follows this choice.')
         MODO_EST = modo.startswith('Station')
         if MODO_EST:
             st.caption(EST['meta']['estacion'] + '. The new worker: first '
-                       f"{EST['meta']['revisado_hasta_s']:.0f} s reviewed, the rest coded in station mode.")
-        else:
-            st.caption("What any new station gets: an engineer reviews this worker's first 60 s and Gilbreth learns "
-                       "from that alone.")
-        st.caption('The chart, the time shares and the plan in every view follow the mode you pick.')
+                       f"{EST['meta']['revisado_hasta_s']:.0f} s reviewed, the rest labelled in station mode.")
 filas = EST['filas'] if MODO_EST else d['filas']
 with st.sidebar.expander('About, data and licence'):
     st.caption('Named after Frank and Lillian Gilbreth, who filmed workers a century ago to study their motions.')
@@ -362,22 +359,29 @@ if vista == 'Overview':
     with izq:
         if video:
             st.video(str(video), muted=True)
-        st.button('▶ Try it on our 20-second sample', type='primary', width='stretch', on_click=ir_a,
+        st.button('▶ Try it on a 20-second clip', type='primary', width='stretch', on_click=ir_a,
                   args=('Try your own video', True))
-        st.button('See the chart next to the video', width='stretch', on_click=ir_a, args=('Bimanual chart',))
+        st.caption('Shows at once the run saved from AMD; a button there runs it again live on AMD (about 4 min).')
+        st.button('Play the video with the chart beside it', width='stretch', on_click=ir_a, args=('Bimanual chart',))
         st.caption(f'**{nombre}.** {descripcion}')
     with der:
         st.markdown('##### What Gilbreth found in this video')
+        quieta = {m: sum(v.get(c, 0.0) for c in ('S', 'D')) for m, v in reparto_manos(filas).items()}
+        st.markdown(f"**Holding or waiting: left hand {quieta['Left hand']:.0f} %, right hand "
+                    f"{quieta['Right hand']:.0f} % of the time.** "
+                    f"The plan would take {'this clip' if clip else 'this unit'} from {pot['tiempo_s']:.0f} s to "
+                    f"{pot['nuevo_s']:.0f} s (a projection).")
         st.altair_chart(barra_manos(filas), width="stretch")
-        st.markdown(texto_manos(filas))
         c1, c2 = st.columns(2)
-        c1.metric(('Clip time' if clip else 'Time per unit') + ': observed → plan',
-                  f"{pot['tiempo_s']:.0f} → {pot['nuevo_s']:.0f} s", f"-{pot['ahorro_pct']:.0f} % (estimate)",
-                  delta_color='inverse',
-                  help='Observed time, then the estimate with the changes of the plan added together (never below the '
-                       'time in which some hand is operating). An estimate until the station is filmed again.')
-        c2.metric("Engineer's review", f'first {rev:.0f} s' if rev else 'not yet',
-                  'the rest unattended' if rev else 'first draft', delta_color='off', **SIN_FLECHA,
+        c1.metric(('Clip time' if clip else 'Time per unit') + ': now → with the plan',
+                  f"{pot['tiempo_s']:.0f} → {pot['nuevo_s']:.0f} s",
+                  f"-{pot['ahorro_pct']:.0f} % = +{pot['capacidad_pct']:.0f} % units per shift", delta_color='inverse',
+                  help='Observed time, then the projection with the changes of the plan added together (never below '
+                       'the time in which some hand is operating). Less time per unit and more units per shift are the '
+                       'same gain. A projection until the station is filmed again.')
+        c2.metric('Human review needed', f"{rev:.0f} s of {pot['tiempo_s']:.0f} s" if rev else 'none yet',
+                  f"Gilbreth labelled the other {pot['tiempo_s'] - rev:.0f} s" if rev else 'a first draft',
+                  delta_color='off', **SIN_FLECHA,
                   help=f"Charting all {pot['tiempo_s']:.0f} s by hand: ≈ {a_mano:.0f} min (our estimate). We did not "
                        'time the review itself.')
         if pot['palancas']:
@@ -385,12 +389,23 @@ if vista == 'Overview':
             nd_t = 1 if top['segundos'] < 20 else 0
             titulo = top['title'].replace(' (fixture or jig)', ' with a fixture or jig (a holder that keeps the part '
                                           'in place)')
-            st.markdown(f"**Biggest saving:** {titulo} — about **{top['segundos']:.{nd_t}f} s** {por}. With the whole "
-                        f"plan, **+{pot['capacidad_pct']:.0f} % output per shift** (estimate).")
+            if 'libre_s' in top:
+                porque = (f" For {top['libre_s']:.0f} s that hand only holds or waits while the other works alone "
+                          f"({top['tr_s']:.0f} s fetching or carrying, {top['op_s']:.0f} s operating); with the part "
+                          f"held, the fetching can overlap the operating.")
+            else:
+                porque = ' ' + evidencia(top, clip)
+            st.markdown(f"**Biggest saving:** {titulo} — about **{top['segundos']:.{nd_t}f} s** {por}.{porque}")
+        if verdad:
+            st.markdown('**How accurate:** on 8 gearbox videos it had never seen, 71.1 % of hand-seconds match the human '
+                        'labels (Gemma 4 alone: 66.5 %; always guessing the most common label: 46.5 %).')
+        else:
+            st.markdown('**How accurate:** in four tests on recordings it had never seen, Gilbreth beat Gemma 4 alone '
+                        'every time, e.g. 55.4 → 65.1 % of hand-seconds labelled like a person (table below).')
         if corrida:
-            st.caption(f"The vision model labelled this video unattended in {corrida['wall_s'] / 60:.1f} min on a shared "
-                       f"AMD endpoint, paced by its request limit (about 1.45 requests per second of video); nobody has "
-                       f"to watch it.")
+            st.markdown(f"**On AMD:** Gemma 4 31B on AMD GPUs (AMD Token Factory) labelled this {pot['tiempo_s']:.0f}-s video in "
+                        f"{corrida['wall_s'] / 60:.1f} min with nobody watching, at about US$0.008 per minute of video. "
+                        f"The shared endpoint's request quota sets that pace, not the method.")
 
     # 2) la idea, cómo funciona y si funciona
     st.divider()
@@ -418,16 +433,20 @@ if vista == 'Overview':
             '5. **Gate**: on reviewed seconds the small model did not learn from, it is compared with Gemma alone; the '
             'better of the two labels the rest of the video.\n'
             '6. **Out**: the bimanual chart (Excel), method alerts and an improvement plan in seconds per unit.')
-    st.markdown('**Does it work?** Four tests, each run once with the pass rule written beforehand, on recordings the '
-                'system had never seen. Score = share of hand-seconds (one hand during one second) labelled like the '
-                'human labels, counted only after the reviewed part.')
+    st.markdown('**Does it work?** Four tests on recordings the system had never seen (rows 1–4; row 4 ran on a lab '
+                'GPU before the event, the others on AMD), plus station mode on the same person as row 2 (last row). '
+                'Each was run once, with its pass criterion written down beforehand. Score = share of hand-seconds '
+                '(one hand during one second) labelled like the human labels, counted only after the reviewed part; '
+                'higher is better. Gilbreth beat Gemma 4 alone in all four tests, by 4.6 to 9.7 points.')
     tabla(pd.DataFrame([
-        ['KIT subject 3 (new person, workshop and kitchen tasks), on AMD', '≈ 42 %', '55.4 %', '65.1 %'],
-        ['KIT subject 4 (new person), on AMD', '41.6 %', '51.5 %', '57.4 %'],
-        ['KIT subject 1 (new person), lab GPU before the event', '48 · 55 % (by task)', '67.5 %', '77.1 %'],
-        ['IMPACT: 8 gearbox videos never labelled before, on AMD', '46.5 %', '66.5 %', '71.1 %'],
-        ['KIT subject 4 in station mode: 5 coworkers at the same tasks already reviewed', '41.6 %', '51.5 %', '83.4 %'],
-    ], columns=['Test', 'Always the most common label', 'Gemma 4 alone (no review)', 'Gilbreth']))
+        ['1 · KIT subject 3 (new person, workshop and kitchen tasks), on AMD', '≈ 42 %', '55.4 %', '65.1 %'],
+        ['2 · KIT subject 4 (new person), on AMD', '41.6 %', '51.5 %', '57.4 %'],
+        ['3 · IMPACT: 8 gearbox videos never labelled before, on AMD', '46.5 %', '66.5 %', '71.1 %'],
+        ['4 · KIT subject 1 (new person), lab GPU before the event', '48–55 % (by task)', '67.5 %', '77.1 %'],
+        ['Extra · KIT subject 4 in station mode (5 coworkers at the same tasks already reviewed)', '41.6 %', '51.5 %',
+         '83.4 %'],
+    ], columns=['Test', 'Always guessing the most common label', 'Gemma 4 alone (no review)',
+                'Gilbreth (Gemma 4 + the review)']))
     st.caption('KIT Bimanual and IMPACT are research datasets of people filmed doing hand tasks, labelled by people. '
                'On the 8 gearbox videos, station mode only tied (72.2 %). Model cost on AMD: about US$0.008 per minute '
                'of video. Every figure and how it was measured: the Accuracy & AMD view.')
@@ -451,8 +470,8 @@ if vista == 'Overview':
     for p in pot['palancas'][:3]:
         nd_p = 1 if p['segundos'] < 20 else 0          # 15.5 s y no «16 s»: como en las tarjetas del plan
         st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.{nd_p}f} s** {por} ({p['pct']:.{nd_p}f} %). "
-                    f"{evidencia(p, clip)}")
-    st.caption('Added together, never below the time in which some hand is operating. Each change, its evidence and '
+                    f"{evidencia(p, clip)} {p['assumption']}")
+    st.caption('The savings add up, but the plan never goes below the time in which some hand is operating. Each change, its evidence and '
                'the assumptions you can change: the Improvement plan view.'
                + (' Times of a factory excerpt are for the whole clip, not per unit.' if clip else ''))
     with st.expander('How it works, in more detail'):
