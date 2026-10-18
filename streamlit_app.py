@@ -335,7 +335,7 @@ if vista == 'Overview':
     a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
     if corrida:
         c4.metric('Agent on AMD (unattended)', f"{corrida['wall_s'] / 60:.1f} min",
-                  f"vs ≈ {a_mano:.0f} min by hand (estimate) · paced by the free endpoint", delta_color='off', **SIN_FLECHA,
+                  f"vs ≈ {a_mano:.0f} min by hand (estimate) · paced by the shared endpoint", delta_color='off', **SIN_FLECHA,
                   help='Unattended wall time on the shared AMD Token Factory endpoint, paced to its limit of 20 requests '
                        'per minute (about one request per second of video). Details in Accuracy & AMD.')
     elif d['meta'].get('minutos_a_mano'):
@@ -592,8 +592,8 @@ if vista == 'Accuracy & AMD':
                                     'Latency, slowest 5 % (s)': v['p95_s'], 'Prompt tokens (mean)': v['prompt_tokens_mean'],
                                     'Output tokens (mean)': v['completion_tokens_mean']}
                                    for k, v in B.get('pasos', {}).items()]), hide_index=True, width="stretch")
-        st.caption('The shared endpoint allows 20 requests per minute per team and the agent sends about one per second '
-                   'of video, plus one per chart row, so that limit sets the wall time, not the GPU. '
+        st.caption('The agent sends about one request per second of video plus one per chart row, so the request '
+                   'limit of the endpoint (below), not the GPU, sets the wall time. '
                    'Steps: operation sheet (1 request per video), per-second coding (1 per second of video), '
                    'row descriptions (1 per chart row). Wall time covers the GPU part; hand tracking ran on CPU.'
                    + (f" Endpoint: {B['endpoint']}; wall time includes pacing to its limits, request latency and "
