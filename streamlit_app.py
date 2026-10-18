@@ -253,7 +253,8 @@ st.markdown("**Film a worker's hands at a workstation. Gilbreth shows what each 
 CORTO = {'impact_gearbox': 'Gearbox · vs human labels', 'factory_screw': 'Screw station · factory video',
          'factory_cardboard': 'Cardboard · factory video', 'factory_plastic': 'Plastic parts · factory video',
          'lego': 'LEGO digger · one full unit'}
-EJ = ejemplos(tuple(sorted((p.parent.name, p.stat().st_mtime) for p in (RAIZ / 'examples').glob('*/diagrama.json'))))
+EJ = ejemplos(('orden: lego primero',) + tuple(sorted((p.parent.name, p.stat().st_mtime)    # la etiqueta renueva la caché
+                                                       for p in (RAIZ / 'examples').glob('*/diagrama.json'))))
 with st.sidebar:
     st.header('Pick an example video')
     nombre = st.selectbox('Operation', list(EJ), label_visibility='collapsed',
