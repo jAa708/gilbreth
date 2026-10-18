@@ -282,7 +282,7 @@ elif EST:
         # (así lo cuentan el video, el README y Accuracy & AMD; careo de cierre del 18-oct)
         modo = st.radio('Which human review does Gilbreth learn from?',
                         ['Station mode: also coworkers already reviewed at this station',
-                         "This worker's first 60 s only (default: what any new station gets)"],
+                         "This worker's first 60 s only (shipped mode: what any new station gets)"],
                         index=1,
                         key=f'modo_{nombre}', help='Station mode learns from workers already reviewed at the same '
                                                    'station (agent/estacion.py). The default needs no one reviewed '
@@ -322,7 +322,7 @@ vista = vista or VISTAS[0]
 EJEMPLO_EN = {
     'impact_gearbox': 'A person reassembles a gearbox with tools. From IMPACT, a research dataset whose hand motions '
                       'were labelled by people; Gilbreth was never trained on this operator. The dataset\'s labels for '
-                      'the first {r:.0f} s stand in for the engineer\'s review; Gilbreth learned from them and labelled '
+                      'the first {r:.0f} s stand in for the engineer\'s review; Gilbreth learned from them and coded '
                       'the rest.',
     'factory_screw': 'A factory worker assembles small parts with a suspended power screwdriver: a {t:.0f}-second '
                      'excerpt with several units. Nobody reviewed it, so this is the first draft of the vision model.',
@@ -331,7 +331,7 @@ EJEMPLO_EN = {
     'factory_plastic': 'A worker arranges small plastic parts in rows: a {t:.0f}-second excerpt with several units. '
                        'Nobody reviewed it, so this is the first draft of the vision model.',
     'lego': 'One full assembly of a 56-piece LEGO model (Creator 5761 Mini Digger, model 1; {t:.0f} s, one unit), '
-            'filmed for our methods course. A person reviewed the first {r:.0f} s; Gilbreth labelled the rest.',
+            'filmed for our methods course. A person reviewed the first {r:.0f} s; Gilbreth coded the rest.',
 }
 FUENTES = 'https://github.com/jAa708/gilbreth/blob/main/docs/SOURCES.md'
 
@@ -362,7 +362,8 @@ if vista == 'Overview':
             st.video(str(video), muted=True)
         st.button('▶ Try it on a 20-second clip', type='primary', width='stretch', on_click=ir_a,
                   args=('Try your own video', True))
-        st.caption('Shows at once the run saved from AMD; a button there runs it again live on AMD (about 4 min).')
+        st.caption('Tracks the hands for a few seconds, then shows the run saved from AMD; a button there runs it '
+                   'again live on AMD (about 4 min).')
         st.button('Play the video with the chart beside it', width='stretch', on_click=ir_a, args=('Bimanual chart',))
         st.caption(f'**{nombre}.** {descripcion}')
     with der:
@@ -381,7 +382,7 @@ if vista == 'Overview':
                        'the time in which some hand is operating). Less time per unit and more units per shift are the '
                        'same gain. A projection until the station is filmed again.')
         c2.metric('Human review needed', f"{rev:.0f} s of {pot['tiempo_s']:.0f} s" if rev else 'none yet',
-                  f"Gilbreth labelled the other {pot['tiempo_s'] - rev:.0f} s" if rev else 'a first draft',
+                  f"Gilbreth coded the other {pot['tiempo_s'] - rev:.0f} s" if rev else 'a first draft',
                   delta_color='off', **SIN_FLECHA,
                   help=f"Charting all {pot['tiempo_s']:.0f} s by hand: ≈ {a_mano:.0f} min (our estimate). We did not "
                        'time the review itself.')
@@ -394,6 +395,10 @@ if vista == 'Overview':
                 porque = (f" For {top['libre_s']:.0f} s that hand only holds or waits while the other works alone "
                           f"({top['tr_s']:.0f} s fetching or carrying, {top['op_s']:.0f} s operating); with the part "
                           f"held, the fetching can overlap the operating.")
+                otra = next((x for x in pot['palancas'] if 'libre_s' in x and x is not top), None)
+                if otra and otra['libre_s'] > top['libre_s']:
+                    porque += (f" The other hand waits longer ({otra['libre_s']:.0f} s), but meanwhile this one is mostly "
+                               f"operating ({otra['op_s']:.0f} s), so less of it can overlap.")
             else:
                 porque = ' ' + evidencia(top, clip)
             st.markdown(f"**Biggest saving:** {titulo} — about **{top['segundos']:.{nd_t}f} s** {por}.{porque}")
@@ -404,8 +409,9 @@ if vista == 'Overview':
             st.markdown('**How accurate:** in four tests on recordings it had never seen, Gilbreth beat Gemma 4 alone '
                         'every time, e.g. 55.4 → 65.1 % of hand-seconds labelled like a person (table below).')
         if corrida:
-            st.markdown(f"**On AMD:** Gemma 4 31B on AMD GPUs (AMD Token Factory) labelled this {pot['tiempo_s']:.0f}-s video in "
-                        f"{corrida['wall_s'] / 60:.1f} min with nobody watching, at about US$0.008 per minute of video. "
+            st.markdown(f"**On AMD:** Gemma 4 31B on AMD GPUs (AMD Token Factory) coded this {pot['tiempo_s']:.0f}-s video in "
+                        f"{corrida['wall_s'] / 60:.1f} min with nobody watching; across the five examples the model cost "
+                        f"about US$0.008 per minute of video. "
                         f"The shared endpoint's request quota sets that pace, not the method.")
 
     # 2) la idea, cómo funciona y si funciona
@@ -416,7 +422,7 @@ if vista == 'Overview':
         st.markdown('**The problem**')
         st.markdown('To improve manual work, industrial engineers draw a **bimanual chart**: step by step, what the left '
                     'and the right hand do (operate, transport, hold or wait). A hand that only holds while the other '
-                    'one works is time that a fixture can give back. Charting a 5-minute video by hand takes about an '
+                    'one works is time that a fixture can give back. Charting a 4.7-minute video by hand takes about an '
                     'hour (our estimate); labelling hand motions frame by frame took about 80 min per minute of video '
                     f'in a NeurIPS 2022 dataset ([sources]({FUENTES})).')
         st.markdown('**Who it is for:** methods engineers and plant supervisors in small and mid-size factories, who '
@@ -426,13 +432,13 @@ if vista == 'Overview':
         st.markdown(
             '1. **Film** the station with a phone.\n'
             '2. **Track the hands**: MediaPipe, on CPU.\n'
-            '3. **Label every second**: Gemma 4 31B on AMD GPUs looks at marked frames and a crop of each hand and '
-            'says what each hand does.\n'
+            '3. **Code every second**: Gemma 4 31B on AMD GPUs looks at marked frames and a crop of each hand and '
+            'gives each hand an activity code (operation, transport, hold or delay).\n'
             '4. **Review the start**: the engineer corrects the first cycle or minute. A small model, fitted in '
-            'seconds on CPU, learns from those corrections how far to trust Gemma\'s labels against the hand '
+            'seconds on CPU, learns from those corrections how far to trust Gemma\'s codes against the hand '
             'motion. Gemma itself is not retrained.\n'
             '5. **Gate**: on reviewed seconds the small model did not learn from, it is compared with Gemma alone; the '
-            'better of the two labels the rest of the video.\n'
+            'better of the two codes the rest of the video.\n'
             '6. **Out**: the bimanual chart (Excel), method alerts and an improvement plan in seconds per unit.')
     st.markdown('**Does it work?** Four tests on recordings the system had never seen (rows 1–4; row 4 ran on a lab '
                 'GPU before the event, the others on AMD), plus station mode on the same person as row 2 (last row). '
@@ -442,15 +448,15 @@ if vista == 'Overview':
     tabla(pd.DataFrame([
         ['1 · KIT subject 3 (new person, workshop and kitchen tasks), on AMD', '≈ 42 %', '55.4 %', '65.1 %'],
         ['2 · KIT subject 4 (new person), on AMD', '41.6 %', '51.5 %', '57.4 %'],
-        ['3 · IMPACT: 8 gearbox videos never labelled before, on AMD', '46.5 %', '66.5 %', '71.1 %'],
-        ['4 · KIT subject 1 (new person), lab GPU before the event', '48–55 % (by task)', '67.5 %', '77.1 %'],
+        ['3 · IMPACT: 8 gearbox videos the system had never seen, on AMD', '46.5 %', '66.5 %', '71.1 %'],
+        ['4 · KIT subject 1 (new person), lab GPU before the event', '48 / 55 % (workshop / kitchen)', '67.5 %', '77.1 %'],
         ['Extra · KIT subject 4 in station mode (5 coworkers at the same tasks already reviewed)', '41.6 %', '51.5 %',
          '83.4 %'],
     ], columns=['Test', 'Always guessing the most common label', 'Gemma 4 alone (no review)',
                 'Gilbreth (Gemma 4 + the review)']))
     st.caption('KIT Bimanual and IMPACT are research datasets of people filmed doing hand tasks, labelled by people. '
-               'On the 8 gearbox videos, station mode only tied (72.2 %). Model cost on AMD: about US$0.008 per minute '
-               'of video. Every figure and how it was measured: the Accuracy & AMD view.')
+               'On the 8 gearbox videos, station mode only tied (71.3 % against 71.1 %; the per-second version this app '
+               'runs: 72.2 %). Model cost on AMD: about US$0.008 per minute of video, across the five examples. Every figure and how it was measured: the Accuracy & AMD view.')
 
     # 3) el detalle del ejemplo
     st.divider()
@@ -543,7 +549,7 @@ if vista == 'Bimanual chart':
                     f"coded in station mode, learning from {EST['meta']['estacion'].split(': ')[-1]}.")
         elif cal:
             est = cal.get('estimacion') or {}
-            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed ({quien_rev}); the agent coded the rest. "
+            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed ({quien_rev}); Gilbreth coded the rest. "
                     f"Gate (the check that decides who codes the rest): "
                     + (f"**the model calibrated on the review recoded it**. " if cal.get('compuerta') == 'v7' else
                        f"**the vision model's codes were kept**. ")
