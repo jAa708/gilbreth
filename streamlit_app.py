@@ -251,7 +251,7 @@ st.markdown('**AI motion study from a workstation video.** A phone video of a ma
 
 EJ = ejemplos(tuple(sorted((p.parent.name, p.stat().st_mtime) for p in (RAIZ / 'examples').glob('*/diagrama.json'))))
 with st.sidebar:
-    st.header('Example')
+    st.header('Examples')
     nombre = st.selectbox('Operation', list(EJ), label_visibility='collapsed')
     st.caption(nombre)
     st.divider()
@@ -319,40 +319,108 @@ else:
     vista = st.radio('View', VISTAS, horizontal=True, key='vista', label_visibility='collapsed')
 vista = vista or VISTAS[0]
 
+# lo que se ve en cada ejemplo, en una frase: la portada lo dice antes de dar cifras
+EJEMPLO_EN = {
+    'impact_gearbox': 'A person reassembles a gearbox with tools. It comes from IMPACT, a research dataset labelled '
+                      'second by second by people, and this person was not in the data Gilbreth learned from. The '
+                      'first {r:.0f} s were reviewed; Gilbreth coded the rest.',
+    'factory_screw': 'A factory worker assembles small parts with a suspended power screwdriver: a {t:.0f}-second '
+                     'excerpt with several units. Nobody reviewed it, so this is the first draft of the vision model.',
+    'factory_cardboard': 'A worker folds cardboard boxes at a packing station: a {t:.0f}-second excerpt with several '
+                         'units. Nobody reviewed it, so this is the first draft of the vision model.',
+    'factory_plastic': 'A worker arranges small plastic parts in rows: a {t:.0f}-second excerpt with several units. '
+                       'Nobody reviewed it, so this is the first draft of the vision model.',
+    'lego': 'One full assembly of a 56-piece LEGO set ({t:.0f} s, one unit), filmed for our methods course. The '
+            'first {r:.0f} s were reviewed by a person; Gilbreth coded the rest.',
+}
+
+
+def ir_a(v, muestra=False):
+    """Botones de la portada: cambian de vista (y, si se pide, cargan el clip de muestra al llegar)."""
+    st.session_state['vista'] = v
+    st.session_state['_vista_ant'] = v
+    if muestra:
+        st.session_state['_auto_muestra'] = True
+
+
 if vista == 'Overview':
     pot = mejora.potencial(filas)
     clip = es_clip(d['meta'])
     por = f"per {pot['tiempo_s']:.0f}-s clip" if clip else 'per unit'
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric('Observed clip' if clip else 'Observed time per unit', f"{pot['tiempo_s']:.0f} s")
-    c2.metric('Same clip after the plan (estimate)' if clip else 'Estimated after the plan', f"{pot['nuevo_s']:.0f} s",
-              f"-{pot['ahorro_pct']:.0f} %", delta_color='inverse')
-    c3.metric('Output per shift (estimate)', f"+{pot['capacidad_pct']:.0f} %",
-              help=f"Units the same shift makes after the plan, against today, if the estimate holds: "
-                   f"{pot['tiempo_s']:.0f} s ÷ {pot['nuevo_s']:.0f} s − 1. A cycle {pot['ahorro_pct']:.0f} % shorter makes "
-                   f"{pot['capacidad_pct']:.0f} % more units.")
-    corrida = (B.get('runs') or {}).get(d['meta'].get('run', ''))
-    a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
-    if corrida:
-        c4.metric('Agent on AMD (unattended)', f"{corrida['wall_s'] / 60:.1f} min",
-                  f"vs ≈ {a_mano:.0f} min by hand (estimate) · paced by the shared endpoint", delta_color='off', **SIN_FLECHA,
-                  help='Unattended wall time on the shared AMD Token Factory endpoint, paced to its limit of 20 requests '
-                       'per minute (about one request per second of video). Details in Accuracy & AMD.')
-    elif d['meta'].get('minutos_a_mano'):
-        c4.metric('Charting by hand (our estimate)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
-                  f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off', **SIN_FLECHA)
-    else:
-        c4.metric('Charting by hand (estimate)', f"≈ {pot['tiempo_s'] / 60 * RITMO_A_MANO:.0f} min",
-                  f"at ≈ {RITMO_A_MANO:.0f} min per video-minute", delta_color='off', **SIN_FLECHA)
+    st.subheader('The idea in one minute')
+    c_a, c_b, c_c = st.columns(3)
+    with c_a.container(border=True):
+        st.markdown('**1 · The problem**')
+        st.markdown('To improve manual work, industrial engineers draw a **bimanual chart**: what the left and the '
+                    'right hand do in every second (operate, transport, hold or wait). A hand that only holds while '
+                    'the other one works is time that a fixture can give back. Charting a 5-minute video by hand '
+                    'takes about an hour (our estimate).')
+    with c_b.container(border=True):
+        st.markdown('**2 · What Gilbreth does**')
+        st.markdown('You film the station with a phone. **Gemma 4 on AMD GPUs** codes each hand, second by second. '
+                    'The engineer corrects only the first seconds; Gilbreth learns from that correction, codes the '
+                    'rest, flags method problems and estimates how many **seconds per unit** a better method saves.')
+    with c_c.container(border=True):
+        st.markdown('**3 · Does it work?**')
+        st.markdown('Tested once, with the rule written beforehand, on recordings it had never seen. Hand-seconds '
+                    '(one hand during one second) coded like a person, Gemma alone → Gilbreth, on AMD:  \n'
+                    '**55.4 → 65.1 %** and **51.5 → 57.4 %** (two new people)  \n'
+                    '**66.5 → 71.1 %** (8 gearbox videos)  \n'
+                    '**83.4 %** when coworkers at the station are already reviewed.  \n'
+                    'Model cost: about **US$0.008 per minute** of video.')
+    pasos = [('📱', 'Film', 'a phone video of the station'), ('✋', 'Track the hands', 'MediaPipe, on CPU'),
+             ('🧠', 'Code every second', 'Gemma 4 31B on AMD GPUs'),
+             ('👷', 'Review the start', 'the engineer corrects the first seconds; a check decides who codes the rest'),
+             ('📊', 'Get the results', 'chart, method alerts, plan in seconds per unit, Excel')]
+    for col, (icono, titulo, detalle) in zip(st.columns(len(pasos)), pasos):
+        col.markdown(f'<div style="text-align:center"><div style="font-size:2rem">{icono}</div><b>{titulo}</b>'
+                     f'<div style="font-size:0.85rem;opacity:0.7">{detalle}</div></div>', unsafe_allow_html=True)
+    st.write('')
+    b1, b2, b3 = st.columns([1.3, 1.3, 2], vertical_alignment='center')
+    b1.button('▶ Try it on our 20-second sample', type='primary', width='stretch', on_click=ir_a,
+              args=('Try your own video', True))
+    b2.button('See the chart next to the video', width='stretch', on_click=ir_a, args=('Bimanual chart',))
+    b3.caption('Or pick one of the 5 real examples in the sidebar; all of them were charted with Gemma 4 on AMD.')
+    st.divider()
+
+    st.subheader('The example on screen')
+    descripcion = EJEMPLO_EN.get(EJ[nombre].name, '').format(t=pot['tiempo_s'], r=(cal or {}).get('revisado_hasta_s', 0))
+    if MODO_EST:
+        descripcion += ' Shown in station mode: it also learned from coworkers already reviewed at this station.'
+    izq, der = st.columns([2, 3])
+    if video:
+        izq.video(str(video))
+    with der:
+        st.markdown(f'**{nombre}**  \n{descripcion}')
+        c1, c2 = st.columns(2)
+        c3, c4 = st.columns(2)
+        c1.metric('Observed clip' if clip else 'Observed time per unit', f"{pot['tiempo_s']:.0f} s")
+        c2.metric('Same clip after the plan (estimate)' if clip else 'Estimated after the plan', f"{pot['nuevo_s']:.0f} s",
+                  f"-{pot['ahorro_pct']:.0f} %", delta_color='inverse')
+        c3.metric('Output per shift (estimate)', f"+{pot['capacidad_pct']:.0f} %",
+                  help=f"Units the same shift makes after the plan, against today, if the estimate holds: "
+                       f"{pot['tiempo_s']:.0f} s ÷ {pot['nuevo_s']:.0f} s − 1. A cycle {pot['ahorro_pct']:.0f} % shorter makes "
+                       f"{pot['capacidad_pct']:.0f} % more units.")
+        corrida = (B.get('runs') or {}).get(d['meta'].get('run', ''))
+        a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
+        if corrida:
+            c4.metric('Agent on AMD (unattended)', f"{corrida['wall_s'] / 60:.1f} min",
+                      f"vs ≈ {float(a_mano):.0f} min by hand (estimate)", delta_color='off', **SIN_FLECHA,
+                      help='Unattended wall time on the shared AMD Token Factory endpoint, paced to its limit of 20 '
+                           'requests per minute (about one request per second of video). Details in Accuracy & AMD.')
+        else:
+            c4.metric('Charting by hand (estimate)', f"≈ {float(a_mano):.0f} min",
+                      f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off', **SIN_FLECHA)
+        if pot['palancas']:
+            top = pot['palancas'][0]
+            nd_t = 1 if top['segundos'] < 20 else 0
+            st.markdown(f"**Biggest saving found:** {top['title']} — about **{top['segundos']:.{nd_t}f} s** {por}.")
     st.caption(f'Charting by hand: we estimate ≈ 60 min of one person for our 4.7-min course video (≈ '
                f'{RITMO_A_MANO:.0f} min per minute of video) and scale other videos from it. Published manual methods take '
                'longer: MTM time studies, which set standard times from motions, need ≈ 40–350 analyst-minutes per '
                'minute of work, and labelling hand motions frame by frame took 79.8 min per minute of video in a '
-               'NeurIPS 2022 dataset. Sources: docs/SOURCES.md.')
-    if clip:
-        st.info(f"This example is a {pot['tiempo_s']:.0f}-second excerpt of a longer take, with several units in it. "
-                f"Times are for the whole clip, not per unit, and the plan estimates the same clip of work after "
-                f"the changes.")
+               'NeurIPS 2022 dataset. Sources: docs/SOURCES.md.'
+               + (' Times of a factory excerpt are for the whole clip, not per unit.' if clip else ''))
     ver_manos(filas)
     st.subheader('Second by second')
     st.altair_chart(linea_tiempo(filas), width="stretch")
@@ -363,22 +431,22 @@ if vista == 'Overview':
         nd_p = 1 if p['segundos'] < 20 else 0          # 15.5 s y no «16 s»: como en las tarjetas del plan
         st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.{nd_p}f} s** {por} ({p['pct']:.{nd_p}f} %). "
                     f"{evidencia(p, clip)}")
-    st.subheader('How it works')
-    st.markdown(
-        '1. **Hands** — MediaPipe tracks both hands at 10 fps; left and right are decided by a vote over ±2 s, so '
-        'the labels do not swap.\n'
-        '2. **Operation sheet** — the vision model looks at 6 frames and writes what is assembled, where the parts '
-        'and tools are, and the typical cycle. Nothing product-specific is hard-coded.\n'
-        '3. **Every second** — Gemma 4 31B, served on AMD GPUs, gets 4 marked frames, a crop of each hand and '
-        'hand-speed data, and returns the activity of each hand (ILO symbols: ○ operation, ⇨ transport, '
-        'D delay, ▽ hold) as schema-checked JSON.\n'
-        '4. **Human calibration** — the engineer corrects the first seconds, ideally the first cycle (20–50 s in the '
-        'KIT Bimanual tests, 60 s in IMPACT: two research datasets of people filmed doing hand tasks). A small model '
-        'learns from that correction how much to trust the vision model vs. the hand motion, and a **gate** lets it '
-        'recode the rest only if it beats the vision model on reviewed seconds it was not trained on; otherwise the '
-        'vision model\'s codes stay.\n'
-        '5. **Outputs** — chart rows (a new row whenever either hand changes activity), method alerts, the '
-        'improvement plan in seconds saved per unit, and the Excel chart in the course format.')
+    with st.expander('How it works, step by step'):
+        st.markdown(
+            '1. **Hands** — MediaPipe tracks both hands at 10 fps; left and right are decided by a vote over ±2 s, so '
+            'the labels do not swap.\n'
+            '2. **Operation sheet** — the vision model looks at 6 frames and writes what is assembled, where the parts '
+            'and tools are, and the typical cycle. Nothing product-specific is hard-coded.\n'
+            '3. **Every second** — Gemma 4 31B, served on AMD GPUs, gets 4 marked frames, a crop of each hand and '
+            'hand-speed data, and returns the activity of each hand (ILO symbols: ○ operation, ⇨ transport, '
+            'D delay, ▽ hold) as schema-checked JSON.\n'
+            '4. **Human calibration** — the engineer corrects the first seconds, ideally the first cycle (20–50 s in the '
+            'KIT Bimanual tests, 60 s in IMPACT: two research datasets of people filmed doing hand tasks). A small model '
+            'learns from that correction how much to trust the vision model vs. the hand motion, and a **gate** lets it '
+            'recode the rest only if it beats the vision model on reviewed seconds it was not trained on; otherwise the '
+            'vision model\'s codes stay.\n'
+            '5. **Outputs** — chart rows (a new row whenever either hand changes activity), method alerts, the '
+            'improvement plan in seconds saved per unit, and the Excel chart in the course format.')
 
 if vista == 'Bimanual chart':
     izq, der = st.columns([3, 2])
@@ -932,6 +1000,9 @@ if vista == 'Try your own video':
                'are sent to AMD Token Factory (developer.amd.com.cn), AMD\'s hosted model service. Avoid clips that show '
                'faces or confidential work. Uploads are deleted when you replace them; older ones are cleared after six hours.')
     up = st.file_uploader('Video', type=['mp4', 'mov', 'avi', 'mkv'])
+    if (st.session_state.pop('_auto_muestra', False) and up is None and MUESTRA.exists()
+            and not (st.session_state.get('subida') or {}).get('muestra')):
+        nueva_subida('sample:' + MUESTRA.name, MUESTRA.name, MUESTRA.read_bytes(), muestra=True)
     sub = st.session_state.get('subida') or {}
     if up is not None:
         if sub.get('clave') != f'{up.name}:{up.size}':
@@ -957,7 +1028,7 @@ if vista == 'Try your own video':
         npz, run = tmp / 'puntos.npz', tmp / 'run'
         if sub.get('muestra'):
             with st.expander('Watch the sample clip', expanded=True):
-                st.video(str(vid))
+                st.columns([3, 2])[0].video(str(vid))      # a lo ancho tapaba lo que el agente sacó del clip
         if sub['dur'] > 121:
             st.error(f"This video is {sub['dur']:.0f} s long. Please upload 2 minutes or less.")
             st.stop()
