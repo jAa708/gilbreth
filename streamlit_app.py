@@ -2,7 +2,7 @@
 A phone video of a manual operation goes in; a draft bimanual (left-hand / right-hand) chart, method alerts and an
 improvement plan in seconds saved per unit come out, for the methods engineer to review.
 Vision model: Gemma 4 31B served on AMD GPUs (AMD Token Factory, or vLLM on ROCm). Hand tracking: MediaPipe."""
-import json, os, sys, tempfile
+import inspect, json, os, sys, tempfile
 from collections import defaultdict
 from pathlib import Path
 
@@ -15,6 +15,7 @@ sys.path.insert(0, str(RAIZ / 'agent'))
 import errores, mejora  # noqa: E402
 
 st.set_page_config(page_title='Gilbreth · AI motion study', page_icon='⏱️', layout='wide')
+SIN_FLECHA = {'delta_arrow': 'off'} if 'delta_arrow' in inspect.signature(st.metric).parameters else {}
 
 ACT = {'OP': 'Operation', 'TR+OP': 'Transport + operation', 'TR': 'Transport', 'S': 'Hold', 'D': 'Delay',
        'NV': 'Not visible'}
@@ -196,12 +197,14 @@ def acuerdo(cal, est=None):
 
 
 @st.cache_data
-def excel_bytes(carpeta, huella=None):
+def excel_bytes(carpeta, huella=None, huella_est=None):
+    """Excel del curso; con huella_est, el del modo estación (sus filas, las alertas del diagrama entregado)."""
     import salidas
     d, ev = cargar(carpeta, huella)[:2]
+    filas = estacion_de(carpeta, huella_est)['filas'] if huella_est is not None else d['filas']
     with tempfile.TemporaryDirectory() as tmp:
         ruta = Path(tmp) / 'bimanual_chart.xlsx'
-        salidas.escribir_excel(d['filas'], salidas.indicadores(d['filas']), d['meta'], ruta, eventos=ev, idioma='en')
+        salidas.escribir_excel(filas, salidas.indicadores(filas), d['meta'], ruta, eventos=ev, idioma='en')
         return ruta.read_bytes()
 
 
@@ -245,11 +248,17 @@ with st.sidebar:
 _fe = EJ[nombre] / 'estacion.json'
 EST = estacion_de(str(EJ[nombre]), _fe.stat().st_mtime if _fe.exists() else None)
 MODO_EST = False
-if EST:
+EN_VIVO = st.session_state.get('vista') == 'Try your own video'
+if EN_VIVO:
+    with st.sidebar:
+        st.divider()
+        st.caption('The sidebar describes the selected example. Your own video, or the sample, is charted from scratch '
+                   'in the main panel with the shipped mode.')
+elif EST:
     with st.sidebar:
         st.divider()
         # este puesto ya tiene compañeros revisados: se abre en modo estación (el modo entregado queda a un clic)
-        modo = st.radio('Chart from', ['Station mode (reviewed coworkers)', 'Shipped mode (reviewed minute)'],
+        modo = st.radio('This example: chart from', ['Station mode (reviewed coworkers)', 'Shipped mode (reviewed minute)'],
                         key=f'modo_{nombre}', help='Station mode learns from workers already reviewed at the same '
                                                    'station (agent/estacion.py). The shipped mode needs no one '
                                                    'reviewed before: it is what a brand-new station gets.')
@@ -282,14 +291,14 @@ if vista == 'Overview':
     corrida = (B.get('runs') or {}).get(d['meta'].get('run', ''))
     a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
     if corrida:
-        c4.metric('Agent on AMD', f"{corrida['wall_s'] / 60:.1f} min",
-                  f"vs ≈ {a_mano:.0f} min by hand (estimate)", delta_color='off')
+        c4.metric('Agent on AMD (unattended)', f"{corrida['wall_s'] / 60:.1f} min",
+                  f"vs ≈ {a_mano:.0f} min by hand (estimate)", delta_color='off', **SIN_FLECHA)
     elif d['meta'].get('minutos_a_mano'):
         c4.metric('Charting by hand (our estimate)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
-                  f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off')
+                  f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off', **SIN_FLECHA)
     else:
         c4.metric('Charting by hand (estimate)', f"≈ {pot['tiempo_s'] / 60 * RITMO_A_MANO:.0f} min",
-                  f"at ≈ {RITMO_A_MANO:.0f} min per video-minute", delta_color='off')
+                  f"at ≈ {RITMO_A_MANO:.0f} min per video-minute", delta_color='off', **SIN_FLECHA)
     st.caption(f'Charting by hand: for our course project we estimate ≈ 60 min of one person for a 4.7-min video (≈ '
                f'{RITMO_A_MANO:.0f} min per minute of video; other videos are scaled from it). Published references for related manual analyses: '
                'MTM-UAS needs ≈ 40 analyst-minutes '
@@ -316,7 +325,8 @@ if vista == 'Overview':
         '3. **Every second** — Gemma 4 31B, served on AMD GPUs, gets 4 marked frames, a crop of each hand and '
         'hand-speed data, and returns the activity of each hand (ILO symbols: ○ operation, ⇨ transport, '
         'D delay, ▽ hold) as schema-checked JSON.\n'
-        '4. **Human calibration** — the engineer corrects the first cycle (≥ 30 s). A small model learns from that '
+        '4. **Human calibration** — the engineer corrects the first seconds, ideally the first cycle (20–50 s in the '
+        'KIT tests, 60 s at IMPACT). A small model learns from that '
         'correction how much to trust the vision model vs. the hand motion, and a **gate** checks on the reviewed '
         'seconds (without seeing itself) that it really beats the vision model before recoding the rest.\n'
         '5. **Outputs** — chart rows (a new row whenever either hand changes activity), method alerts, the '
@@ -357,8 +367,10 @@ if vista == 'Bimanual chart':
                     f"the agent. Gate: **{'the calibrated model recoded it' if cal.get('compuerta') == 'v7' else 'the vision model was kept'}**"
                     f" (it scored higher on the reviewed seconds, tested without seeing itself).")
     a, b = st.columns(2)
-    a.download_button('Download the chart (Excel, course format)', excel_bytes(str(EJ[nombre]), HUELLA), 'bimanual_chart.xlsx',
-                      width="stretch", disabled=MODO_EST, help='Shipped mode only' if MODO_EST else None)
+    a.download_button('Download the chart (Excel, course format)',
+                      excel_bytes(str(EJ[nombre]), HUELLA, _fe.stat().st_mtime if MODO_EST else None),
+                      'bimanual_chart_estacion.xlsx' if MODO_EST else 'bimanual_chart.xlsx', width="stretch",
+                      help='Station-mode rows; the method alerts come from the shipped chart' if MODO_EST else None)
     b.download_button('Download the raw result (JSON)',
                       json.dumps(EST if MODO_EST else d, ensure_ascii=False, indent=1),
                       'diagrama_estacion.json' if MODO_EST else 'diagrama.json', width="stretch")
@@ -429,8 +441,8 @@ if vista == 'Method alerts':
 
 if vista == 'Accuracy & AMD':
     st.markdown('Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each '
-                'pre-registered and looked at **once** with the system frozen, on people never used before: three in '
-                'the KIT Bimanual dataset (the labels of the first two takes of each task, ≈ 20–50 s, stand in for the '
+                'pre-registered and scored **once** with the system frozen, on recordings it had never seen: three new '
+                'people in the KIT Bimanual dataset (the labels of the first two takes of each task, ≈ 20–50 s, stand in for the '
                 'engineer’s review; takes 2–9 are measured) and one on a second dataset, IMPACT (8 runs never coded before, by '
                 'operators not in the motion prior; the first 60 s of each reviewed, measured from second 60).')
     st.dataframe(pd.DataFrame([
@@ -463,7 +475,7 @@ if vista == 'Accuracy & AMD':
         ['KIT subject 4, clean test (5 labelled coworkers), per hand and second', '51.5 %', '57.4 %',
          '83.4 % (82.5 % with per-second labels)'],
         ['   on the chart: share of time per hand, points from the human labels', '12.5', '12.8', '6.3'],
-        ['   on the chart: the hand that holds or waits the most, right', '79 %', '71 %', '92 %'],
+        ['   on the chart: takes where it finds the hand that holds or waits the most', '79 %', '71 %', '92 %'],
         ['Gearbox example, IMPACT (9 reviewed coworkers), from second 60, 307 hand-seconds', '70.0 %', '73.9 %',
          '77.9 %'],
         ['IMPACT clean test, 8 new runs (same 9 coworkers), 3,142 hand-seconds', '66.5 %', '71.1 %',
@@ -520,7 +532,7 @@ PASOS_EN = {'1/5': 'Tracking both hands (MediaPipe, CPU)', '2/5': 'Frames, hand 
             '4/5': 'Coding every second, hand by hand', '5/5': 'Chart rows, row descriptions and method alerts'}
 
 
-def endpoint_vivo(base, modelo):
+def endpoint_vivo(base, modelo, espera=45):
     """Una petición mínima antes de lanzar el agente: el endpoint compartido puede estar caído (modelo experimental)."""
     import urllib.error, urllib.request
     url = base.rstrip('/') + ('/chat/completions' if base.rstrip('/').endswith('/v1') else '/v1/chat/completions')
@@ -535,7 +547,7 @@ def endpoint_vivo(base, modelo):
     cuerpo = json.dumps({'model': modelo, 'max_tokens': 2, 'messages': [{'role': 'user', 'content': [
         {'type': 'text', 'text': 'ok'}, {'type': 'image_url', 'image_url': {'url': img}}]}]}).encode()
     try:
-        urllib.request.urlopen(urllib.request.Request(url, data=cuerpo, headers=cab), timeout=45).read()
+        urllib.request.urlopen(urllib.request.Request(url, data=cuerpo, headers=cab), timeout=espera).read()
         return True
     except urllib.error.HTTPError as e:
         return e.code == 429                       # ocupado pero vivo: el agente sabe esperar
@@ -543,14 +555,14 @@ def endpoint_vivo(base, modelo):
         return False
 
 
-@st.cache_data(ttl=300, show_spinner=False)
+@st.cache_data(ttl=300, show_spinner='Checking which vision model is answering on AMD…')
 def elegir_motor(base, modelo, motor, respaldo, motor_respaldo):
     """Qué modelo corre la demo en vivo: Gemma si responde con imagen; si no, el respaldo configurado en el mismo
     servicio de AMD (GILBRETH_FALLBACK_MODEL). Se vuelve a mirar cada 5 min. Devuelve (modelo, motor, estado) con
     estado 'principal', 'respaldo' o 'ninguno'."""
-    if endpoint_vivo(base, modelo):
+    if endpoint_vivo(base, modelo, 20):
         return modelo, motor, 'principal'
-    if respaldo and endpoint_vivo(base, respaldo):
+    if respaldo and endpoint_vivo(base, respaldo, 20):
         return respaldo, motor_respaldo, 'respaldo'
     return modelo, motor, 'ninguno'
 
@@ -563,8 +575,8 @@ def correr_agente(vid, npz, run, base, modelo, motor, respaldo=False):
     # el respaldo (Qwen) razona: se le apaga el razonamiento, como en el cribado
     extra = ['--ollama'] if respaldo and config('GILBRETH_FALLBACK_NO_REASONING', '1') == '1' else []
     if not vivo:
-        st.warning('The shared AMD endpoint that serves Gemma 4 is not answering right now (it is an experimental '
-                   'service). Please try again in a while; the examples in the sidebar were computed with it.')
+        st.warning('The shared AMD endpoint that serves the vision model is not answering right now (it is an '
+                   'experimental service). Please try again in a while; the examples in the sidebar were computed with it.')
         return False
     env = env_agente()
     cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
@@ -581,7 +593,10 @@ def correr_agente(vid, npz, run, base, modelo, motor, respaldo=False):
         for linea in p.stdout:
             cola = (cola + [linea.rstrip()])[-25:]
             if linea[:3] in PASOS_EN:
-                estado.write(f'{PASOS_EN[linea[:3]]} · {time.time() - t0:.0f} s')
+                estado.write(f'{PASOS_EN[linea[:3]]} (started at {time.time() - t0:.0f} s)'
+                             + (' · one request per second of video on the shared endpoint: the long step'
+                                if linea[:3] == '4/5' else ''))
+                estado.update(label=f'The agent is charting your video… step {linea[:3]}: {PASOS_EN[linea[:3]]}')
         p.wait()
         (run / 'corriendo').unlink(missing_ok=True)
         ok = p.returncode == 0 and (run / 'diagrama.json').exists()
@@ -619,19 +634,26 @@ def mostrar_resultado(run, motor):
     pot2 = mejora.potencial(filas2)
     wall = json.loads((run / 'tiempo.json').read_text())['wall_s'] if (run / 'tiempo.json').exists() else None
     c1, c2, c3, c4 = st.columns(4)
-    c1.metric('Observed clip', f"{pot2['tiempo_s']:.0f} s")
-    c2.metric('Estimated after the plan', f"{pot2['nuevo_s']:.0f} s", f"-{pot2['ahorro_pct']:.0f} %", delta_color='inverse')
-    c3.metric('Output per shift (estimate)', f"+{pot2['capacidad_pct']:.0f} %")
+    nd = 1 if pot2['tiempo_s'] < 60 else 0           # en un clip corto, 20 → 18 s junto a −12 % parecía un error
+    c1.metric('Observed clip', f"{pot2['tiempo_s']:.{nd}f} s")
+    c2.metric('Estimated after the plan', f"{pot2['nuevo_s']:.{nd}f} s", f"-{pot2['ahorro_pct']:.{nd}f} %",
+              delta_color='inverse')
+    c3.metric('Output per shift (estimate)', f"+{pot2['capacidad_pct']:.{nd}f} %")
     if wall:
-        c4.metric('Agent wall time', f'{wall:.0f} s', f'≈ {pot2["tiempo_s"] / 60 * RITMO_A_MANO:.0f} min by hand (estimate)',
-                  delta_color='off')
+        c4.metric('Agent wall time (unattended)', f'{wall:.0f} s')
+        st.caption('The agent runs unattended on the shared AMD endpoint, paced by its request limit; the engineer\'s '
+                   'part is the review below.')
     cal2 = json.loads((run / 'calibracion.json').read_text(encoding='utf-8')) if (run / 'calibracion.json').exists() else None
     if cal2:
         est = cal2.get('estimacion') or {}
-        st.caption(f"Computed by {motor}, then recoded after you reviewed the first {cal2.get('revisado_hasta_s', 0)} s. "
-                   f"Gate: **{'calibrated model' if cal2.get('compuerta') == 'v7' else 'vision model kept'}** (on your reviewed "
-                   f"seconds, held out: vision model {est.get('gemma', 0)}/{est.get('n', 0)}, calibrated {est.get('v7', 0)}/"
-                   f"{est.get('n', 0)}; motion prior: {previo_en(cal2.get('previo'))}).")
+        recodifico = cal2.get('compuerta') == 'v7'
+        st.caption(f"Computed by {motor}; you reviewed the first {cal2.get('revisado_hasta_s', 0)} s. "
+                   f"Gate: **{'the calibrated model recoded the rest' if recodifico else 'vision model kept for the rest'}** "
+                   f"(on your reviewed seconds, held out: vision model {est.get('gemma', 0)}/{est.get('n', 0)}, calibrated "
+                   f"{est.get('v7', 0)}/{est.get('n', 0)}; motion prior: {previo_en(cal2.get('previo'))}).")
+        if not recodifico:
+            st.caption('On these reviewed seconds the calibrated model did not beat the vision model, so its codes stay '
+                       'for the rest; your corrections are kept. In our tests the engineer reviewed 20–60 s.')
     else:
         st.caption(f'Computed just now by {motor}. First draft from the vision model, not yet reviewed by an engineer.')
     ver_manos(filas2)
@@ -642,7 +664,8 @@ def mostrar_resultado(run, motor):
     if pot2['palancas']:
         st.subheader('Top improvements')
         for p in pot2['palancas'][:3]:
-            st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.0f} s** ({p['pct']:.0f} %). {p['evidence']}")
+            st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.{nd}f} s** in this clip ({p['pct']:.0f} %). "
+                        f"{p['evidence']}")
     if ev2:
         st.subheader('Method alerts')
         st.dataframe(alertas_agrupadas(ev2), hide_index=True, width="stretch")
@@ -670,7 +693,7 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
     st.caption('Correct what each hand does in the first seconds (the first cycle, if it fits). The agent learns from your '
                'corrections how far to trust the vision model and how far the hand motion; a gate keeps the vision '
                'model unless the calibrated one scores higher on your reviewed seconds, tested without seeing itself.')
-    tope = max(5, min(60, int(dur)))
+    tope = max(6, min(60, int(dur)))
     n = st.slider('Seconds to review', 5, tope, min(30, max(5, int(0.4 * dur))), key='rev_n')   # deja algo que recodificar
     df = pd.DataFrame([{'Second': f'{s}–{s + 1} s', 'Left hand': ACT.get(borrador[s][1], borrador[s][1]),
                         'Right hand': ACT.get(borrador[s][0], borrador[s][0])} for s in sorted(borrador) if s < n])
@@ -684,7 +707,8 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
                             column_config={'Left hand': st.column_config.SelectboxColumn(options=opciones, required=True),
                                            'Right hand': st.column_config.SelectboxColumn(options=opciones, required=True)})
     cambios = sum((ed['Left hand'] != df['Left hand']) | (ed['Right hand'] != df['Right hand']))
-    if st.button(f'Apply my review ({cambios} rows changed) and recode the rest', type='primary'):
+    if st.button(f'Apply my review ({cambios} row{"" if cambios == 1 else "s"} changed) and let the gate decide the rest',
+                 type='primary'):
         filas_rev = [{'t0': float(s), 't1': float(s + 1), 'md': CODIGO_DE[r['Right hand']], 'mi': CODIGO_DE[r['Left hand']]}
                      for s, (_, r) in zip(sorted(x for x in borrador if x < n), ed.iterrows())]
         (run / 'revisado.json').write_text(json.dumps({'filas': filas_rev}, ensure_ascii=False), encoding='utf-8')
@@ -692,7 +716,7 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
         cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
                '--modelo', modelo, '--idioma', 'en', '--puntos', str(npz), '--reusar-ventanas', '--sin-descripciones',
                '--calibrar', str(run / 'revisado.json')] + (['--ollama'] if respaldo else [])
-        with st.spinner('Calibrating on your review and recoding the rest (CPU, no new model requests)…'):
+        with st.spinner('Calibrating on your review and checking the rest (CPU, no new model requests)…'):
             p = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', errors='replace', env=env,
                                cwd=str(RAIZ))
         if p.returncode != 0:
@@ -726,9 +750,13 @@ if vista == 'Try your own video':
         modelo, motor, estado = elegir_motor(base, modelo, motor, respaldo,
                                              config('GILBRETH_FALLBACK_ENGINE', f'{respaldo} on AMD GPUs (AMD Token Factory)'))
         if estado == 'respaldo':
-            st.info(f'Live runs use **{motor}**, the best of the vision models we screened on AMD after Gemma 4 left the '
-                    f'shared Token Factory catalogue on 15 Oct. {config("GILBRETH_FALLBACK_NOTE", "")} Every example in this app '
-                    'and the KIT tests on subjects 3 and 4 were computed with Gemma 4 31B on AMD.')
+            st.info(f'Gemma 4 is not answering on the shared AMD Token Factory right now (it was removed from the '
+                    f'catalogue on 15 Oct and listed again on 16 Oct), so live runs use **{motor}**, the best of the vision '
+                    f'models we screened on AMD. {config("GILBRETH_FALLBACK_NOTE", "")} Every example in this app, the KIT '
+                    'tests on subjects 3 and 4 and the IMPACT test were computed with Gemma 4 31B on AMD.')
+        elif estado == 'ninguno':
+            st.warning('The shared AMD endpoint is not answering right now (it is an experimental service), so the full '
+                       'agent cannot run at the moment. Hand tracking below still works; please try again in a while.')
     st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU'
                 + (f'; the full chart is computed by **{motor}**.' if base else
                    ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))
@@ -760,22 +788,31 @@ if vista == 'Try your own video':
         if sub['dur'] > 121:
             st.error(f"This video is {sub['dur']:.0f} s long. Please upload 2 minutes or less.")
             st.stop()
+        if sub['dur'] < 6:
+            st.error('This video is under 6 seconds, or its length could not be read. Please upload a clip of 6 s to '
+                     '2 minutes.')
+            st.stop()
         if not npz.exists():
             barra = st.progress(0.0, 'Tracking hands…')
             sub['manos'] = extraer_puntos.extraer(vid, npz, lambda x: barra.progress(x, 'Tracking hands…'))
             barra.empty()
         if sub.get('manos'):
-            st.caption(f"Hand tracking (MediaPipe, CPU): {sub['manos'][0]} frames, {sub['manos'][1]} hand detections.")
+            st.caption(f"Hand tracking (MediaPipe, CPU): {sub['manos'][0]} video frames, tracked at 10 fps; "
+                       f"{sub['manos'][1]} hand detections.")
         pi = pista(*cargar_npz(npz))
         limite = float(config('GILBRETH_MAX_LIVE_S', '120'))
         if pi and base and not (run / 'diagrama.json').exists() and sub['dur'] > limite + 1:
             st.info(f'On this public demo the full agent charts clips of up to {limite:.0f} s (the free AMD endpoint has '
                     f'a daily quota). Trim the video to chart it; the hand tracking below works on the whole clip.')
-        elif pi and base and not (run / 'diagrama.json').exists():
-            if (run / 'corriendo').exists():
+        elif pi and base and estado != 'ninguno' and not (run / 'diagrama.json').exists():
+            import time as _t
+            if (run / 'corriendo').exists() and _t.time() - (run / 'corriendo').stat().st_mtime < 1200:
                 st.info('The agent is still working on this video. Wait a moment and press the button below.')
                 st.button('Refresh')
             else:
+                if (run / 'corriendo').exists():         # una corrida de hace más de 20 min que no terminó
+                    (run / 'corriendo').unlink(missing_ok=True)
+                    st.warning('The last run did not finish; press the button to try again.')
                 ritmo = float(config('GILBRETH_LIVE_REQ_PER_MIN', '0') or 0)
                 if ritmo:
                     pide = sub['dur'] + 1 + (0 if config('GILBRETH_LIVE_DESC', '1') == '0' else sub['dur'] / 2)

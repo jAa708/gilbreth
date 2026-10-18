@@ -38,8 +38,8 @@ points here (on subject 1 it cost nothing). That is the next thing to study, on 
 
 ## Clean test on AMD (17 Oct): KIT Bimanual subject 4, the shipped system
 Pre-registered on 16 Oct at 22:35, when Gemma came back to Token Factory, before any result of subject 4 existed; looked
-at once. Same system and same calculation as subject 3 (agent commit `ab7188a`, which only adds the strict mode used
-for the MI300X runs and behaves byte for byte like `5b3edd6` with the shipped settings). 90 takes, 1,190 windows, no
+at once. Same system and same calculation as subject 3 (agent commit `ab7188a`, which only adds a strict mode prepared
+for MI300X runs, not run during the event, and behaves byte for byte like `5b3edd6` with the shipped settings). 90 takes, 1,190 windows, no
 failed answers, about US$0.13 of quota.
 
 | KIT subject 4 (new person), on AMD | Baseline | Gemma alone | Calibrated (v7) | **Gilbreth (v9)** | ±1 s |
@@ -75,6 +75,12 @@ only the 20–50 reviewed seconds of the new person. Built and chosen on KIT sub
 How many labelled people it needs (each new person scored with every combination of the others, development): 1 person
 83.8 % (20 runs), 2 people 84.5 % (30), 3 people 84.9 % (20), 4 people 85.0 % (5). Almost all of the gain comes from the
 first labelled person.
+
+How much of that one person it needs (development, the per-second variant with the labels the review page exports; the
+20 pairs of a new person and one labelled coworker, 45,388 hand-seconds; script
+[`research/station_v10/cuanta_revision.py`](../research/station_v10/cuanta_revision.py)): the coworker's first take of
+each task, about 16 s of video per task (2.4 min over the nine tasks), gives 81.9 %; 2 takes (31 s per task) 82.4 %;
+4 takes (63 s) 82.7 %; all 10 takes (158 s) 83.3 %.
 
 **Clean test, KIT subject 4** (trained on subjects 1, 2, 3, 5, 6 plus the reviewed takes of subject 4; the same 1,888
 hand-seconds as above; pre-registered criterion: above v9 in total and not below it in workshop or kitchen):

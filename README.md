@@ -3,10 +3,13 @@
 **A phone video of a manual operation goes in. A draft bimanual chart, method alerts and an improvement plan in
 seconds saved per unit come out — for the methods engineer to review and approve.**
 
+**Live demo: https://gilbreth.streamlit.app** — no sign-in. In *Try your own video*, chart the 20-second sample with
+the full agent on AMD, correct its first seconds and let the gate decide how the rest is coded.
+
 Built for the **AMD Developer Hackathon: ACT III** (Track 1, *Intelligent Industry*) by team **ArkhanLabs**
 (Juan David Sabogal Orozco, industrial engineering student, Cali, Colombia).
 Vision model: **Gemma 4 31B** on **AMD GPUs** through **AMD Token Factory** (the event's OpenAI-compatible endpoint)
-for every example and for the KIT tests on subjects 3 and 4 (subject 1 ran earlier on a lab GPU). Hand tracking:
+for every example, the KIT tests on subjects 3 and 4 and the IMPACT test (subject 1 ran earlier on a lab GPU). Hand tracking:
 **MediaPipe**.
 
 > **Status, 17 Oct:** AMD removed `Gemma-4-31B-IT` from Token Factory on 15 Oct and listed it again on 16 Oct
@@ -42,7 +45,8 @@ observed cycle times with Gilbreth.
    tools and documents are, and the typical cycle. Nothing product-specific is hard-coded.
 3. **Every second** — Gemma 4 31B on AMD GPUs gets 4 frames with the hands marked, a crop of each hand and
    hand-speed data, and returns the activity of each hand as schema-checked JSON.
-4. **Human calibration (the human + AI loop)** — the engineer corrects the first cycle (≥ 30 s) in the review page.
+4. **Human calibration (the human + AI loop)** — the engineer corrects the first seconds in the review page, ideally the first cycle (20–50 s in the KIT tests,
+   60 s at IMPACT).
    A small gradient-boosting model learns from that correction how much to trust the vision model versus the hand
    motion. A **gate** then checks, on the reviewed seconds and without letting the model see itself, that it really
    beats the vision model. Only then is the rest of the video recoded; otherwise Gemma's codes stay.
@@ -50,8 +54,8 @@ observed cycle times with Gilbreth.
    tracking and codes; the improvement planner (`agent/mejora.py`) turns the chart into seconds saved per lever.
 
 ## How accurate (measured)
-Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each pre-registered and looked at
-**once** with the system frozen, on people never used before: three in the KIT Bimanual dataset (the labels of the
+Accuracy = share of (hand, second) pairs with the right activity code. Four tests, each pre-registered and scored
+**once** with the system frozen, on recordings it had never seen: three new people in the KIT Bimanual dataset (the labels of the
 first two takes of each task, ≈ 20–50 s, stand in for the engineer's review; takes 2–9 are measured) and one on a
 second dataset, IMPACT (8 runs never coded before by 4 operators not in the motion prior, which comes from other
 operators at that station; the first 60 s of each run reviewed, measured from second 60).
@@ -74,7 +78,7 @@ the gate kept Gemma there; without the gate, the kitchen would have reached 54.4
 
 ### Station mode: when other workers at the same station are already labelled
 If the same tasks were already labelled for other people, Gilbreth can learn from all of their seconds instead of only
-the new person's 30 s: hand-tracker motion (whole second, half seconds and the 10 Hz profile), Gemma's codes and
+the new person's 20–50 reviewed seconds: hand-tracker motion (whole second, half seconds and the 10 Hz profile), Gemma's codes and
 attributes, and the new person's **dominant hand** read from the reviewed takes (in development it is what kept
 the left-handed subject 3 above 82 %). Trained on five KIT people (subjects 1, 2, 3, 5, 6; subject 1's Gemma codes come from the lab GPU run, the others
 from AMD) and tested once on subject 4, the same seconds and the same review as above:
@@ -85,13 +89,15 @@ from AMD) and tested once on subject 4, the same seconds and the same review as 
 | · workshop / kitchen | 56.1 / 48.5 % | 69.8 / 49.0 % | **82.9 / 83.7 %** |
 
 Leaving one of the five training people out at a time, the same system averaged 85.0 % (82.2–86.9 %); with a single
-labelled person to learn from it averaged 83.8 %, so one labelled worker per station is most of the gain. With labels per
+labelled person to learn from it averaged 83.8 %, so one labelled worker per station is most of the gain; with only that
+person's first take of each task (≈ 16 s of video per task) it was 81.9 %, against 83.3 % with all ten takes (both with
+per-second labels; development data). With labels per
 second, which is what the app's review page produces, instead of KIT's per-frame labels: 82.5 % on subject 4. It only
 applies where people doing the same task have been labelled; elsewhere the shipped mode above is the one to use.
 **Outside KIT it did not add:** in the pre-registered IMPACT test the frozen two-model version tied the shipped mode
 (71.3 % against 71.1 %); the per-second version, the one the app uses, scored 72.2 % but lower within ±1 s (81.0 %
-against 82.4 %), where the shipped motion prior already comes from the same 9 operators the station
-mode learned from. Code, pre-registrations and audit: [`research/station_v10/`](research/station_v10/).
+against 82.4 %). A likely reason, not measured: at IMPACT the shipped motion prior already comes from the same 9
+operators the station mode learned from. Code, pre-registrations and audit: [`research/station_v10/`](research/station_v10/).
 At the level the engineer reads, the share of time each hand spends operating, transporting, holding or waiting: with
 the shipped mode it is 6–13 points from the human labels, about as close as Gemma alone, so the per-second gain does not
 carry over to the chart. With station mode it does: on subject 4 the time shares are **6.3 points** away against 12.5

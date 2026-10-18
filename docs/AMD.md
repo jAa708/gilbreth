@@ -38,8 +38,14 @@ US$0.15 of the daily quota with Gemma.
 One second of video costs about 1.45 requests (one per second plus one per chart row for the descriptions; 1,390
 requests for 957.7 s of video in the five examples), so a 5-minute video needs at least 24 minutes at 18 requests per
 minute, plus request latency and retries on the shared endpoint (median 19.5 s per coding request on 14 Oct).
+Those 1,390 requests used US$0.130 of the daily quota (the sum of the `cost` field Token Factory returns with each
+answer): about US$0.008 per minute of video. That is the Gemma API spend only; it leaves out hosting, the CPU part and
+the engineer's review.
 
 ## Option B — your own AMD Instinct MI300X (AMD Developer Cloud)
+
+Prepared, but not run during the event: every AMD figure in this repository comes from
+Option A (Token Factory).
 
 The CPU part (hand tracking and per-second packages) is prepared beforehand on any computer with
 `scripts/prepare_runs.py`. The VM on AMD Developer Cloud then only does the GPU part:
