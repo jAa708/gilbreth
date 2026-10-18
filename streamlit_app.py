@@ -675,9 +675,14 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
     df = pd.DataFrame([{'Second': f'{s}–{s + 1} s', 'Left hand': ACT.get(borrador[s][1], borrador[s][1]),
                         'Right hand': ACT.get(borrador[s][0], borrador[s][0])} for s in sorted(borrador) if s < n])
     opciones = list(ACT.values())
-    ed = st.data_editor(df, hide_index=True, width="stretch", disabled=['Second'], key=f'rev_tabla_{n}',
-                        column_config={'Left hand': st.column_config.SelectboxColumn(options=opciones, required=True),
-                                       'Right hand': st.column_config.SelectboxColumn(options=opciones, required=True)})
+    izq, der = st.columns([3, 2])
+    with der:                         # el video al lado del editor: se revisa mirando, también con un video propio
+        st.video(str(vid))
+        st.caption('Play the clip while you correct the rows on the left.')
+    with izq:
+        ed = st.data_editor(df, hide_index=True, width="stretch", disabled=['Second'], key=f'rev_tabla_{n}',
+                            column_config={'Left hand': st.column_config.SelectboxColumn(options=opciones, required=True),
+                                           'Right hand': st.column_config.SelectboxColumn(options=opciones, required=True)})
     cambios = sum((ed['Left hand'] != df['Left hand']) | (ed['Right hand'] != df['Right hand']))
     if st.button(f'Apply my review ({cambios} rows changed) and recode the rest', type='primary'):
         filas_rev = [{'t0': float(s), 't1': float(s + 1), 'md': CODIGO_DE[r['Right hand']], 'mi': CODIGO_DE[r['Left hand']]}
