@@ -96,7 +96,7 @@ def linea_tiempo(filas, alto=240):
     return alt.Chart(df).mark_bar().encode(
         x=alt.X('start:Q', title='seconds', scale=alt.Scale(domain=[0, max(f['t1'] for f in filas)], nice=False)),
         x2='end:Q', y=alt.Y('hand:N', title=None, sort=['Left hand', 'Right hand']),
-        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='top', title=None, columns=6)),
+        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='top', title=None, columns=3)),
         tooltip=['hand', 'activity', 'what', 'start', 'end']).properties(height=alto)
 
 
@@ -111,7 +111,7 @@ def linea_comparada(filas, verdad, alto=300):
     return alt.Chart(pd.DataFrame(filas_d)).mark_bar().encode(
         x=alt.X('start:Q', title='seconds', scale=alt.Scale(domain=[0, max(f['t1'] for f in filas)], nice=False)),
         x2='end:Q', y=alt.Y('hand:N', title=None, sort=orden),
-        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='top', title=None, columns=6)),
+        color=alt.Color('activity:N', scale=escala, legend=alt.Legend(orient='top', title=None, columns=3)),
         tooltip=['hand', 'activity', 'start']).properties(height=alto)
 
 
@@ -209,6 +209,11 @@ def excel_bytes(carpeta, huella=None, huella_est=None):
         return ruta.read_bytes()
 
 
+def tabla(df):
+    """Tabla estática que parte el texto en líneas (st.dataframe cortaba las columnas largas en pantallas de portátil)."""
+    st.table(df.astype(str).set_index(df.columns[0]))
+
+
 def alertas_agrupadas(ev):
     por = defaultdict(list)
     for e in ev:
@@ -233,6 +238,7 @@ EJ = ejemplos(tuple(sorted((p.parent.name, p.stat().st_mtime) for p in (RAIZ / '
 with st.sidebar:
     st.header('Example')
     nombre = st.selectbox('Operation', list(EJ), label_visibility='collapsed')
+    st.caption(nombre)
     st.divider()
     st.markdown('**Who is it for?** Industrial and methods engineers, and plant supervisors in small and mid-size '
                 'factories, who need left-hand/right-hand charts and motion-economy improvements but cannot spend '
@@ -252,10 +258,12 @@ EST = estacion_de(str(EJ[nombre]), _fe.stat().st_mtime if _fe.exists() else None
 MODO_EST = False
 EN_VIVO = st.session_state.get('vista') == 'Try your own video'
 if EN_VIVO:
+    for _k in [k for k in st.session_state if str(k).startswith('modo_')]:
+        st.session_state[_k] = st.session_state[_k]       # un widget no dibujado perdería su estado
     with st.sidebar:
         st.divider()
-        st.caption('The sidebar describes the selected example. Your own video, or the sample, is charted from scratch '
-                   'in the main panel with the shipped mode.')
+        st.caption('The sidebar describes the selected example. Your own video, or the sample, is charted in the main '
+                   'panel by the full agent with the shipped mode (for the sample, a stored run shows at once).')
 elif EST:
     with st.sidebar:
         st.divider()
@@ -275,8 +283,16 @@ B = banco()
 
 # navegación con estado: st.tabs vuelve a la primera pestaña en cada recarga (p. ej. al subir un video)
 VISTAS = ['Overview', 'Bimanual chart', 'Improvement plan', 'Method alerts', 'Accuracy & AMD', 'Try your own video']
+def _vista_fija():
+    """Volver a pulsar la vista activa la desmarcaba (y la app saltaba a Overview): se restaura la anterior."""
+    if st.session_state.get('vista') is None:
+        st.session_state['vista'] = st.session_state.get('_vista_ant', VISTAS[0])
+    st.session_state['_vista_ant'] = st.session_state['vista']
+
+
 if hasattr(st, 'segmented_control'):
-    vista = st.segmented_control('View', VISTAS, default=VISTAS[0], key='vista', label_visibility='collapsed')
+    vista = st.segmented_control('View', VISTAS, default=VISTAS[0], key='vista', label_visibility='collapsed',
+                                 on_change=_vista_fija)
 else:
     vista = st.radio('View', VISTAS, horizontal=True, key='vista', label_visibility='collapsed')
 vista = vista or VISTAS[0]
@@ -294,7 +310,9 @@ if vista == 'Overview':
     a_mano = d['meta'].get('minutos_a_mano') or pot['tiempo_s'] / 60 * RITMO_A_MANO
     if corrida:
         c4.metric('Agent on AMD (unattended)', f"{corrida['wall_s'] / 60:.1f} min",
-                  f"vs ≈ {a_mano:.0f} min by hand (estimate)", delta_color='off', **SIN_FLECHA)
+                  f"vs ≈ {a_mano:.0f} min by hand (estimate)", delta_color='off', **SIN_FLECHA,
+                  help='Unattended wall time on the shared AMD Token Factory endpoint, paced to its limit of 20 requests '
+                       'per minute (about one request per second of video). Details in Accuracy & AMD.')
     elif d['meta'].get('minutos_a_mano'):
         c4.metric('Charting by hand (our estimate)', f"≈ {d['meta']['minutos_a_mano']:.0f} min",
                   f"for this {pot['tiempo_s'] / 60:.1f}-min video", delta_color='off', **SIN_FLECHA)
@@ -362,10 +380,10 @@ if vista == 'Bimanual chart':
         if img.exists() and not MODO_EST:
             st.image(str(img), caption='Frame at the middle of the row')
         if cal and MODO_EST:
-            st.info(f"The first {EST['meta']['revisado_hasta_s']:.0f} s were reviewed with human labels; the rest was "
+            st.info(f"The first {EST['meta']['revisado_hasta_s']:.0f} s were reviewed with the dataset's per-second labels; the rest was "
                     f"coded in station mode, learning from {EST['meta']['estacion'].split(': ')[-1]}.")
         elif cal:
-            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed with human labels; the rest was coded by "
+            st.info(f"The first {cal.get('revisado_hasta_s', 0)} s were reviewed with the dataset's per-second labels; the rest was coded by "
                     f"the agent. Gate: **{'the calibrated model recoded it' if cal.get('compuerta') == 'v7' else 'the vision model was kept'}**"
                     f" (it scored higher on the reviewed seconds, tested without seeing itself).")
     a, b = st.columns(2)
@@ -437,7 +455,7 @@ if vista == 'Method alerts':
     st.markdown('Signals for the engineer to look at, from hand tracking plus the chart codes. They are prompts to '
                 'check, not verdicts.' + (' Computed on the shipped chart.' if MODO_EST else ''))
     if ev:
-        st.dataframe(alertas_agrupadas(ev), hide_index=True, width="stretch")
+        tabla(alertas_agrupadas(ev))
     else:
         st.info('No method alerts for this operation.')
 
@@ -447,33 +465,32 @@ if vista == 'Accuracy & AMD':
                 'people in the KIT Bimanual dataset (the labels of the first two takes of each task, ≈ 20–50 s, stand in for the '
                 'engineer’s review; takes 2–9 are measured) and one on a second dataset, IMPACT (8 runs never coded before, by '
                 'operators not in the motion prior; the first 60 s of each reviewed, measured from second 60).')
-    st.dataframe(pd.DataFrame([
+    tabla(pd.DataFrame([
         ['Subject 4 on AMD Token Factory (shipped system), 1,888 hand-seconds', '41.6 %', '51.5 %', '57.4 % (±1 s: 71.2 %)'],
         ['   workshop 756 · kitchen 1,132', '37.0 · 44.7 %', '56.1 · 48.5 %', '69.8 · 49.0 %'],
-        ['Subject 3 on AMD Token Factory (shipped system), 2,258 hand-seconds', '—', '55.4 %', '65.1 % (±1 s: 80.1 %)'],
+        ['Subject 3 on AMD Token Factory (shipped system), 2,258 hand-seconds', 'by task below', '55.4 %', '65.1 % (±1 s: 80.1 %)'],
         ['   workshop 1,086 · kitchen 1,172', '41.8 · 41.7 %', '59.3 · 51.9 %', '66.5 · 63.9 %'],
-        ['Subject 1 on a lab GPU (Gemma 4-bit), 3,305 hand-seconds', '—', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
+        ['Subject 1 on a lab GPU (Gemma 4-bit), 3,305 hand-seconds', 'by task below', '67.5 %', '77.1 % (±1 s: 87.2 %)'],
         ['   workshop 1,347 · kitchen 1,958', '48.4 · 55.0 %', '69.6 · 66.0 %', '80.3 · 74.9 %'],
         ['IMPACT, 8 runs never coded before, 4 operators not in the prior, on AMD Token Factory, 3,142 hand-seconds', '46.5 %',
          '66.5 %', '71.1 % (±1 s: 82.4 %)'],
         ['   the hand to free and the top lever match the ones from the human labels, 8 runs', '—', '8 of 8', '8 of 8'],
-    ], columns=['New person', 'Constant baseline', 'Vision model alone', 'Gilbreth']),
-        hide_index=True, width="stretch")
+    ], columns=['New person', 'Constant baseline', 'Vision model alone', 'Gilbreth']))
     st.caption('On development data, 63–80 % of the remaining errors sit in the second next to a change of activity. '
                'Times are observed times, not standard times (no rating or allowances). Earlier lab runs and '
                'everything we tried and dropped: docs/RESULTS.md.')
     st.markdown('**The examples in this app, run on AMD** (the shipped pipeline, gate on; second looks at data used '
                 'during development)')
-    st.dataframe(pd.DataFrame([
+    tabla(pd.DataFrame([
         ['Gearbox, IMPACT operator not in the training data, first 60 s reviewed (307 hand-seconds)', '70.0 %', '73.9 %'],
         ['LEGO, two batches of blind human labels (92 hand-seconds)', '58.7 %', '62.0 %'],
-    ], columns=['Example', 'Vision model alone', 'Gilbreth']), hide_index=True, width="stretch")
+    ], columns=['Example', 'Vision model alone', 'Gilbreth']))
     st.subheader('Station mode: when coworkers at the same station are already reviewed')
     st.markdown('Gilbreth learns from all the reviewed seconds of other workers doing the same task (hand motion, '
                 'Gemma\'s codes and each worker\'s dominant hand), not only from the new worker\'s first minute. '
                 'Run it with `python agent/estacion.py --station runs/w1 runs/w2 --new runs/w3 --reviewed-until 60`; '
                 'on the gearbox example, pick **Station mode** in the sidebar.')
-    st.dataframe(pd.DataFrame([
+    tabla(pd.DataFrame([
         ['KIT subject 4, clean test (5 labelled coworkers), per hand and second', '51.5 %', '57.4 %',
          '83.4 % (82.5 % with per-second labels)'],
         ['   on the chart: share of time per hand, points from the human labels', '12.5', '12.8', '6.3'],
@@ -482,7 +499,7 @@ if vista == 'Accuracy & AMD':
          '77.9 %'],
         ['IMPACT clean test, 8 new runs (same 9 coworkers), 3,142 hand-seconds', '66.5 %', '71.1 %',
          '71.3 % (per-second version, as in the app: 72.2 %)'],
-    ], columns=['', 'Vision model alone', 'Shipped mode', 'Station mode']), hide_index=True, width="stretch")
+    ], columns=['Test', 'Vision model alone', 'Shipped mode', 'Station mode']))
     st.caption('KIT subject 4 and the IMPACT test: pre-registered, looked at once. The chart rows and the gearbox are '
                'second looks at data already used, declared as such. Outside KIT station mode tied the shipped mode: '
                'there the shipped motion prior already comes from the same 9 operators. The coworkers\' Gemma codes '
@@ -494,10 +511,13 @@ if vista == 'Accuracy & AMD':
         st.markdown(f"Model **{B.get('modelo', '')}** served on **{B.get('gpu') or 'AMD GPUs'}**"
                     + (f", {B['vram_used_gb']} of {B['vram_total_gb']} GB of GPU memory in use"
                        if B.get('vram_used_gb') else '') + '.')
-        st.dataframe(pd.DataFrame([{'Video': k, 'Video length (s)': v['video_s'], 'Agent wall time (s)': v['wall_s'],
+        VIDEO_EN = {'lego': 'LEGO Mini Digger', 'gearbox': 'Gearbox (IMPACT)', 'screw': 'Screw station',
+                    'plastic': 'Plastic parts', 'cardboard': 'Cardboard box'}
+        PASO_EN = {'ficha': 'Operation sheet', 'paso': 'Per-second coding', 'desc': 'Row descriptions'}
+        st.dataframe(pd.DataFrame([{'Video': VIDEO_EN.get(k, k), 'Video length (s)': v['video_s'], 'Agent wall time (s)': v['wall_s'],
                                     'Seconds of video per minute': v['video_s_per_min']}
                                    for k, v in B['runs'].items()]), hide_index=True, width="stretch")
-        st.dataframe(pd.DataFrame([{'Step': k, 'Requests': v['requests'], 'Latency p50 (s)': v['p50_s'],
+        st.dataframe(pd.DataFrame([{'Step': PASO_EN.get(k, k), 'Requests': v['requests'], 'Latency p50 (s)': v['p50_s'],
                                     'Latency p95 (s)': v['p95_s'], 'Prompt tokens (mean)': v['prompt_tokens_mean'],
                                     'Output tokens (mean)': v['completion_tokens_mean']}
                                    for k, v in B.get('pasos', {}).items()]), hide_index=True, width="stretch")
@@ -569,8 +589,84 @@ def elegir_motor(base, modelo, motor, respaldo, motor_respaldo):
     return modelo, motor, 'ninguno'
 
 
+def sin_secretos(texto):
+    """Defensa en profundidad: nada de lo que se muestra al visitante debe llevar la clave del endpoint."""
+    k = config('GILBRETH_API_KEY')
+    return texto.replace(k, '***') if k else texto
+
+
+@st.cache_resource
+def _turnos_vivos():
+    """Estado común a todas las sesiones: el cupo diario del endpoint de AMD es de la cuenta del equipo, así que va una
+    corrida en vivo a la vez y con un tope por hora (revisión de seguridad del 18-oct)."""
+    import threading
+    return {'lock': threading.Lock(), 'proc': None, 'reserva': 0.0, 'marcas': []}
+
+
+def reservar_turno():
+    """None si se puede lanzar una corrida en vivo (y la deja reservada); si no, el motivo para el visitante."""
+    import time
+    t, ahora = _turnos_vivos(), time.time()
+    tope = int(config('GILBRETH_LIVE_MAX_PER_HOUR', '12') or 12)
+    with t['lock']:
+        t['marcas'] = [m for m in t['marcas'] if ahora - m < 3600]
+        if (t['proc'] is not None and t['proc'].poll() is None) or ahora - t['reserva'] < 60:
+            return ('Another visitor is charting a clip live right now (one live run at a time on the shared AMD '
+                    'endpoint). Please try again in a few minutes.')
+        if len(t['marcas']) >= tope:
+            return (f'This public demo allows {tope} live runs per hour on the shared AMD endpoint, and they are used '
+                    'up for now. Please try again later.')
+        t['reserva'] = ahora
+        t['marcas'].append(ahora)
+    return None
+
+
+def registrar_turno(proc):
+    t = _turnos_vivos()
+    with t['lock']:
+        t['proc'], t['reserva'] = proc, 0.0
+
+
+def seguir_agente(run, p, t0):
+    """Muestra el avance del agente leyendo su bitácora y, cuando acaba, el resultado o el error. Si el visitante toca
+    otro control, Streamlit corta este guion pero el agente sigue: al volver, esta función lo retoma."""
+    import time
+    log = run / 'agente.log'
+    with st.status('The agent is charting your video…', expanded=True) as estado:
+        vistos = 0
+        while True:
+            lineas = log.read_text(encoding='utf-8', errors='replace').splitlines() if log.exists() else []
+            for linea in lineas[vistos:]:
+                if linea[:3] in PASOS_EN:
+                    estado.write(f'{PASOS_EN[linea[:3]]} (started at {time.time() - t0:.0f} s)'
+                                 + (' · one request per second of video on the shared endpoint: the long step'
+                                    if linea[:3] == '4/5' else ''))
+                    estado.update(label=f'The agent is charting your video… step {linea[:3]}: {PASOS_EN[linea[:3]]}')
+            vistos = len(lineas)
+            if p.poll() is not None:
+                break
+            time.sleep(1)
+        (run / 'corriendo').unlink(missing_ok=True)
+        (st.session_state.get('_procs') or {}).pop(str(run), None)
+        ok = p.returncode == 0 and (run / 'diagrama.json').exists()
+        if ok:
+            (run / 'tiempo.json').write_text(json.dumps({'wall_s': round(time.time() - t0, 1)}))
+            estado.update(label=f'Done in {time.time() - t0:.0f} s', state='complete', expanded=False)
+        elif p.returncode == 3:
+            estado.update(label='Today\'s free GPU quota for this demo is used up', state='error', expanded=False)
+        else:
+            estado.update(label='The agent stopped before finishing', state='error')
+            st.code(sin_secretos('\n'.join(lineas[-25:])))
+    if p.returncode == 3:
+        st.warning('The free AMD endpoint behind this demo has a daily quota, and it is used up for today. It resets at '
+                   'midnight Beijing time (16:00 UTC, 11:00 in Colombia). The examples in the sidebar were computed with the full agent.')
+    if not ok:
+        st.button('Try again', key='otra_vez')
+    return ok
+
+
 def correr_agente(vid, npz, run, base, modelo, motor, respaldo=False):
-    """Corre agent/bimanual.py contra el endpoint configurado y muestra el avance; devuelve True si terminó bien."""
+    """Lanza agent/bimanual.py contra el endpoint configurado y sigue su avance; devuelve True si terminó bien."""
     import subprocess, time
     with st.spinner('Checking that the AMD endpoint is answering…'):
         vivo = endpoint_vivo(base, modelo)
@@ -580,40 +676,27 @@ def correr_agente(vid, npz, run, base, modelo, motor, respaldo=False):
         st.warning('The shared AMD endpoint that serves the vision model is not answering right now (it is an '
                    'experimental service). Please try again in a while; the examples in the sidebar were computed with it.')
         return False
-    env = env_agente()
+    motivo = reservar_turno()
+    if motivo:
+        st.info(motivo)
+        return False
+    env = {**env_agente(), 'PYTHONUNBUFFERED': '1'}
     cmd = [sys.executable, str(RAIZ / 'agent' / 'bimanual.py'), str(vid), '--salida', str(run), '--base', base,
            '--modelo', modelo, '--idioma', 'en', '--hilos', config('GILBRETH_THREADS', '8'), '--puntos', str(npz)] + extra
     if config('GILBRETH_LIVE_DESC', '1') == '0':      # endpoint compartido y lento: sin la 2.ª pasada de descripciones
         cmd.append('--sin-descripciones')
     run.mkdir(parents=True, exist_ok=True)
     (run / 'motor.txt').write_text(motor, encoding='utf-8')
-    (run / 'corriendo').write_text('1')
-    cola, t0 = [], time.time()
-    with st.status('The agent is charting your video…', expanded=True) as estado:
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding='utf-8',
-                             errors='replace', env=env, cwd=str(RAIZ))
-        for linea in p.stdout:
-            cola = (cola + [linea.rstrip()])[-25:]
-            if linea[:3] in PASOS_EN:
-                estado.write(f'{PASOS_EN[linea[:3]]} (started at {time.time() - t0:.0f} s)'
-                             + (' · one request per second of video on the shared endpoint: the long step'
-                                if linea[:3] == '4/5' else ''))
-                estado.update(label=f'The agent is charting your video… step {linea[:3]}: {PASOS_EN[linea[:3]]}')
-        p.wait()
-        (run / 'corriendo').unlink(missing_ok=True)
-        ok = p.returncode == 0 and (run / 'diagrama.json').exists()
-        if ok:
-            (run / 'tiempo.json').write_text(json.dumps({'wall_s': round(time.time() - t0, 1)}))
-            estado.update(label=f'Done in {time.time() - t0:.0f} s', state='complete', expanded=False)
-        elif p.returncode == 3:
-            estado.update(label='Today\'s free GPU quota for this demo is used up', state='error', expanded=False)
-        else:
-            estado.update(label='The agent stopped before finishing', state='error')
-            st.code('\n'.join(cola))
-    if p.returncode == 3:
-        st.warning('The free AMD endpoint behind this demo has a daily quota, and it is used up for today. It resets at '
-                   'midnight Beijing time (16:00 UTC, 11:00 in Colombia). The examples in the sidebar were computed with the full agent.')
-    return ok
+    t0 = time.time()
+    #  la salida va a un fichero y no a una tubería: si el visitante toca otro control y Streamlit corta el guion, el
+    #  agente sigue y escribe su resultado (con la tubería moría en el siguiente print; revisión del 18-oct)
+    with open(run / 'agente.log', 'w', encoding='utf-8') as fh:
+        p = subprocess.Popen(cmd, stdout=fh, stderr=subprocess.STDOUT, env=env, cwd=str(RAIZ),
+                             **({'start_new_session': True} if os.name == 'posix' else {}))
+    registrar_turno(p)
+    (run / 'corriendo').write_text(f'{t0:.0f}')
+    st.session_state.setdefault('_procs', {})[str(run)] = (p, t0)
+    return seguir_agente(run, p, t0)
 
 
 def previo_en(previo):
@@ -644,7 +727,8 @@ def mostrar_resultado(run, motor, nota=None):
     if wall:
         c4.metric('Agent wall time (unattended)', f'{wall:.0f} s')
         st.caption('The agent runs unattended on the shared AMD endpoint, paced by its request limit; the engineer\'s '
-                   'part is the review below.')
+                   + ('part is the review below.' if nota is None else
+                      'part, the review, opens after you chart the clip live with the button above.'))
     cal2 = json.loads((run / 'calibracion.json').read_text(encoding='utf-8')) if (run / 'calibracion.json').exists() else None
     if cal2:
         est = cal2.get('estimacion') or {}
@@ -667,10 +751,10 @@ def mostrar_resultado(run, motor, nota=None):
         st.subheader('Top improvements')
         for p in pot2['palancas'][:3]:
             st.markdown(f"- **{p['title']}** — saves ≈ **{p['segundos']:.{nd}f} s** in this clip ({p['pct']:.{nd}f} %). "
-                        f"{p['evidence']}")
+                        f"{evidencia(p, True)}")
     if ev2:
         st.subheader('Method alerts')
-        st.dataframe(alertas_agrupadas(ev2), hide_index=True, width="stretch")
+        tabla(alertas_agrupadas(ev2))
     a, b = st.columns(2)
     if (run / 'diagrama_bimanual.xlsx').exists():
         a.download_button('Download the chart (Excel)', (run / 'diagrama_bimanual.xlsx').read_bytes(),
@@ -691,7 +775,7 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
     if not vent.exists():
         return
     borrador = {int(round(o['t0'])): (o['md'], o['mi']) for o in json.loads(vent.read_text(encoding='utf-8'))}
-    st.subheader('Review the first seconds, then let the agent recode the rest')
+    st.subheader('Review the first seconds; the gate decides whether to recode the rest')
     st.caption('Correct what each hand does in the first seconds (the first cycle, if it fits). The agent learns from your '
                'corrections how far to trust the vision model and how far the hand motion; a gate keeps the vision '
                'model unless the calibrated one scores higher on your reviewed seconds, tested without seeing itself.')
@@ -723,7 +807,7 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
                                cwd=str(RAIZ))
         if p.returncode != 0:
             st.error('The recode stopped before finishing.')
-            st.code(p.stdout[-2000:] + p.stderr[-1000:])
+            st.code(sin_secretos(p.stdout[-2000:] + p.stderr[-1000:]))
         else:
             st.rerun()
 
@@ -731,7 +815,16 @@ def revisar(run, vid, npz, base, modelo, respaldo, dur):
 def nueva_subida(clave, nombre, datos, muestra=False):
     """Una subida, o el clip de muestra por EXACTAMENTE el mismo camino: su propio directorio temporal, el video
     dentro y su duración en st.session_state['subida']."""
-    import cv2
+    import cv2, shutil, time
+    viejo = st.session_state.get('subida')
+    if viejo and viejo.get('dir'):                       # la subida que esta sesión reemplaza
+        shutil.rmtree(viejo['dir'], ignore_errors=True)
+    for d in Path(tempfile.gettempdir()).glob('gilbreth_*'):   # subidas de sesiones cerradas hace horas
+        try:
+            if time.time() - d.stat().st_mtime > 6 * 3600:
+                shutil.rmtree(d, ignore_errors=True)
+        except OSError:
+            pass
     tmp = Path(tempfile.mkdtemp(prefix='gilbreth_'))
     vid = tmp / ('video' + Path(nombre).suffix.lower())
     vid.write_bytes(datos)
@@ -762,6 +855,9 @@ if vista == 'Try your own video':
     st.markdown('Upload a short top-down video of a workstation (≤ 2 min). Hand tracking runs here on CPU'
                 + (f'; the full chart is computed by **{motor}**.' if base else
                    ' and gives a first look at each hand. The full chart needs the vision model on the AMD GPU server.'))
+    st.caption('Privacy: your clip is processed on this app\'s server. For the full chart, still frames and hand crops '
+               'are sent to AMD Token Factory (developer.amd.com.cn), AMD\'s hosted model service. Avoid clips that show '
+               'faces or confidential work. Uploads are deleted when you replace them, and after a few hours.')
     up = st.file_uploader('Video', type=['mp4', 'mov', 'avi', 'mkv'])
     sub = st.session_state.get('subida') or {}
     if up is not None:
@@ -771,8 +867,10 @@ if vista == 'Try your own video':
         a, b = st.columns([5, 1], vertical_alignment='center')
         a.caption('Using our 20-second sample: a screw-assembly station from *Factory Manipulation Videos* by '
                   'Procedural Robotics Inc. (CC BY 4.0), the same take as the screw example. Below, what the full agent '
-                  'charted on it on AMD; press the button to chart it again live. Upload your own video above to replace it.')
+                  'charted on it on AMD. Upload your own video above to replace it.')
         if b.button('Remove the sample', key='quitar_muestra', width='stretch'):
+            import shutil
+            shutil.rmtree(sub.get('dir', ''), ignore_errors=True)
             st.session_state.pop('subida', None)
             st.rerun()
     elif MUESTRA.exists() and st.button('No clip at hand? Use our 20-second sample (factory screw station, CC BY 4.0)',
@@ -802,13 +900,17 @@ if vista == 'Try your own video':
             st.caption(f"Hand tracking (MediaPipe, CPU): {sub['manos'][0]} video frames, tracked at 10 fps; "
                        f"{sub['manos'][1]} hand detections.")
         pi = pista(*cargar_npz(npz))
+        boton_vivo = False
         limite = float(config('GILBRETH_MAX_LIVE_S', '120'))
         if pi and base and not (run / 'diagrama.json').exists() and sub['dur'] > limite + 1:
             st.info(f'On this public demo the full agent charts clips of up to {limite:.0f} s (the free AMD endpoint has '
                     f'a daily quota). Trim the video to chart it; the hand tracking below works on the whole clip.')
         elif pi and base and estado != 'ninguno' and not (run / 'diagrama.json').exists():
             import time as _t
-            if (run / 'corriendo').exists() and _t.time() - (run / 'corriendo').stat().st_mtime < 1200:
+            proc = (st.session_state.get('_procs') or {}).get(str(run))
+            if proc:                                  # esta sesión lanzó el agente: retomarlo (o ver cómo acabó)
+                seguir_agente(run, *proc)
+            elif (run / 'corriendo').exists() and _t.time() - (run / 'corriendo').stat().st_mtime < 1200:
                 st.info('The agent is still working on this video. Wait a moment and press the button below.')
                 st.button('Refresh')
             else:
@@ -820,6 +922,7 @@ if vista == 'Try your own video':
                     pide = sub['dur'] + 1 + (0 if config('GILBRETH_LIVE_DESC', '1') == '0' else sub['dur'] / 2)
                     st.caption(f'One request per second of video on a shared endpoint: about {pide / ritmo:.0f} min '
                                f'for this {sub["dur"]:.0f}-second clip.')
+                boton_vivo = True
                 if st.button(f'Chart it with the full agent · {motor}', type='primary'):
                     correr_agente(vid, npz, run, base, modelo, motor, estado == 'respaldo')
         if (run / 'diagrama.json').exists():
@@ -831,7 +934,9 @@ if vista == 'Try your own video':
             st.subheader('What Gilbreth charted on this sample')
             mostrar_resultado(MUESTRA_RUN, motor, nota='A stored run of the full agent on this clip: Gemma 4 31B on AMD '
                               'Token Factory, from this public app on 18 Oct 2026 (first draft, not reviewed by an '
-                              'engineer). Press the button above to chart it again live; results vary a little between runs.')
+                              'engineer; its method alerts and Excel were rebuilt on CPU from those codes).'
+                              + (' Press the button above to chart it again live; results vary a little between runs.'
+                                 if boton_vivo else ''))
         elif not pi:
             st.warning('No hands found. Film from above, with both hands and the work area in view.')
         else:
@@ -856,7 +961,7 @@ if vista == 'Try your own video':
                        '"hold" from "operate" needs the vision model.')
             ev_vivo = errores.detectar(pi)
             if ev_vivo:
-                st.dataframe(alertas_agrupadas(ev_vivo), hide_index=True, width="stretch")
+                tabla(alertas_agrupadas(ev_vivo))
     if not base:
         st.info('The full agent needs the vision model on an AMD GPU endpoint, which is not connected to this copy of '
                 'the app. The examples in the sidebar were computed with the full agent.')

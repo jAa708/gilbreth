@@ -3,8 +3,9 @@
 **A phone video of a manual operation goes in. A draft bimanual chart, method alerts and an improvement plan in
 seconds saved per unit come out — for the methods engineer to review and approve.**
 
-**Live demo: https://gilbreth.streamlit.app** — no sign-in. In *Try your own video*, chart the 20-second sample with
-the full agent on AMD, correct its first seconds and let the gate decide how the rest is coded.
+**Live demo: https://gilbreth.streamlit.app** — no sign-in. In *Try your own video*, the 20-second sample shows at once
+what the full agent charted on it on AMD (a stored run); press the button to chart it live, correct its first seconds
+and let the gate decide how the rest is coded.
 
 Built for the **AMD Developer Hackathon: ACT III** (Track 1, *Intelligent Industry*) by team **ArkhanLabs**
 (Juan David Sabogal Orozco, industrial engineering student, Cali, Colombia).

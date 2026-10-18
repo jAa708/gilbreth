@@ -9,3 +9,9 @@ __pycache__/
 .streamlit/secrets.toml
 .env
 runs_colab/
+# never commit or bake in secrets
+.amd_key
+*.amd_key
+STREAMLIT_SECRETS*
+*secrets*.txt
+*.bundle
