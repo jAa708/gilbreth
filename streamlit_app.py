@@ -44,7 +44,7 @@ COSTOS = {
 @st.cache_data
 def ejemplos(huella):            # sin «_»: st.cache_data no mira los parámetros que empiezan con guion bajo
     out = {}
-    orden = ['lego', 'impact_gearbox', 'factory_screw', 'factory_cardboard', 'factory_plastic']
+    orden = ['impact_gearbox', 'factory_screw', 'factory_cardboard', 'factory_plastic', 'lego']
     for d in sorted((RAIZ / 'examples').glob('*/diagrama.json'),
                     key=lambda p: (orden.index(p.parent.name) if p.parent.name in orden else len(orden), p.parent.name)):
         meta = json.loads(d.read_text(encoding='utf-8'))['meta']
@@ -253,7 +253,7 @@ st.markdown("**Film a worker's hands at a workstation. Gilbreth shows what each 
 CORTO = {'impact_gearbox': 'Gearbox · vs human labels', 'factory_screw': 'Screw station · factory video',
          'factory_cardboard': 'Cardboard · factory video', 'factory_plastic': 'Plastic parts · factory video',
          'lego': 'LEGO digger · one full unit'}
-EJ = ejemplos(('orden: lego primero',) + tuple(sorted((p.parent.name, p.stat().st_mtime)    # la etiqueta renueva la caché
+EJ = ejemplos(('orden: lego al final',) + tuple(sorted((p.parent.name, p.stat().st_mtime)    # la etiqueta renueva la caché
                                                        for p in (RAIZ / 'examples').glob('*/diagrama.json'))))
 with st.sidebar:
     st.header('Pick an example video')
